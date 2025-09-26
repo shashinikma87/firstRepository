@@ -1,0 +1,47 @@
+<apex:page showheader="false" standardstylesheets="false">
+    
+    <link href="https://cdn.datatables.net/1.10.6/css/jquery.dataTables.css" rel="stylesheet" type="text/css" /> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.6/js/jquery.dataTables.min.js"></script>
+    
+    <table cellspacing="0" class="display" id="example" style="width: 100%px;">
+        <thead>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Birthdate</th>
+                <th>Phone</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Birthdate</th>
+                <th>Phone</th>
+                <th>Email</th>  
+            </tr>
+        </tfoot>
+    </table>
+    
+    <script>
+        $(document).ready(function() {
+            $.fn.dataTableExt.sErrMode = 'console';   //block alert                                     
+            $('#example').dataTable( {
+                //"paging": false,
+                "processing": true,
+                "serverSide": true,
+                "ajax": "/apex/DataTableHelper",
+                "columns": [
+                    { "data": "FirstName" },
+                    { "data": "LastName" },
+                    { "data": "Birthdate" },
+                    { "data": "Phone" },
+                    { "data": "Email" }     
+                ]
+            } );
+        } );
+    </script>
+    
+</apex:page>

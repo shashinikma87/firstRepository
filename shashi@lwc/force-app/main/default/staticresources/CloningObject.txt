@@ -1,0 +1,519 @@
+Init  code to redirect from component to vf page
+----------------------------------------------------
+
+
+ var url='/apex/LROpportunityCloneWithProduct?id='+component.get("v.recordId")+'&flagOfRt=false&rt='+component.get('v.selectedValue');
+        var urlEvent = $A.get("e.force:navigateToURL");
+        urlEvent.setParams({
+            "url": url,
+            "isredirect": "true"
+        });
+        urlEvent.fire();
+		
+		
+		
+Vf page Code
+------------------------------------------------------
+
+
+<apex:page standardController="Opportunity" showHeader="true" extensions="LROptyDynamicPagelayout" lightningStylesheets="true">
+    <script src="/soap/ajax/41.0/connection.js" type="text/javascript"></script> 
+    <script src="/soap/ajax/41.0/apex.js" type="text/javascript"></script>
+    
+    
+    <script>
+    
+    var sObject = '{!strSObject}'; 
+    var recordTypeId = '{!RecordTypeId}';
+    var arrLayoutFields = new Array(); 
+    var arrFields = new Array(); 
+    var layoutId = '';
+    
+    var myVar = setInterval(myTimer, 1000);
+    window.onload = function() {
+        LoadLayoutFields();
+        
+        setTimeout(function(){ 
+            var spanHelp=document.querySelectorAll('span.helpButton');            
+            for(var i=0;i< spanHelp.length;i++){
+                var helptext=spanHelp[i].children[2].innerText.split(',')[1]; 
+                var strRemove=helptext.replace(/[^\w\s]/gi, '');               
+                spanHelp[i].children[1].setAttribute('title',strRemove);
+                
+            }            
+        }, 3000);        
+    };
+    
+    function myTimer(){
+        var tab=document.getElementsByClassName('detailList')[0];
+        
+        if(tab!='' && tab !='undefined'){
+            var tdFirst=tab.rows[0].cells[0].innerText;
+            if(tdFirst==''){
+                tab.rows[0].cells[0].remove();
+                //clearInterval(myVar);
+            }                                                
+        }
+    }
+    
+    
+    var arrLayoutFields = new Array();
+    var arrFields = new Array();
+    var layoutId = '';
+    
+    var recordId = '';
+    function LoadLayoutFields() {
+        var arrRtId=[];
+        arrRtId.push('{!recordTypeId}');        
+        sforce.connection.sessionId = "{!$Api.Session_ID}";
+        var result = sforce.connection.describeLayout(sObject, null, arrRtId);              
+        var layouts = result.getArray("layouts");
+        
+        arrLayoutFields = new Array();
+        arrFields = new Array();
+        layoutId = '';
+        if(layouts.length > 1) {
+            if(recordTypeId == '') {
+                var layout = layouts[0];
+                detailLayoutSections(layout.detailLayoutSections);
+            }
+            else {
+                var recordTypes = result.getArray("recordTypeMappings");
+                if(recordTypes != undefined && recordTypes != null && recordTypes != '') {
+                    recordTypeMappings(recordTypes);
+                }
+                
+                for (var i=0; i<layouts.length; i++) {
+                    if(layoutId == layouts[i].id) {
+                        var layout = layouts[i];
+                        detailLayoutSections(layout.detailLayoutSections);
+                    }
+                }
+            }
+        }
+        else if(layouts.length > 0) {                
+            var layout = layouts[0];
+            detailLayoutSections(layout.detailLayoutSections);
+        }
+        console.log('===>',arrLayoutFields);
+        ShowSelectedRecordAF(JSON.stringify(arrLayoutFields));
+        
+    } 
+    
+    function recordTypeMappings(recordTypes) {
+        for (var i=0; i<recordTypes.length; i++) {
+            if(recordTypes[i].recordTypeId == recordTypeId) {
+                layoutId = recordTypes[i].layoutId;
+            }
+        }
+    }
+    
+    function detailLayoutSections(sections) { 
+        if(sections.length == undefined) 
+            sections = new Array(sections); 
+        
+        for (var i=0; i<sections.length; i++) { 
+            var section = sections[i]; 
+            var LayoutSection = {}; 
+            arrFields = new Array(); 
+            LayoutSection.Header = section.heading; 
+            LayoutSection.Columns = section.columns; 
+            layoutRows(section.getArray("layoutRows")); 
+            LayoutSection.Fields = arrFields; 
+            arrLayoutFields.push(LayoutSection); 
+        } 
+    } 
+    
+    function layoutRows(rows) { 
+        for (var i=0; i<rows.length; i++) { 
+            var row = rows[i]; 
+            layoutItems(row.getArray("layoutItems")); 
+        } 
+    } 
+    
+    function layoutItems(items) { 
+        for (var i=0; i<items.length; i++) { 
+            var item = items[i]; 
+            layoutComponents(item.getArray("layoutComponents"), item.editableForUpdate, item.required); 
+        } 
+    } 
+    function layoutComponents(components, editableForUpdate, required) { 
+        
+        for (var i=0; i<components.length; i++) { 
+            var component = components[i]; 
+            if(component.getArray("components") != null && component.getArray("components").length != 0 && component.getArray("components") != undefined && component.getArray("components") == '') 
+                layoutFields(component.getArray("components"), editableForUpdate, required);
+            else { 
+                var LayoutFields = {}; 
+                LayoutFields.Field = component.value; 
+                LayoutFields.isUpdatable = editableForUpdate; 
+                LayoutFields.isRequired = required; 
+                arrFields.push(LayoutFields); 
+            } 
+        } 
+        
+    }
+    function layoutFields(fields, editableForUpdate, required) { 
+        for (var i=0; i<fields.length; i++) { 
+            var field = fields[i]; 
+            var LayoutFields = {}; 
+            LayoutFields.Field = field.value; 
+            LayoutFields.isUpdatable = editableForUpdate; 
+            LayoutFields.isRequired = required; 
+            arrFields.push(LayoutFields); 
+        } 
+        
+    }
+    
+    function disableBtn(ele){
+        ele.disabled=true;
+        ele.value='Submitting';
+        setTimeout(function(){ 
+            ele.disabled=false;
+            ele.value='Save';
+        }, 3000);
+    }
+    
+    </script>
+    
+    
+    <apex:form id="frm">
+        <apex:actionfunction name="ShowSelectedRecordAF" action="{!showSelectedRecord}" rerender="pb3"> 
+            <apex:param name="param1" value="" assignTo="{!strLayoutFields}" />
+        </apex:actionfunction>
+        
+        <apex:outputPanel id="pb3">
+            <apex:outputPanel id="pb2" rendered="{!lstSections != null}">
+                <apex:pageMessages />
+                <apex:sectionheader title="{!strSObjectLabel} Detail" />
+                <div style="text-align: center;" >
+                    <apex:commandButton action="{!createOpty}" value="Save" rerender="pb3" onclick="disableBtn(this)" />
+                    <apex:commandButton action="{!cancelSave}" value="Cancel" immediate="true"  />
+                </div> 
+                <br/>
+                
+                
+                <apex:pageBlock rendered="{!showEditView}">
+                    <apex:repeat value="{!lstSections}" var="sec" > 
+                        <apex:pageBlockSection title="{!sec.Header}"  columns="{!IF(sec.Columns == '2', 2, 1)}" collapsible="true" id="Section"> 
+                            <apex:repeat value="{!sec.Fields}" var="f" > 
+                                
+                                
+                                
+                                <apex:inputField required="{!f.isRequired}"  value="{!sObjectRecord[f.Field]}" styleClass="{!f.Field}" rendered="{!f.Field != 'RecordTypeId' && f.Field != 'Amount' && f.Field != 'Campaign_Structure__c' && f.Field != 'Action_Taken__c'}" />                                                                          
+                                <apex:inputField html-disabled="true"  required="{!f.isRequired}"  value="{!sObjectRecord[f.Field]}" styleClass="{!f.Field}" rendered="{!f.Field == 'Amount'}" />                                                                          
+                                <apex:outputText rendered="{!f.Field == 'RecordTypeId'}">
+                                    
+                                    
+                                    <th class="labelCol vfLabelColTextWrap" scope="row"><label> Opportunity Record Type</label></th>
+                                    <td class="dataCol"><span id="j_id0:frm:j_id36:j_id37:0:Section:j_id38:17:j_id39"><span class="Internal_Forecast_Date__c">{!selectedRecordType} </span></span></td> 
+                                    
+                                    
+                                </apex:outputText>
+                                <apex:outputText rendered="{!f.Field == 'RecordTypeId'}">
+                                </apex:outputText> 
+                            </apex:repeat> 
+                        </apex:pageBlockSection>
+                        
+                    </apex:repeat>
+                </apex:pageBlock>
+                
+                
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <br/>
+        <div style="text-align: center;" >
+            <apex:commandButton action="{!createOpty}" value="Save" rerender="pb3" onclick="disableBtn(this)" />
+            <apex:commandButton action="{!cancelSave}" value="Cancel" immediate="true"  />
+        </div>
+        <br/>
+    </apex:form>
+</apex:page>
+
+
+
+------------------------------------------------------------------------------
+
+
+Apex class code
+--------------------
+
+public with sharing class LROptyDynamicPagelayout {
+    public List<LayoutSections> lstSections {get; set;} 
+    public SObject sObjectRecord {get; set;}    
+    public String strLayoutFields {get; set;} 
+    public  Id strRecordId {get; set;}
+    public String strSObject {get; set;} 
+    public String strSObjectLabel {get; set;}  
+    public Id recordTypeId {get; set;} 
+    public Boolean showEditView{get; set;}
+    private final Opportunity opty;
+    public  string strRecordType         {get;set;}
+    public Static Boolean productCheck ;
+    public Boolean checkRtSelected{get;set;} 
+    public String selectedRecordType{get;set;} 
+    public  List<LayoutFields> requiredField{get;set;} 
+    public String copyStageName='';
+    
+    public LROptyDynamicPagelayout(ApexPages.StandardController controller){
+        strSObject = 'Opportunity';
+        checkRtSelected=true;
+        if(ApexPages.currentPage().getParameters().get('Id') != null && ApexPages.currentPage().getParameters().get('Id') !=''){
+            showEditView= true;
+            strRecordId = ApexPages.currentPage().getParameters().get('Id');
+            String strQuery = '';
+            strQuery += 'SELECT Id, RecordTypeId,HasOpportunityLineItem FROM ' + strSObject + ' WHERE Id =: strRecordId'; 
+            sObjectRecord = database.query(strQuery); 
+            
+            if(ApexPages.currentPage().getParameters().get('rt')!=null && ApexPages.currentPage().getParameters().get('rt') !=''){
+                recordTypeId =  ApexPages.currentPage().getParameters().get('rt').escapeHtml4();            
+            }else{
+                recordTypeId = String.valueOf(sObjectRecord.get('RecordTypeId'));
+            }
+            selectedRecordType=[select Name from recordType where id=:recordTypeId].Name;            
+            this.strRecordType=recordTypeId;                                    
+        }
+        
+        this.opty = (Opportunity)controller.getRecord();
+    }
+    
+    public Pagereference cancelSave(){        
+        return new Pagereference('/'+ApexPages.currentPage().getParameters().get('Id'));
+    }
+    
+    @AuraEnabled
+    public static String getApiCallUrl(String recordId){
+        
+        sObject sObjectRec = Database.query('SELECT Id, RecordTypeId,HasOpportunityLineItem,StageName FROM  opportunity WHERE Id = :recordId');        
+        String returnVar='';
+        Map<String,String> mapCnf=getTheConfigrationSetting();
+        
+        if (sObjectRec.get('HasOpportunityLineItem') == false) {                            
+            returnVar = 'failure';      
+        }
+        else if(mapCnf!=null && sObjectRec.get('StageName')==mapCnf.get('StageName')){
+            String profile=mapCnf.get('profile');
+            String stageName=mapCnf.get('StageName');
+            String defaultRT=mapCnf.get('defaultRT');
+            
+            returnVar='redirectToRt|'+profile+'|'+stageName+'|'+defaultRT;
+        }else{
+            returnVar= '/apex/LROpportunityCloneWithProduct?id='+recordId;
+        }	
+        
+        return returnVar; 
+        
+    }
+    
+    
+    @AuraEnabled
+    public static list<Map<String,String>> getRecordTypesv2()
+    {
+        
+        list<Map<String,String>> options = new list<Map<String,String>>();
+        
+        Schema.DescribeSObjectResult sdso = Opportunity.SObjectType.getDescribe();
+        List<Schema.RecordTypeInfo> rtInfo = sdso.getRecordTypeInfos();
+        for(Schema.RecordTypeInfo rInfo : rtInfo){            
+            if(rInfo.isAvailable() && !rInfo.isMaster()){
+                Map<String,String> rtMap=new Map<String,String>();
+                rtMap.put('label',rInfo.getName());
+                rtMap.put('value',rInfo.getRecordTypeId()); 
+                options.add(rtMap);
+            }
+            
+        }                       
+        return options;
+    }
+    
+    public list<SelectOption> getRecordTypes()
+    {
+        
+        list<SelectOption> options = new list<SelectOption>();        
+        Schema.DescribeSObjectResult sdso = Opportunity.SObjectType.getDescribe();
+        List<Schema.RecordTypeInfo> rtInfo = sdso.getRecordTypeInfos();
+        for(Schema.RecordTypeInfo rInfo : rtInfo)
+        {            
+            if(rInfo.isAvailable() && !rInfo.isMaster())
+            {
+                options.add(new SelectOption(rInfo.getRecordTypeId(), rInfo.getName()));
+            }
+            
+        }                
+        return options;
+        
+    }
+    
+    public PageReference updateRecordType()
+    {
+        opty.RecordTypeId = strRecordType;
+        PageReference page = new PageReference('/apex/LROpportunityCloneWithProduct?id='+strRecordId+'&rt='+ strRecordType);
+        page.setRedirect(true);
+        return page;
+    }
+    
+    
+    public class LayoutSections {
+        public String header {get; set;} 
+        public String columns {get; set;} 
+        public List<LayoutFields> fields {get; set;} 
+    } 
+    
+    public class LayoutFields {
+        public String field {get; set;} 
+        public String isUpdatable {get; set;} 
+        public String isRequired {get; set;} 
+        public boolean isRender {get; set;} 
+    } 
+    
+    
+    public void showSelectedRecord() {        
+        lstSections = (List<LayoutSections>)JSON.deserialize(strLayoutFields, List<LayoutSections>.class); 
+        Schema.SObjectType token;
+        if(strRecordId != null){
+            token = strRecordId.getSObjectType();
+        }
+        
+        
+        Schema.DescribeSObjectResult dr = token.getDescribe(); 
+        strSObject = dr.getName(); 
+        strSObjectLabel = dr.getLabel(); 
+        
+        SObjectType sObjectType = Schema.getGlobalDescribe().get(strSObject); 
+        
+        String strQuery = 'SELECT '; 
+        //system.debug('=======lstSections'+ lstSections);
+        requiredField=new List<LayoutFields>();
+        for(LayoutSections objL : lstSections) { 
+            List<LayoutFields> lstFieldsTemp = new List<LayoutFields>(); 
+            
+            for(LayoutFields oField : objL.Fields) { 
+                
+                if(oField.Field != null && sObjectType.getDescribe().fields.getMap().containsKey(oField.Field)){ 
+                    LayoutFields oLayoutFields = new LayoutFields(); 
+                    oLayoutFields.Field = oField.Field; 
+                    oLayoutFields.isUpdatable = 'true'; 
+                    oLayoutFields.isRequired = oField.isRequired;
+                    oLayoutFields.isrender = true; 
+                    strQuery += oField.Field + ', ';                   
+                    lstFieldsTemp.add(oLayoutFields);
+                    if(oField.isRequired=='true'){
+                        this.requiredField.add(oLayoutFields);
+                    }                                        
+                } 
+            } 
+            objL.Fields = lstFieldsTemp;             
+        } 
+        if(strRecordId != null){
+            strQuery += 'Id FROM ' + strSObject + ' WHERE Id =: strRecordId';
+            sObjectRecord = database.query(strQuery); 
+            this.sObjectRecord.put('RecordTypeId',recordTypeId);
+            
+            system.debug('Query --> ' + strQuery);
+            
+        }
+    }
+    public PageReference createOpty(){
+        String exp='';        
+        try{                       
+            System.debug('+++' + recordTypeId);            
+            Opportunity optyNew = new Opportunity();
+            optyNew = ((Opportunity)this.sObjectRecord).clone(false,false,false,false); 
+            
+            Map<String,String> mapCnf=getTheConfigrationSetting();            
+            //String userProfileName = [select Name from profile where id =: userinfo.getProfileId()].Name;
+            //if(userProfileName=='TC P2G Team' && optyNew.StageName =='Closed Won'){
+            if(mapCnf!=null && optyNew.StageName==mapCnf.get('StageName')){
+                copyStageName=optyNew.StageName;
+                optyNew.StageName='Prospecting';
+            }  
+            insert optyNew;
+            String oid= String.valueOf(this.sObjectRecord.get('Id'));
+            cloneProductOfClonedOpty(optyNew.Id,oid);
+            return new PageReference('/'+optyNew.Id);
+        }catch(Exception e){
+            exp=e.getMessage();
+        }
+        
+        
+        ApexPages.addmessage(new ApexPages.message(ApexPages.severity.Error, exp));
+        
+        return null;
+    }
+    
+    public  String cloneProductOfClonedOpty (String cid,String oid){                
+        Opportunity lineItem= [select HasOpportunityLineItem from opportunity where id=:oid];
+        if (lineItem.HasOpportunityLineItem == true) {               
+            String queryObj1 = getCreatableFieldsSOQL('OpportunityLineITem', 'OpportunityId =\'' + oid + '\'');
+            String replaceQueryObj1= queryObj1.replace('TotalPrice,',''); //TotalPrice from String
+            List<OpportunityLineItem> products = Database.query(replaceQueryObj1);
+            
+            List<OpportunityLineItem> newProdList = new List<OpportunityLineItem>();
+            for (OpportunityLineItem prod:products) {
+                OpportunityLineItem newProd = prod.clone(false, false, false, false);
+                newProd.OpportunityId = cid;
+                newProdList.add(newProd);
+            }                       
+            insert(newProdList);
+            System.debug('copyStageName '+copyStageName);
+            if(copyStageName!=''){
+                Opportunity opty=new Opportunity(id=cid);
+                opty.stageName=copyStageName;
+                update opty;
+            }
+            
+            return 'true';
+        } else {
+            return 'failure';
+        }
+        
+    }
+    
+    public static string getCreatableFieldsSOQL(String objectName, String whereClause){
+        String selects = '';        
+        // Get a map of field name and field token
+        Map<String, Schema.SObjectField> fMap = Schema.getGlobalDescribe().get(objectName.toLowerCase()).getDescribe().Fields.getMap();
+        list<string> selectFields = new list<string>();
+        
+        if (fMap != null){
+            for (Schema.SObjectField ft : fMap.values()){ // loop through all field tokens (ft)
+                Schema.DescribeFieldResult fd = ft.getDescribe(); // describe each field (fd)
+                if (fd.isCreateable()){ // field is creatable
+                    selectFields.add(fd.getName());
+                }
+            }
+        }
+        
+        if (!selectFields.isEmpty()){
+            for (string s:selectFields){
+                selects += s + ',';
+            }
+            if (selects.endsWith(',')){ selects = selects.substring(0,selects.lastIndexOf(',')); }
+            
+        }
+        system.debug('-----'+selects);
+        return 'SELECT ' + selects + ' FROM ' + objectName + ' WHERE ' + whereClause;        
+    }
+    
+    public static Map<String,String> getTheConfigrationSetting(){
+        String userProfileName = [select Name from profile where id =: userinfo.getProfileId()].Name;
+        Map<String,String> cnfMap;
+        Clone_With_Product__c cwp = Clone_With_Product__c.getValues(userProfileName);
+        
+        if(cwp != null){
+            cnfMap=new Map<String,String>();
+            cnfMap.put('profile', userProfileName);
+            cnfMap.put('StageName',cwp.Stage_Name__c);
+            cnfMap.put('defaultRT',cwp.Default_Record_Type__c);
+            
+        }                
+        return cnfMap;
+    }
+    
+}
+
+
+
+
+
+		

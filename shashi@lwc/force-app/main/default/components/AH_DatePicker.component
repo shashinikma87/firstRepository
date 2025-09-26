@@ -1,0 +1,18 @@
+<apex:component >
+    
+    <apex:attribute name="defaultValue" description="This is value of the Field." type="String" required="false"/>
+    <apex:attribute name="defaultStyle" description="This is value of the Field Style." type="String" required="false"/>
+
+    <apex:stylesheet value="{!URLFOR($Resource.jQueryDatePicker,'jquery-ui.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.jQueryDatePicker,'jquery-1.12.4.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.jQueryDatePicker,'jquery-ui.js')}" />
+
+    <apex:inputText id="datePicker" value="{!defaultValue}" style="{!defaultStyle}background-color:white;" />
+    
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('input[id$="{!$Component.datePicker}"]').datepicker();
+    });
+    </script>
+    
+</apex:component>

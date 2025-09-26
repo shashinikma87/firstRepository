@@ -1,0 +1,124 @@
+<apex:page controller="AH_JobScheduler_Ctlr" >
+    
+    <style>
+        
+        table {
+        display: table;
+        border-collapse: separate;
+        border-spacing: 2px;
+        border-color: grey;
+        }
+        
+        .pbBody, .pbBody a, .pbBody td, .lbBody a, .lbBodyDescription, .list .headerRow .noRowsHeader {
+        color: #000;
+        }
+        
+        body, td {
+        font-family: Arial,Helvetica,sans-serif;
+        color: #222;
+        }   
+        
+    </style>
+    
+    <script>
+    
+        function clickSaveButton()
+        {
+            //alert('Save button clicked...');
+            //callSave();
+        }
+        function checkAllRecords(this1)
+            {
+                console.log('in checkAllRecords function..');
+                var parentVal = $(this1).is(':checked');
+                
+                $(this1).closest('table').find('.checkAll').each(function() 
+                {
+                    $(this).prop('checked',parentVal);
+                });
+                
+                $(this1).closest('table').find('.checkbox').each(function() 
+                {
+                    var isChildDisabled = $(this).is(':disabled');
+                    if (!isChildDisabled)
+                    {
+                        $(this).prop('checked',parentVal);
+                    }
+                });
+            } 
+    </script>
+    
+    <apex:form id="ffrm">
+        <apex:pageMessages id="msg"/>
+        
+        <br/>
+        <h1 style="margin-top: 0; font-size:25px;">Finance Job Scheduler</h1>
+<!--
+        <div style="margin-left:800px;" id="statusID">
+            <h1  style="margin-top: 0; font-size:10px;">{!status}</h1>
+        </div>
+-->        <br/>
+        
+        <apex:outputPanel id="thePanel">
+        <apex:pageBlock >
+            
+            <apex:pageBlockButtons location="top">
+                <apex:outputPanel id="buttons">
+                    <apex:commandButton value="Save" action="{!saveFunc}" reRender="msg"/>
+                    <apex:commandButton value="Cancel" action="{!doCancel}"/>
+                </apex:outputPanel>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection columns="1">
+                <apex:inputText id="job_name" label="Job Name" value="{!jobName}" style="width:250px;" required="true"/>
+                
+                <apex:selectList value="{!selectedClass}" multiselect="false" size="1" label="Apex Class" style="width:250px;" required="true" >
+                    <apex:selectOptions value="{!classOptions}"/> 
+                </apex:selectList>
+               
+            </apex:pageBlockSection>
+            
+            <!-- <apex:actionFunction name="callSave" action="{!saveFunc}" /> -->
+        </apex:pageBlock>
+            </apex:outputPanel>
+    </apex:form>
+    
+    <!-- COMPONENT DETAILS--->
+    <table style="padding: 10px;" >
+        <tr>
+            <td>  
+                Schedule Apex Execution
+            </td>
+            <td>
+                <c:cronVFC compData="{!theData}" ></c:cronVFC>
+            </td>
+        </tr>
+    </table>
+    <!--- SHOW SCHEDULED CRON JOBS HERE --->
+    <apex:form >
+        <apex:pageBlock title="Scheduled Jobs">
+            
+            <apex:pageBlockButtons location="top">
+                <apex:outputPanel id="buttons">
+                    <apex:commandButton value="Delete Job" action="{!deleteJobs}"/>
+                </apex:outputPanel>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection columns="1" >
+                <apex:pageBlockTable value="{!schldJobsData}" var="job">
+                    <apex:column style="width: 60px;">
+                        <apex:facet name="header">                                        
+                            <apex:inputCheckbox value="{!isCheckAllJobs}" onclick="checkAllRecords(this);"  styleClass="checkAllRecs"/>
+                        </apex:facet>
+                        <apex:inputCheckbox value="{!job.check}" styleClass="checkbox" />
+                    </apex:column>
+                   <apex:column headerValue="Job Id" value="{!job.jobId}"/>
+                    <apex:column headerValue="Apex Class Name" value="{!job.ClassName}"/>
+                    <apex:column headerValue="Job Type" value="{!job.JobType}"/>
+					<apex:column headerValue="Job Status" value="{!job.status}"/>
+                    <apex:column headerValue="CreatedBy" value="{!job.CreatedBy}"/>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

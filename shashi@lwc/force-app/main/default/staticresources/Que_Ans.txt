@@ -1,0 +1,209 @@
+
+Queues can be made up of the following
+A. Users
+B. Public Groups
+C. Roles
+
+Who can invite Chatter customers into a Chatter group?
+A. The system admin
+B. Group owner
+
+The page layout allows users to see the Next Steps field on an Opportunity record, Field Level Security dictates that the field is hidden, how will the field appear to the user?
+A. The field will be hidden from the user
+
+If a lead is converted without a value in the company field, what happens?
+B. A Person Account is created
+
+The system administrator needs to ensure that all Leads coming from the website are assigned a website lead queue, that all Leads for a recent trade show are assigned to Matt Wilson and all other leads are assigned to Phil Smith. The system administrator will 
+B. Create 1 assignment rule with multiple criteria entries
+
+	As per the Salesforce documentation, there should be only one active lead assignment rule per RULE TYPE. Here the rule type is web-generated leads. So, there should be only one assignment rule, but with three entries.
+
+Which of the following are true about formula fields?
+A. They are read-only
+B. They will not display on record edit pages
+D. They are not searchable
+E. They will display on reports
+
+Lead assignment rules assign leads to owners and queues based on the criteria the system admin specifies within the rule.
+A. True
+
+When a Lead is converted, an Account, Contact and _______ record are created.
+D. Opportunity
+
+To prevent a user from logging into the Salesforce org outside normal business hours, the System Administrator would do this in:
+B. The user's profile record
+
+Which of the following SF applications enables organizations to speed and streamline all phases of sales?
+C. SF Automation
+
+A system administrator can opt to lock users out of the Salesforce org if they exceed a certain number of failed login attempts.
+A. True
+
+You can use standard reports when creating Dashboards
+B. False
+
+What type of report cannot be used to run a dashboard report?
+2.   Tabular
+
+Fields which are hidden using Field-Level-Security are still subject to Validation Rules?
+1.   True
+
+What is the maximum number of Components available on a Dashboard?
+3.   20
+
+What is true about dynamic dashboards:
+1.   A dynamic dashboard will show data according to the user's security settings
+
+The Sales Director wants to be alerted to deals that are greater than $1,000,000. Which tool should you use to achieve this?
+
+1.   Big Deal Alerts
+2.   Workflow - Create a workflow to send an email if an Opportunity amount is great than 1,000,000
+
+What are the ways leads can be captured with Salesforce? (Choose two answers)
+
+1.   Lead Import
+2.   Web to Lead
+
+An Approval Process begins when a record is..
+3.   Submitted for Approval
+
+All of the following objects may have a queue EXCEPT
+1.   Accounts
+
+
+Which statement about Community experts is true? (Choose 2)
+  Community experts are designated by an icon
+  Community experts can be designated for Salesforce Ideas or Answers
+
+The marketing team at Universal Containers wants to send an email to each lead received from its website. The country of the incoming lead should determine the language of the email that will be sent to the lead. How can a system administrator automate this process?
+ Create an email template for each language and an auto-response rule to send the appropriate template  
+
+Which statement about record types is true? (Choose 2)
+  The ability to create records of a specific record type is determined by the profile
+  Record types can be used to define picklist values available for a given field
+
+Regional sales users at Universal Containers sell to both business and consumer accounts. However, sales users are unable to use the set of stages that apply to consumer opportunities. How can a system administrator correct this problem?
+  Check for validation rule that restricts the visibility of the opportunity stage
+  Assign the relevant record types and sales processes to the regional sales team profile
+  Ensure that regional sales users are routing consumer opportunities to the appropriate approver
+  Remove all but one record type from the regional sales team profile
+
+Which component can be included in a custom home page layout? (Choose 3)
+  Dashboard components
+  Messages and alerts
+  Pending approvals list
+
+What user interface setting must be enabled for users to edit records in a list view?(Choose 2)
+  Enhanced lists
+  Inline editing
+
+Which feature license can be assigned to a user record in Salesforce? (Choose 2)
+  Service Cloud User
+  Knowledge User
+  
+A user responsible for managing and creating campaigns is unable to create a new campaign, even though the user’s profile has the “Create” profile permission for Campaigns. How should the system administrator grant the correct access to the user?
+  Select the marketing user checkbox on the user record
+  
+What is required to make a user an approver in the approval process?
+  The user must have read permission for the object in the approval process
+  
+Which tab can be included in a customer portal? (Choose 2)
+  Knowledge
+  Ideas
+  
+Which setting can a system administrator control in the Salesforce user interface? (Choose 3)
+  Enable hover details
+  Enable enhanced list views
+  Enable spell checker
+
+Which permission is requited to install and uninstall packages from Salesforce AppExchange?
+  Download AppExchange Packages
+
+Which record type can be updated when converting a lead? (Choose 2)
+  An existing opportunity record
+  An existing account record
+
+What should a system administrator consider when deleting a custom field? (Choose 3)
+  Deleted fields and values can be restored from the recycle bin within 15 days
+  Field values should be archived before a field is deleted
+  Fields used in workflow and assignment rules cannot be deleted  
+  
+Where can the multilingual solution search feature be enabled? 
+  Self Service Portal
+  Public Knowledge Base
+
+Which statement about products and price books is true?
+  A product can have a different list price in different price books
+  The standard and list price for a product can be listed in multiple currencies
+
+Which accounts are automatically synchronized on Salesforce Classic Lite?
+  All recently accessed accounts
+
+What is the purpose of the Service Cloud (customer) portal? (Choose 2)
+  To allow customers to log and check the status of cases online
+  To provide Web self-service by exposing Knowledge articles
+
+What can an administrator assign to both Ideas and Answers?
+  Categories
+ 
+Which action can a user with the standard system administrator profile take? (Choose 3)
+  Assign custom profiles to users
+  Reset all users passwords
+  Assign feature license to users
+  
+Universal Containers requires that the organization-wide default for Opportunities be set to public read/write. However sales users are reporting that opportunity reports return too many results, and this makes it difficult to find their team’s opportunities in the report results. How can an administrator address this problem?
+  Use the "Show" filter to filter report results and reduce records returned
+  
+What can be modified on standard object fields?(Choose 3)
+  Help text
+  Default text
+  Picklist values
+  
+Which type of chart can be used to display summary values from two different levels of grouping in a report?(Choose 2)
+  Stacked bar chart
+  Grouped line chart
+  
+Which accounts are automatically synchronized on Salesforce Classic Lite?
+  All recently accessed accounts
+  
+Which task can a delegated administrator perform? (Choose 3)
+  Log in as a user who has granted login access
+  Manage specified custom objects
+  Manage users within specified roles
+  
+Which schedule type can be defined for a product? (Choose 2)
+  Revenue
+  Quantity
+  
+How can a sales user relate an opportunity to a campaign? (Choose 2)
+  Select the primary campaign source for the opportunity
+  Use the campaign influences related list on the opportunity
+  
+What is affected by changing the default locale setting for an organization?
+ Date Fields
+ 
+How can a system administrator add users to a Salesforce organization using Chatter Free? (Choose 2)
+  Create users in the organization and assign them a chatter free license
+  Enable invites to allow users to invite others within specified email domains
+  
+Which privilege can be granted to members of a content library (workspace) without modifying user permissions? (Choose 2)
+  Add tags when editing content details
+  Share content with other users in Chatter
+  
+  
+A system administrator at Universal Containers created a new account record type. However, sales users are unable to select the new record type when creating new account records. What is a possible reason for this? (Choose 2)
+  The record type has not been added to the sales user profile
+  The records type has not been activated
+
+Universal Containers has set the organization-wide default settings for accounts to private. Amy and bob are on separate sales teams, but are assigned to the same role in the hierarchy. Amy is a member of the “Sales West” public group and needs access to all accounts owned by Bob, a member of the “Sales East” group. How would an administrator grant Amy access to only Bob’s accounts?
+  Add Amy to Bob's default account team
+
+Custom Fiscal Years : 
+Before enabling custom fiscal years, consider the following items:
+After enabling custom fiscal years, your organization's fiscal years will no longer be automatically defined by salesforce.com. The only fiscal years available for reports, quotas, forecasts, and so on will be those defined by your organization.
+Enabling custom fiscal years is not reversible. After enabling custom fiscal years, you cannot revert to standard fiscal years. However, you can define your custom fiscal years to match a standard fiscal year.
+If you have forecasting features enabled, creating the initial custom fiscal year deletes all quotas and adjustments from that year forward.
+
+  
+

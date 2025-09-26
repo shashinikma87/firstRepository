@@ -1,0 +1,26 @@
+<apex:page controller="Integration_ServiceNow" >
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="1">
+                <apex:selectList value="{!user_name}" multiselect="False" label="Select User" size="1">
+                    <apex:selectOptions value="{!usernames}" />
+                </apex:selectList>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Show Data" action="{!getIncidentsList}"/>
+                <apex:commandButton value="Send Mail" action="{!sendMail}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+        <apex:pageBlock title="Result" >
+            <apex:pageBlockTable value="{!tasks_list}" var="item" >
+                <apex:column headerValue="Task Name"> 
+                    <apex:commandLink value="{!item.Name}" action="/{!item.id}"/>
+                </apex:column>
+                <apex:column headerValue="Short Description" value="{!item.Short_Description__c}"/>
+                <apex:column headerValue="Assigned To" value="{!item.Aassigned_to__c}"/>
+                <apex:column headerValue="Created On" value="{!item.Created_On__c}"/>
+                <apex:column headerValue="State" value="{!item.State__c}"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form> 
+</apex:page>

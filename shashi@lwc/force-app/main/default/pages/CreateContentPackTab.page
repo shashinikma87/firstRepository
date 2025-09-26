@@ -1,0 +1,153 @@
+<apex:page standardStylesheets="false" Controller="AH_ContentPacks_ZipFile_Ctlr" title="Popup Example" applyBodyTag="false" sidebar="false" showHeader="false">
+    
+    <head>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" ></script>
+        <style>
+            .container-fluid {
+            margin-top: 10px;
+            }
+        </style>
+        <style>
+          .required:after {
+            content:" *";
+            color: red;
+          }
+        </style>
+    </head>
+    <script>
+        function performCallOutMethod()
+        {
+            if(hasMessages == 'false') {
+                $('#myModal').modal('hide');$('body').removeClass('modal-open');$('.modal-backdrop').remove();
+            }
+
+        }
+    </script>
+    <body>
+        <apex:form >
+            <div class="container-fluid">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <br/>
+                        Search in &nbsp;
+                           <apex:selectList size="1" value="{!selectedLibrary}">
+                              <apex:selectOptions value="{!librarylist}"></apex:selectOptions>
+                          </apex:selectList>&nbsp;&nbsp;for&nbsp;
+                            <apex:inputText value="{!searchKey}" label="Input"/>&nbsp;
+                            <apex:commandButton value="Search files" action="{!search}"/>&nbsp;
+                            <apex:commandButton value="Clear search" action="{!clear}"/>
+                        <br/><br/>
+                        <apex:outputPanel rendered="{!AND(listOfFiles != null, listOfFiles.size > 0)}" id="modelId">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <div>
+                                        Search Result
+                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" style="float: right;">
+                                            <span class="glyphicon glyphicon-plus-sign" /> Create Content Pack
+                                        </button>
+                                    </div>
+                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <center>
+                                                <apex:actionStatus id="actStatusId" >
+                                                 	<apex:facet name="start" >
+                                                     <img src="/img/loading.gif" />                    
+                                                    </apex:facet>
+                                                </apex:actionStatus>
+                                                </center>    
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    <h4 class="modal-title" id="myModalLabel">New Content Pack</h4>
+                                                </div>
+                                                <div style="color:red;">
+                                                    <center><apex:pageMessages id="msgId"/></center>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label class="required">Enter Content Pack Name</label><br />
+                                                        <apex:inputText value="{!contentPackName}" html-placeholder="Enter Content Pack Name" styleClass="form-control"/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="required">Please Select Library</label><br />
+                                                        <apex:selectList size="1" value="{!selectLibForPublish}">
+                                                            <apex:selectOptions value="{!librarylistInPopup}"></apex:selectOptions>
+                                                        </apex:selectList> 
+                                                    </div>
+                                                   <div class="form-group">
+                                                        <label>Tag</label><br />
+                                                        <apex:inputTextarea value="{!tags}" html-placeholder="Tag" styleClass="form-control" rows="4"/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Comment</label><br />
+                                                        <apex:inputTextarea value="{!comments}" html-placeholder="Comment" styleClass="form-control" rows="4"/>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>                                                
+                                                    <apex:commandButton styleclass="btn btn-primary" value="Create Content Pack" action="{!createZipFile}" reRender="filesTable,script-block,msgId" status="actStatusId"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="panel-body">
+                                    <apex:outputPanel id="filesTable">
+                                        <apex:outputPanel rendered="{!AND(listOfFiles != null, listOfFiles.size > 0)}">
+                                            <table class="table table-condensed">
+                                                <tr>
+                                                    <th>Please select file</th>
+                                                    <th>File Name</th>
+                                                    <th>File</th>
+                                                </tr>
+                                                <apex:repeat value="{!listOfFiles}" var="file">
+                                                    <tr>
+                                                        <td>
+                                                            <apex:inputCheckbox value="{!file.selectedFile}" label="Please select file" title="Please select file"/>
+                                                        </td>
+                                                        <td>
+                                                            <apex:outputText value="{!file.name}"/>
+                                                        </td>
+                                                        <td>
+                                                            <!--<apex:outputText value="{!file.cvId}" />-->
+                                                            <apex:image URL="/sfc/servlet.shepherd/version/download/{!file.cvId}" height="50px" width="50px"/>
+                                                        </td>
+                                                    </tr>
+                                                </apex:repeat>
+                                            </table>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel rendered="{!displayFileNotFound}">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    Files Not Found..
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!$CurrentPage.parameters.success == 'true'}" dir="successMsg">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    Content pack created successfully.
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+            </div>
+        </apex:form>
+        <apex:outPutPanel layout="block" id="script-block">
+        <script>
+            var hasMessages = '{!hasError}';
+        </script>
+    </apex:outPutPanel>
+    </body>
+</apex:page>

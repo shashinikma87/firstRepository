@@ -1,0 +1,176 @@
+<apex:page tabstyle="Account" controller="nestedqueryexample" showheader="false">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script>
+    
+     $(document).ready(function(){
+    //checkAllFunction(); 
+        }); 
+        
+    
+        function switchMenu(obj,obj1,obj2) 
+        {
+            var el = document.getElementById(obj);                                       
+            if ( el.style.display != 'none' ) {
+            	el.style.display = 'none';
+            }
+            else {
+            	el.style.display = '';
+            }
+            
+            var e2 = document.getElementById(obj1);                                       
+            if ( e2.style.display != 'none' ) {
+            	e2.style.display = 'none';
+            }
+            else {
+            	e2.style.display = '';
+            }
+            
+            var e3 = document.getElementById(obj2);                                       
+            if ( e2.style.display != 'none' ) {
+            	e3.style.display = 'none';
+            }
+            else {
+            	e3.style.display = '';
+            }
+
+        }
+    
+    	function checkAllFunction(evt){
+            //   console.log($(evt).closest('table'));
+            var isCheckedBox = $(evt).is(':checked');
+            //console.log('parenct checkbox value : '+isCheckedBox);
+            
+            $(evt).closest('table').find('.checkbox').each(function( ) {
+                //console.log( ": ",$(this));
+                $(this).prop('checked',isCheckedBox);
+            });
+        }
+    
+    	function checkAllRecords(this1)
+    	{
+            //console.log($(this1));
+            //console.log($(this1).closest('table'));
+            var parentVal = $(this1).is(':checked');
+            
+            $(this1).closest('table').find('.checkAll').each(function( ) {
+                //console.log( ": ",$(this));
+                var isDisabledParent = $(this).is(':disabled');
+                if (!isDisabledParent)
+                {
+                    //console.log(' isdisabled : ', isdisabled);
+                    $(this).prop('checked',parentVal);
+                }
+                else 
+                {
+                    console.log($(this).closest('tr'));
+                }
+            });
+            
+            $(this1).closest('table').find('.checkbox').each(function( ) {
+                //console.log( ": ",$(this));
+                var isDisabledChild = $(this).is(':disabled');
+                if (!isDisabledChild)
+                {
+                	$(this).prop('checked',parentVal);
+				}
+            });
+        }
+    
+    	function innerCheckFunction(this2)
+        {
+            //console.log('this 2 : ', $(this2));
+            var isChecked = $(this2).is(':checked');
+            //console.log( 'is chcked : ' ,isChecked);
+            if (!isChecked)
+            {
+                console.log('closest table : ',$(this2).closest('table'));
+                $(this2).closest('table').find('.checkAll').prop('checked',false);
+            }
+            else if (isChecked)
+            {
+                console.log('in else if closest table : ',$(this2).closest('table'));
+
+                var rowCount = $(this2).closest('table').find('tr').index();
+                
+
+                console.log('rowCount : ',rowCount);
+
+                var isALLChecked = false;
+                
+                $(this2).closest('table').find('.checkbox').each(function( ) {
+                    if ($(this).is(':checked'))
+                    {
+                        isALLChecked = true;
+                        //$(this2).closest('table').find('.checkAll').prop('checked',true);
+                    }
+                });
+                if (isALLChecked)
+                {
+                    console.log('if isALLChecked : ',isALLChecked);
+                }
+                else
+                {
+                    console.log('else isALLChecked : ',isALLChecked);
+                }
+            }
+        }
+    
+    
+</script>
+    <apex:form >
+    <apex:pageblock >     
+        <apex:pageBlockButtons >
+            <apex:outputPanel id="buttons">
+                <apex:commandButton value="Load Data" action="{!fetchData}" reRender="dataSection" />
+                <apex:commandButton value="Process" action="{!processData}" reRender="dataSection" />
+            </apex:outputPanel>
+        </apex:pageBlockButtons>
+        
+        <apex:pageBlockSection id="dataSection">
+            <apex:pageblocktable value="{!wrapList}"  var="wrapper">
+                <apex:column >
+                    <apex:facet name="header">                                        
+                        <apex:inputCheckbox value="{!isParentChecked}" onclick="checkAllRecords(this)" styleClass="parentCheckBox"/>
+                    </apex:facet>
+                    <apex:outputpanel id="plusimage">
+                        <apex:image url="{!$Resource.plusImg}" onclick="switchMenu('{!$Component.inlinetablesec}','{!$Component.minusimage}','{!$Component.plusimage}')" title="Expand - Team Member's"/> 
+                    </apex:outputpanel>
+                    <apex:outputpanel id="minusimage" style="display:none;">
+                        <apex:image url="{!$Resource.minusImg}" onclick="switchMenu('{!$Component.inlinetablesec}','{!$Component.plusimage}','{!$Component.minusimage}')" title="Collapse - Team Member's"/>
+                    </apex:outputpanel>
+                    
+                </apex:column>
+                <apex:column headervalue="Account Name">
+                    <apex:outputtext value="{!wrapper.a.Name}"/>
+                    
+                    <apex:outputpanel id="inlinetablesec" style="display:none;">
+                        <div>
+                            <br/>
+                        </div>
+                        <apex:variable value="{!0}" var="rowNum"/>
+                        <apex:repeat var="count" value="{!wrapper.conWrapperList}">
+                            <apex:variable var="rowNum" value="{!rowNum+1}"/>
+                        </apex:repeat>
+                        <apex:outputText rendered="{!rowNum=0}">  No Team Members  </apex:outputText>
+                        <apex:pageblocktable value="{!wrapper.conWrapperList}" var="tm" rendered="{!rowNum>0}">
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:inputCheckbox value="{!wrapper.isAccChecked}" disabled="{!wrapper.isDisabled}" onclick="checkAllFunction(this)" styleClass="checkAll"/>
+                                </apex:facet>
+                                <apex:inputCheckbox value="{!tm.isChecked}" disabled="{!tm.isDisabled}" onclick="innerCheckFunction(this)" styleClass="checkbox" />
+                            </apex:column>
+                            <apex:column headerValue="Contact ID">
+                                <apex:outputfield value="{!tm.con.ID}"/>
+                            </apex:column>
+                            <apex:column headerValue="Contact Name">
+                                <apex:outputfield value="{!tm.con.FirstName}"/>
+                            </apex:column>                          
+                        </apex:pageblocktable>
+                    </apex:outputpanel>
+                </apex:column>
+            </apex:pageblocktable>
+        </apex:pageBlockSection>
+    </apex:pageblock>
+    </apex:form>
+</apex:page>

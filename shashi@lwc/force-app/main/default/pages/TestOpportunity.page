@@ -1,0 +1,3 @@
+<apex:page standardController="Opportunity">
+    This is a test page.
+</apex:page>

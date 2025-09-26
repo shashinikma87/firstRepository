@@ -1,0 +1,526 @@
+1. In which of the following environments can Developers write code? Select all that apply.
+Developer edition production org
+Enterprise edition production org
+Enterprise edition Sandbox org
+Professional edition Sandbox org
+Explanations: 1 3 
+Developers can develop applications only in developer edition orgs. But other orgs, such as the Enterprise Edition, also support development and coding functionalities in their Sandboxes.
+
+
+2. How can a developer avoid exceeding Governor Limits when using an Apex Trigger? Select all that apply.
+By using a helper class that can be invoked from multiple triggers
+By using Maps to hold data from query results
+By using the Database class to handle DML transactions
+By performing DML transactions on lists of Objects
+Explanations: 2 4 
+The best way to avoid Governor Limits is to bulkify your code by using sets, lists, and Maps. You must also keep your SOQL queries outside loops.
+
+
+3. Which of these is an accurate statement about "with sharing" keywords? Select all that apply.
+Inner classes inherit the sharing setting from the container class
+Either inner classes or outer classes can be declared as "with sharing", but not both
+Inner classes do not inherit the sharing setting from the container class
+Both inner classes and outer classes can be declared as "with sharing"
+Explanations: 3 4 
+Inner classes do not inherit the sharing setting of the container class. Both the inner and outer classes can be declared as "with sharing".
+
+
+4. Which standard field mandatorily needs to be populated when a developer inserts new Contact records programmatically?
+Name
+LastName
+AccountId
+FirstName
+Explanations: 2 
+LastName is a mandatory field on the contact object, so it must be populated when a contact is inserted.
+
+
+5. In the given code, from where does the Boolean inherit its value? _x000D_Boolean b = true;
+Class
+Object
+Enum
+String
+Explanations: 2 
+The Boolean inherits its value from the object.
+
+
+6. Which of these is a characteristic of the Lightning Component framework? Select all that apply.
+It has an event-driven architecture.
+It works with the existing Visualforce pages.
+It uses XML as its data format.
+It includes responsive components.
+Explanations: 1  4 
+The New Lighting component framework comes with a new responsive design called LDS (Lightning Design System) and has a JavaScript driven architecture.
+
+
+7. Visualforce components are similar to which type of tag library containing tag namespace prefixes?
+ASP tag library
+JSP tag library
+ASP log file
+DL JSP log file
+Explanations: 2 
+Visualforce tags are similar to the JSP tag library that carry the metadata information.
+
+
+8. A developer wants to display all of the available record types for a Case object. The developer also wants to display the picklist values for the Case.Status field. The Case object and the Case.Status field are on a custom Visualforce page. What action can the developer perform to get the record types and picklist values in the controller? Select all that apply.
+Use Schema.PickListEntry returned by Case.Status.getDescribe().getPicklistValues()
+Use Schema.RecordTypeInfo returned by Case.SObjectType.GetDescribe().getRecordTypeInfos()
+Use SOQL to query Case records in the org to get all the RecordType values available for Case
+Use SOQL to query case records in the org to get all values for the Status picklist field
+Explanations: 1 2 
+The developer can either use Schema.PickListEntry returned by Case.Status.getDescribe().getPicklistValues() or Schema.RecordTypeInfo returned by Case.SObjectType.GetDescribe().getRecordTypeInfos().
+
+
+9. On a Visualforce page with a custom controller, by using an ID parameter that is passed in the URL, how should a developer retrieve a record? Select all that apply.
+Use the constructor method for the controller
+Use the $Action.View method in the Visualforce page
+Use the <apex:detail> tag in the Visualforce page
+Create a new PageReference object with the Id
+Explanations: 1 4 
+We can use an Apex method to obtain the ID from the page URL. Usually, we use a constructor to call it because every time the page loads, the constructor is called first.
+
+
+10. A Visualforce page has a standard controller for an object that has a lookup relationship to a parent object. How can a developer display data from the parent record on the page?
+By adding a second standard controller to the page for the parent record
+By using a roll-up summary field on the child record to include data from the parent record
+By using SOQL on the Visualforce page to query for data from the parent record
+By using merge field syntax to retrieve data from the parent record
+Explanations: 4 
+You can use related merged fields to obtain the data from the parent record. The relative fields are prepended to __r .
+
+
+11. A developer needs to provide a Visualforce page that lets users enter product-specific details during a sales cycle. How can this be accomplished? Select all that apply.
+Download a Managed Package from the AppExchange that provides a custom Visualforce page to modify
+Copy the standard page and then make a new Visualforce page for Product data entry
+Download an Unmanaged Package from the AppExchange that provides a custom Visualforce page to modify
+Create a new Visualforce page and an Apex controller to provide Product data entry
+Explanations: 3 4 
+You can modify the custom Visualforce pages in unmanaged packages; the code in Managed Packages cannot be modified. Alternatively, you can also create a customized Visualforce page with an Apex controller to provide the required input fields.
+
+
+12. What is the preferred way to reference web content such as images, stylesheets, JavaScript, and other libraries that is used in Visualforce pages? 1 
+Uploading the content as a Static Resource
+Accessing the content from a third-party CDN
+Uploading the content in the Documents tab
+Accessing the content from Chatter Files
+Explanations:
+It is advisable to upload all the images, Stylesheets, and JavaScript files as Static resources because that enables the files to load faster.
+
+13. The Review__c object has a lookup relationship with the Job_Application__c object. The Job_Application__c object has a master-detail relationship with the Position__c object. The relationship field names are based on the auto-populated defaults. What is the recommended way to display field data from the related Review__c records on a Visualforce page for a single Position__c record?
+Utilize the Standard Controller for Position__c and expression syntax in the Page to display related Review__c data through the Job_Application__c object
+Utilize the Standard Controller for Position__c and cross-object Formula Fields on the Job_Application__c object to display Review__c data
+Utilize the Standard Controller for Position__c and cross-object Formula Fields on the Review__c object to display Review__c data
+Utilize the Standard Controller for Position__c and a Controller Extension to query for Review__c data
+Explanations: 4 
+Standard controllers have limited functionalities. To fetch records of grandchildren, SOQL query needs to be used in a controller extension.
+
+
+14. Which of these statements are true about the "view state" inspector? Select all that apply.
+Shows components contributing to view state
+Must be enabled on a user profile
+Is displayed only when using <apex: form>
+Is controlled by the Role Hierarchy
+Explanations: 1 2 3 
+The "view state" inspector displays components contributing to it only when the <apex:form> tag is used. It must be enabled on a user profile.
+
+
+15. What type of a programming language is Apex? Select all that apply.
+Object-oriented
+On-Demand
+Water-Fall
+Declarative-Specific
+Explanations: 1 2 
+Just like Java, Apex is also an object oriented programming language. With its Cloud compatibility, it has now become an on-demand programming language.
+
+
+16. A developer creates a Workflow Rule declaratively that updates a field on an object. An Apex update trigger exists for this object. What happens when a user updates the record?
+No changes are made to the data.
+The Workflow Rule is fired more than once.
+Both the Apex Trigger and Workflow Rule are fired only once.
+The Apex Trigger is fired more than once.
+Explanations: 4 
+When the user updates the record, the Apex Trigger will keep firing, causing Trigger recursion. To avoid this, follow Trigger best practices.
+
+17. A developer needs to automatically populate the ReportsTo field in a Contact record based on the values of the related Account and Department fields in the record. Which type of Trigger would the developer create? Select all that apply.
+Before insert
+After update
+After insert
+Before update
+Explanations: 1 4 
+Since the ReportsTo field is to be populated after the Account and Department field values are provided or updated, before insert and before update Triggers would be required.
+
+
+18. A developer uses a before insert trigger on the Lead object to fetch Territoy__c object, where the Territory__c. PostalCode__c matches the Lead.PostalCode. The code fails when the developer uses the Apex Data Loader to insert 10000 Lead records> The developer has the following code block: for(Lead l : Trigger.new){ if(l.PostalCode != null){ List<Territory__C> terrList = [SELECT Id FROM Territory__c WHERE PostalCode__c =:l.PostalCode;] if(terrList.size() > 0){ l.Territory__c = terrList[0].Id; } } } Which line of code is causing the code block to fail?
+05: The Lead in a "before insert" trigger cannot be updated.
+02: A NullPointer exception is thrown if PostalCode is null.
+01: Trigger.new is not valid in a "before insert" Trigger.
+03: A SOQL query is located inside the "for" loop code.
+Explanations: 4 
+The code fails because a SOQL query is located inside the "for" loop and SOQL Query Governor Limit has been hit.
+
+19. In what order does Salesforce execute events while saving a record?
+Before Triggers; Validation Rules; After Triggers; Assignment Rules; Workflow Rules; Commit
+Validation Rules; Before triggers; After triggers Workflow Rules Assignment Rules; Commit
+Before Triggers; Validation Rules; After triggers; Workflow rules; Assignment Rules; Commit
+Validation Rules; Before Triggers; After Triggers; Assignment Rules; Workflow Rules; Commit
+Explanations: 1
+This is the correct order of a Trigger Execution. To see the full order, check the given link: _x000D__x000D_https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers_order_of_execution.htm
+
+20. What is the result when a Visualforce page calls an Apex controller, which in turn calls another Apex class, causing the code to hit a Governor Limit?
+All changes up to the error are saved.
+All changes before a save point are saved.
+All changes are saved in the first Apex class.
+All changes up to the error are rolled back.
+Explanations: 4 
+Apex transactions are automatically rolled back if they are not successful.
+
+
+21. When would a developer use a custom controller instead of a controller extension? Select all that apply.
+When a Visualforce page needs to replace the functionality of a standard controller
+When a Visualforce page needs to add new actions to a standard controller
+When a Visualforce page does not reference a single primary object
+When a Visualforce page should not enforce permissions or field-level security
+Explanations: 1 3 
+Use custom controllers when you don't require the standard functionalities of the object or if the page references more than one primary object.
+
+
+22. What is the value of x after the code segment executes? String x = 'A' Integer I = 10; if (I < 15){ I = 15; x = 'B'; } else if ( I < 20) { x = 'C'; } else { x = 'D'; }
+D
+A
+B
+C
+Explanations: 3 
+Since the first "if" condition was satisfied, the value of x is "B".
+
+
+23. In a single record, a user selects multiple values from a multi-select pick list. How are the selected values represented in Apex?
+As a String with each value separated by a comma
+As a Set<String> with each value as an element in the set
+As a List<String> with each value as an element in the list
+As a String with each value separated by a semicolon
+Explanations: 4 
+The multiple options selected in the picklist appear as a String with each value separated by a semicolon.
+
+
+24. Which of these is a good practice for a developer to follow when writing a trigger? Select all that apply.
+Using @future methods to perform DML operations
+Using the Map data structure to hold query results by ID
+Using the Set data structure to ensure distinct records
+Using synchronous callouts to call external systems
+Explanations: 2 3 
+One of the best practices for Triggers is to bulkify the code. Set and map data structures are critical for successful coding of bulk triggers.
+
+
+25. How can a developer determine, from the DescribeSObjectResult, if the current user will be able to create records for an object in Apex?
+By using the IsInsertable() method
+By using the IsCreatable() method
+By using the hasAccess() method
+By using the canCreate() method
+Explanations: 2 
+isCreatable is used to check if a user has access to create records for an object.
+
+
+26. Which of these is an accurate statement about variable scope? Select all that apply.
+Parallel blocks can use the same variable name.
+A variable can be defined at any point in a block.
+Sub-blocks cannot reuse the variable name of a parent block.
+Sub-blocks can reuse the variable name of a parent block if its value is null.
+A static variable can restrict the scope to the current block if its value is null.
+Explanations: 1 2 3 
+A variable can be defined at any point in a block. Parallel blocks can use the same variable name. However, sub-blocks cannot reuse the variable name of a parent block.
+
+
+27. Which code block returns the ListView of an Account object using the following Debug statement? _x000D_system.debug(controller.getListViewOptions());_x000D_
+ApexPages.StandardSetController controller = new ApexPages.StandardSetController(Database.getQueryLocator(Ã”SELECT Id FROM Account LIMIT 1Ã•));
+ApexPages.StandardController controller = new ApexPages.StandardController([SELECT Id FROM Account LIMIT 1]);
+ApexPages.StandardController controller = new ApexPages.StandardController(Database.getQueryLocator(Ã”SELECT Id FROM Account LIMIT 1Ã•));
+ApexPages.StandardSetController controller = new ApexPages.StandardSetController([SELECT Id FROM Account LIMIT 1]);
+Explanations: 1 
+One of the methods of the StandardSetController class is getListViewOptions.
+
+28. A developer runs the following anonymous code block: List<Account> acc = [SELECT Id FROM Account LIMIT 10;]; Delete acc; Database.emptyRecycleBin(acc); system.debug(Limits.getDMLStatements() + ', '+Limits.getLimitsDMLStatements()); What is the result?
+2, 150
+150, 2
+11, 150
+150, 11
+Explanations: 1 
+getDMLStatements method shows you the number of DML calls that have been used so far._x000D__x000D_ getLimitsDMLStatements shows you the total number calls that can be made.
+
+29. What is an accurate construction for a custom controller named ''MyController''?
+Public MyController() {_x000D_account = new Account();_x000D_}
+Public MyController(SObject obj) {_x000D_account = new (Account) obj;_x000D_}
+Public MyController(List<SObject> objects){_x000D_accounts = (List<Account>)objects;_x000D_}
+Public MyController(ApexPages.StandardController stdController){_x000D_account = (Account)stdController.getRecord():_x000D_}
+Explanations: 1 
+Custom controllers don't have a parameterized constructor.
+
+
+30. Which of the following is a valid Apex statement?
+Private static constant Double rate = 7.75;
+Account() acctList = new List<Account>{new Account()};
+Integer w, x, y, = 123, x = Ã”abcÃ•;
+Map conMap = [SELECT Name FROM Contact];
+Explanations: 2 
+
+
+31. What must the controller for a Visualforce page utilize to override the standard Opportunity view button?
+The Opportunity StandardController for pre-built functionality
+The StandardSetController to support related lists for pagination
+A constructor that initializes a private Opportunity variable
+A callback constructor to reference the StandardController
+Explanations: 1 
+We can override the standard functionality of the standard buttons through Visualforce pages which use the same object's standard controller.
+
+
+32. A person who does not have "View Encrypted Data" permission will see the field with masked characters. Assuming the field is in the page layout, what happens if he tries to edit the value by clicking on the Edit button?
+The field will not appear in the edit layout.
+The user will see only masked characters, but can enter a new value and save it.
+It will throw an error on changing that field and saving it.
+He can see the original value and he can save the record.
+Explanations: 2 
+The user will see only masked characters, but can enter a new value and save it.
+
+33. A Position is a custom object containing details of each position. A Candidate contains the details of each candidate such as skills. When users view the Position records, they should also be able to see all those candidates who match the skills required for the post. A position record need not have details of candidates and a candidate record can also be kept blank. A position can be applied by multiple candidates, while a candidate can also apply for multiple positions. What can be done to achieve this?
+Create a master-child relationship between them
+Create a junction object to store both the values
+Create a lookup relationship of candidate on position
+Create a Visualforce page
+Explanations: 2 
+To meet the specified requirement, the Position and Candidate objects need to be linked through a "many to many" relationship. In Salesforce, this is accomplished by creating a junction object.
+
+
+34. A custom object has an organization-wide default setting of "Private" with Grant Access Using Hierarchies turned off. Which users can select the Sharing button on records for that object?
+Only the record owner and a user with the System Administrator profile
+The record owner, a user with the System Administrator profile, and a user shared to the record
+The record owner, a user shared to the record, any user above the record owner in the role hierarchy, and a user with the System Administrator profile
+The record owner, a user above the record owner in the role hierarchy, and a user with the System
+Explanations: 2 
+Since the Grant Access using Hierarchies is un-checked, no user above the owner of the record in role hierarchy will be able to see the record._x000D__x000D_ Users below the owner of the record in the role hierarchy are not allowed to see it anyway._x000D__x000D_ OWD is private, hence only owners have the access to see the record.
+
+
+35. Universal Containers tracks reviews as a custom object in a recruiting application. The interview score is tracked on each review record and should have a numerical value, so that hiring managers can calculate scores. The scores should be restricted to integer values 1 through 5 and displayed as a set of radio buttons. How can a developer meet this requirement?
+Create the Interview score field as a picklist, displayed as a radio button on page layout
+Create a formula field that displays the interview score as a set of radio buttons
+Create the interview score field with a data type of radio button
+Create a Visualforce page to display the interview score as a set of radio buttons
+Explanations: 4 
+Radio buttons cannot be created in Salesforce using standard functionality. A Visualforce page is needed to show radio buttons on the page.
+
+
+36. Universal Containers wants to create a custom order management application that allows users to enter order details such as the Product Name and Product Code. The application should be able to check if these values are consistent with the valid Product Name and Product Code combinations set up in a custom object. Which feature would a developer use to accomplish this?
+A validation rule with the REGEX function
+A formula field with the VALIDATE function
+A validation rule with the VLOOKUP function
+A formula field with the IF function
+Explanations: 3 
+VLOOKUP can be used to validate data with the records in a custom object.
+
+
+37. A customer wants to add a custom validation to the "contact save" process. Before a contact is created, the customer wants to include the validation, which checks if the associated account is active. This validation should be active for all UI as well as integration requests. Which design accomplishes this goal?
+A custom Web service
+A "before insert" Trigger
+A custom Visualforce controller
+A client-side S-control
+Explanations: 2 
+Custom validations are written as part of the logic in a "before insert" Trigger.
+
+
+38. How would a developer use Schema Builder to delete a custom field from an Account object that was required for prototyping but is no longer needed?
+Delete the field from Schema Builder and then all references in the code will be automatically removed
+Remove all the references in the code and then the field will be automatically removed from Schema Builder
+Mark the field for deletion in Schema Builder and then delete it from the declarative UI
+Remove all references from the code and then delete the custom field from Schema Builder
+Explanations: 4 
+Schema Builder is a good tool to view and make corrections in your database. But to delete a custom field, you need to first remove all the references of the field.
+
+
+39. Where can custom roll-up summary fields be created using Standard Object relationships? Select all that apply.
+On Opportunity using Opportunity Product records
+On Account using Case records
+On Campaign using Campaign Member records
+On Account using Opportunity records
+Explanations: 1 3 4 
+Custom roll-up summary fields can be created using Standard Object relationships on Opportunity using Opportunity Product records, on Campaign using Campaign Member records, and on Account using Opportunity records.
+
+
+40. A Developer wants to create a custom object to track Customer Invoices. How should Invoices and Accounts be related to ensure that all Invoices are visible to everyone with access to an Account?
+The Account should have a Lookup relationship to the Invoice.
+The Account should have a Master-Detail relationship to the Invoice.
+The Invoice should have a Master-Detail relationship to the Account.
+The Invoice should have a Lookup relationship to the Account.
+Explanations: 3 
+In a master-detail relationship, the child object inherits all the properties of the master object.
+
+
+41. A candidate may apply to multiple jobs at the company Universal Containers by submitting a single application per job posting. Once an application is submitted for a job posting, that application cannot be modified to be resubmitted for another job position. The candidate can apply for a different job posting only by submitting a new application. What can an administrator do to associate an application with each job posting in the schema for the organization?
+Create a master-detail relationship in the Application custom object to the Job Postings custom object
+Create a master-detail relationship in the Job Postings custom object to the Applications customer object
+Create a lookup relationship on both objects to a junction object called Job Posting Applications
+Create a lookup relationship in the Applications customer object to the Job Postings custom object
+Explanations: 1 
+A child record once linked to a master record using a master-detail relationship cannot be re-parented unless "re-parenting allowed" checkbox is checked on the field definition level.
+
+
+42. An org has different Apex Classes that provide Account related functionality. After a new validation rule is added to the Account object, many of the test methods fail. What can be done to resolve the failures and reduce the number of code changes needed for future validation rules? Select all that apply.
+Create a method that performs a callout for a valid Account record, and call this method from within test methods.
+Create a method that creates valid Account records, and call this method from within test methods.
+Create a method that queries for valid Account records, and call this method from within test methods.
+Create a method that loads valid Account records from a Static Resource, and call this method within test methods.
+Explanations: 2 4 
+Account data passed to the test class should be modified according to the modified validation.
+
+
+43. A company has a custom object named Warehouse. Each Warehouse record has a distinct record owner, and is related to a parent Account in Salesforce. What kind of relationship would a developer use to relate the Account to the Warehouse?
+Parent-Child
+Master-Detail
+One-to-Many
+Lookup
+Explanations: 4 
+With a lookup relationship, child records can have distinct owners. With Master-Detail relationship, parent records become the owner of the child record. Since both Account and Warehouse are independent entities, there will be a lookup relationship between them.
+
+
+44. A developer is creating an application to track engines and their components. An individual component can be used in different types of engines. What data model should be used to track the data and to prevent orphan records?
+Create a junction object to relate many engines to many parts through a master-detail relationship
+Create a lookup relationship to represent how each part relates to the parent engine object
+Create a master-detail relationship to represent the one-to-many model of engines to parts
+Create a junction object to relate many engines to many parts through a lookup relationship
+Explanations: 1 
+Since an engine can have multiple parts and a component can be a part of multiple engines, a Junction object needs to be created.
+
+
+45. Which of these statements is true for encrypted custom fields? Select all that apply.
+Encrypted fields can be included in Search results.
+Encrypted fields can be included in report results.
+Encrypted fields are not available in filters for list views, reports, and Roll-up summary fields.
+Encrypted fields are not available for validation rules or Apex scripts.
+Explanations: 1 2 3 
+For security purposes, Salesforce provides encryption fields to store information. These fields have their own features. For more detail, refer the Salesforce reference documents: _x000D_https://help.salesforce.com/HTViewHelpDoc?id=fields_about_encrypted_fields.htm&language=en_US
+
+
+46. A developer created an Apex Trigger using the Developer Console and now wants to debug the code. How can the developer accomplish this in the Developer Console?
+Select the Override Log Triggers checkbox for the Trigger
+Open the Progress tab in the Developer Console
+Open the Logs tab in the Developer Console
+Add the user name in the Log Inspector
+Explanations: 3 
+
+
+47. What is the minimum log level needed to see user-generated debug statements?
+INFO
+FINE
+WARN
+DEBUG
+Explanations: 4 
+You need to set the Debug Log level to least DEBUG to be able to view user-generated debug statements.
+
+
+48. Which of the following can be done using the Force.com platform? Select all that apply.
+Data-warehousing
+Applications with clicks and not code
+Applications can be upgraded without loss of customization
+Code version control system
+Explanations: 3 4 
+The Force.com platform provides a code version control system. It also allows you to upgrade applications without losing customizations.
+
+
+49. Which of the following refers to the data model of Salesforce? Select all that apply.
+Force.com API
+Force.com metadata API
+Sandbox
+Force.com IDE
+Explanations: 2 4 
+Force.com Metadata API and Force.com IDE provide access through the metadata components.
+
+
+50. Which one of the following is not possible to view in the Debug Logs?
+Workflow formula evaluation results
+Assignment rules
+Formula field calculations
+Validation rules
+Resources used by Apex Script
+
+Explanations: 1 3 4 
+Debug Logs record details for Apex, Visualforce pages, Callouts, and other entities but do not capture certain items such as JavaScript and formula fields.
+
+
+
+51. By using which tool can the developer change the data model of a Salesforce organization?
+Data loader
+Administrator setup
+Cloud based data wizard
+Other
+Explanations: 2 
+Administrator Setup allows you to make changes to Salesforce.
+
+52. Dashboard refresh can be monitored using:
+Apex jobs
+Scheduled jobs
+Dashboard jobs
+Report jobs
+Explanations: 2 
+Users with the View Setup and Configuration permission can view all the dashboards scheduled to refresh for your organization on the All Scheduled Jobs page. To view the All Scheduled Jobs page, go to Setup, enter Scheduled Jobs in the Quick Find box, and select Scheduled Jobs.
+
+53. Which of the following will you use for browsing objects and fields in the Force.com IDE? Select all that apply.
+Force.com Projects
+Schema Explorer
+Development Work Area
+Debug View
+Explanations: 1 2 
+When using the Force.com IDE, we have to create a project, import the database, and build schema in the IDE itself._x000D__x000D_ Schema Explorer can also be used to check the schema of the object.
+
+
+54. Each setSavepoint() and rollback statement counts against the total number of DML statements.
+1
+0
+Explanations: 1
+These actions add up to the Governor Limits. So you should be careful while using them.
+
+
+55. What should a developer working in a sandbox use to exercise a new test class before the developer deploys that test class to production? Select all that apply.
+The Apex Test Execution page in Salesforce Setup
+The Run Tests page in Salesforce Setup
+The Test menu in the Developer Console
+The REST API and ApexTestRun method
+Explanations: 1 3 
+These are the different ways in which Test Classes can be executed in Salesforce.
+
+
+56. A developer creates an Apex class that includes private methods. What can the developer do to ensure that the private methods can be accessed by the test class?
+Add the TestVisible attribute to the Apex class
+Add the SeeAllData attribute to the test methods
+Add the @TestVisible attribute to the Apex methods
+Add the SeeAllData attribute to the test class
+Explanations: 3 
+Use @TestVisible annotation to make the private methods or variables visible to test classes.
+
+
+57. What is the proper process for an Apex Unit Test?
+Query for test data using SeeAllData=true. Call the method being tested. Verify that the results are correct.
+Query for test data using SeeAllData=true. Execute runAllTests(). Verify that the results are correct.
+Create data for testing. Execute runAllTest(). Verify that the results are correct.
+Create data for testing. Call the method being tested. Verify that the results are correct.
+Explanations: 4 
+
+
+58. Which of the following scenarios is invalid for execution by unit tests?
+Executing methods for negative test scenarios
+Loading the standard Pricebook ID using a system method
+Loading test data in place of user input for Flows
+Executing methods as different users
+Explanations: 3
+Taking the test data from the user input takes up a lot of time.
+
+59. Where would you find identical Force.com IDs?
+Production and Full Copy Sandbox only
+Production and Dev Sandbox only
+Two developer orgs
+Two Sandbox orgs
+Explanations: 1 
+As a Full Copy Sandbox is a replica of the production org, they can have identical Salesforce record IDs.
+
+60. What would a developer do to update a picklist field on related Opportunity records when a modification to the associated Account record is detected?
+Create a process with Process Builder
+Create a workflow rule with field update
+Create a lightning component
+Create a Visualforce page
+Explanations: 1
+Process Builder can be used to update child records when parent records are updated.

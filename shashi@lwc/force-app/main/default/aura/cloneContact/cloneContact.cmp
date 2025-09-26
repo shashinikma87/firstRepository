@@ -1,0 +1,123 @@
+<aura:component implements="force:lightningQuickAction,flexipage:availableForRecordHome,force:hasRecordId" controller="cloneContact_cntlr" access="global">
+	
+    <!--
+    <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="Contact">
+        <div class="slds-grid">
+            <div class="slds-col slds-size_1-of-2">
+                <lightning:inputField fieldName="Name" />
+                <lightning:inputField fieldName="LastName" />
+            </div>
+            <div class="slds-col slds-size_2-of-2">
+                <lightning:outputField fieldName="Email" />
+            </div>
+        </div>
+    </lightning:recordViewForm>
+-->
+    
+    
+	<aura:attribute name="fields" type="String[]" default="['Email']" />
+    
+    <lightning:notificationsLibrary aura:id="notifLib" />
+    <lightning:recordForm
+        recordId = "{!v.recordId}"
+		fields = "{!v.fields}"
+        objectApiName="Contact"
+        layoutType="Full"   
+		columns="2"
+        mode="edit" 
+     	onsubmit = "{!c.handleSubmit}"
+	/>
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <!--    
+    
+    <lightning:recordEditForm
+     	aura:id="myform"
+	 	recordId = "{!v.recordId}"
+     	objectApiName="Contact" 
+     	onsubmit="{!c.handleSubmit}" 
+	>
+
+      	<lightning:inputField fieldName="Name" />
+      	<lightning:button variant="brand" label="Save" type="submit" />
+
+	</lightning:recordEditForm> -->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     <!-- ORIGINAL CODE TO CLONE THE CONTACT RECORD 
+
+	<aura:attribute name="newContact" type="Object" />
+    <aura:attribute name="simpleNewContact" type="Object" />
+    <aura:attribute name="newContactError" type="String" />
+
+	
+    <force:recordData aura:id="contactRecordCreator"
+                      layoutType="FULL" 
+                      recordId="{!v.recordId}"
+                      targetRecord="{!v.newContact}"
+                      targetFields="{!v.simpleNewContact}"
+                      targetError="{!v.newContactError}"
+                       mode="EDIT" />  
+    -->
+
+<!--       
+    <lightning:recordForm
+        recordId = "{!v.recordId}"
+        objectApiName="Contact"
+        layoutType="Compact"
+        columns="2" />
+
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    
+    
+    {!v.recordId}==<br/>
+    
+    
+    <div class="slds-page-header" role="banner">
+        <p class="slds-text-heading_label">{!v.simpleNewContact.Name}</p>
+        <h1 class="slds-page-header__title slds-m-right_small
+                   slds-truncate slds-align-left">Create New Contact</h1>
+    </div>
+    
+
+    <lightning:input aura:id="contactField" name="firstName" label="First Name"
+                     value="{!v.simpleNewContact.FirstName}" />
+    
+    <lightning:input aura:id="contactField" name="lastName" label="Last Name"
+                     value="{!v.simpleNewContact.LastName}" />
+    
+    <lightning:input aura:id="contactField" name="email" label="Email"
+                     value="{!v.newContact.fields.Email.value}" />
+
+    <lightning:button label="Cancel" onclick="{!c.handleCancel}" class="slds-m-top_medium" />
+	<lightning:button label="Save Contact" onclick="{!c.handleCreateContact}"
+               variant="brand" class="slds-m-top_medium"/>
+
+	-->    
+    
+    
+    
+    
+    
+    
+       
+</aura:component>

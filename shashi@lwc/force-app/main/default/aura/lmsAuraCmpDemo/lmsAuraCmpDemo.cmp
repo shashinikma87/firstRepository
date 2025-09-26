@@ -1,0 +1,10 @@
+<!-- myPublisherComponent.cmp -->
+<aura:component
+    implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction">
+    <aura:attribute name="recordValue" type="String" />
+    <div>
+        <lightning:formattedText value="{!v.recordValue}" />
+        <lightning:button onclick="{!c.publishMC}" />
+    </div>
+    <lightning:messageChannel type="MyMessageChannel__c" aura:id="myMessageChannel" />
+</aura:component>

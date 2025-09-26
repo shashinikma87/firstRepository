@@ -1,0 +1,214 @@
+<!-- <apex:page standardController="Opportunity" showHeader="true" extensions="LROptyDynamicPagelayout" lightningStylesheets="true"> -->
+<apex:page standardController="Opportunity" showHeader="true" extensions="LROptyDynamicPagelayout" lightningStylesheets="true">
+    <script src="/soap/ajax/41.0/connection.js" type="text/javascript"></script> 
+    <script src="/soap/ajax/41.0/apex.js" type="text/javascript"></script>
+    
+    
+    <script>
+    
+    var sObject = '{!strSObject}'; 
+    var recordTypeId = '{!RecordTypeId}';
+    var arrLayoutFields = new Array(); 
+    var arrFields = new Array(); 
+    var layoutId = '';
+    
+    var myVar = setInterval(myTimer, 1000);
+    window.onload = function() {
+        LoadLayoutFields();
+        
+        setTimeout(function(){ 
+            var spanHelp=document.querySelectorAll('span.helpButton');            
+            for(var i=0;i< spanHelp.length;i++){
+                var helptext=spanHelp[i].children[2].innerText.split(',')[1]; 
+                var strRemove=helptext.replace(/[^\w\s]/gi, '');               
+                spanHelp[i].children[1].setAttribute('title',strRemove);
+                
+            }            
+        }, 3000);        
+    };
+    
+    function myTimer(){
+        var tab=document.getElementsByClassName('detailList')[0];
+        
+        if(tab!='' && tab !='undefined'){
+            var tdFirst=tab.rows[0].cells[0].innerText;
+            if(tdFirst==''){
+                tab.rows[0].cells[0].remove();
+                //clearInterval(myVar);
+            }                                                
+        }
+    }
+    
+    
+    var arrLayoutFields = new Array();
+    var arrFields = new Array();
+    var layoutId = '';
+    
+    var recordId = '';
+    function LoadLayoutFields() {
+        var arrRtId=[];
+        arrRtId.push('{!recordTypeId}');        
+        sforce.connection.sessionId = "{!$Api.Session_ID}";
+        var result = sforce.connection.describeLayout(sObject, null, arrRtId);              
+        var layouts = result.getArray("layouts");
+        
+        arrLayoutFields = new Array();
+        arrFields = new Array();
+        layoutId = '';
+        if(layouts.length > 1) {
+            if(recordTypeId == '') {
+                var layout = layouts[0];
+                detailLayoutSections(layout.detailLayoutSections);
+            }
+            else {
+                var recordTypes = result.getArray("recordTypeMappings");
+                if(recordTypes != undefined && recordTypes != null && recordTypes != '') {
+                    recordTypeMappings(recordTypes);
+                }
+                
+                for (var i=0; i<layouts.length; i++) {
+                    if(layoutId == layouts[i].id) {
+                        var layout = layouts[i];
+                        detailLayoutSections(layout.detailLayoutSections);
+                    }
+                }
+            }
+        }
+        else if(layouts.length > 0) {                
+            var layout = layouts[0];
+            detailLayoutSections(layout.detailLayoutSections);
+        }
+        console.log('===>',arrLayoutFields);
+        ShowSelectedRecordAF(JSON.stringify(arrLayoutFields));
+        
+    } 
+    
+    function recordTypeMappings(recordTypes) {
+        for (var i=0; i<recordTypes.length; i++) {
+            if(recordTypes[i].recordTypeId == recordTypeId) {
+                layoutId = recordTypes[i].layoutId;
+            }
+        }
+    }
+    
+    function detailLayoutSections(sections) { 
+        if(sections.length == undefined) 
+            sections = new Array(sections); 
+        
+        for (var i=0; i<sections.length; i++) { 
+            var section = sections[i]; 
+            var LayoutSection = {}; 
+            arrFields = new Array(); 
+            LayoutSection.Header = section.heading; 
+            LayoutSection.Columns = section.columns; 
+            layoutRows(section.getArray("layoutRows")); 
+            LayoutSection.Fields = arrFields; 
+            arrLayoutFields.push(LayoutSection); 
+        } 
+    } 
+    
+    function layoutRows(rows) { 
+        for (var i=0; i<rows.length; i++) { 
+            var row = rows[i]; 
+            layoutItems(row.getArray("layoutItems")); 
+        } 
+    } 
+    
+    function layoutItems(items) { 
+        for (var i=0; i<items.length; i++) { 
+            var item = items[i]; 
+            layoutComponents(item.getArray("layoutComponents"), item.editableForUpdate, item.required); 
+        } 
+    } 
+    function layoutComponents(components, editableForUpdate, required) { 
+        
+        for (var i=0; i<components.length; i++) { 
+            var component = components[i]; 
+            if(component.getArray("components") != null && component.getArray("components").length != 0 && component.getArray("components") != undefined && component.getArray("components") == '') 
+                layoutFields(component.getArray("components"), editableForUpdate, required);
+            else { 
+                var LayoutFields = {}; 
+                LayoutFields.Field = component.value; 
+                LayoutFields.isUpdatable = editableForUpdate; 
+                LayoutFields.isRequired = required; 
+                arrFields.push(LayoutFields); 
+            } 
+        } 
+        
+    }
+    function layoutFields(fields, editableForUpdate, required) { 
+        for (var i=0; i<fields.length; i++) { 
+            var field = fields[i]; 
+            var LayoutFields = {}; 
+            LayoutFields.Field = field.value; 
+            LayoutFields.isUpdatable = editableForUpdate; 
+            LayoutFields.isRequired = required; 
+            arrFields.push(LayoutFields); 
+        } 
+        
+    }
+    
+    function disableBtn(ele){
+        ele.disabled=true;
+        ele.value='Submitting';
+        setTimeout(function(){ 
+            ele.disabled=false;
+            ele.value='Save';
+        }, 3000);
+    }
+    
+    </script>
+    
+    
+    <apex:form id="frm">
+        <apex:actionfunction name="ShowSelectedRecordAF" action="{!showSelectedRecord}" rerender="pb3"> 
+            <apex:param name="param1" value="" assignTo="{!strLayoutFields}" />
+        </apex:actionfunction>
+        
+        <apex:outputPanel id="pb3">
+            <apex:outputPanel id="pb2" rendered="{!lstSections != null}">
+                <apex:pageMessages />
+                <apex:sectionheader title="{!strSObjectLabel} Detail" />
+                <div style="text-align: center;" >
+                    <apex:commandButton action="{!createOpty}" value="Save" rerender="pb3" onclick="disableBtn(this)" />
+                    <apex:commandButton action="{!cancelSave}" value="Cancel" immediate="true"  />
+                </div> 
+                <br/>
+                
+                
+                <apex:pageBlock rendered="{!showEditView}">
+                    <apex:repeat value="{!lstSections}" var="sec" > 
+                        <apex:pageBlockSection title="{!sec.Header}"  columns="{!IF(sec.Columns == '2', 2, 1)}" collapsible="true" id="Section"> 
+                            <apex:repeat value="{!sec.Fields}" var="f" > 
+                                
+                                
+                                
+                                <apex:inputField required="{!f.isRequired}"  value="{!sObjectRecord[f.Field]}" styleClass="{!f.Field}" rendered="{!f.Field != 'RecordTypeId' && f.Field != 'Amount' && f.Field != 'Campaign_Structure__c' && f.Field != 'Action_Taken__c'}" />                                                                          
+                                <apex:inputField html-disabled="true"  required="{!f.isRequired}"  value="{!sObjectRecord[f.Field]}" styleClass="{!f.Field}" rendered="{!f.Field == 'Amount'}" />                                                                          
+                                <apex:outputText rendered="{!f.Field == 'RecordTypeId'}">
+                                    
+                                    
+                                    <th class="labelCol vfLabelColTextWrap" scope="row"><label> Opportunity Record Type</label></th>
+                                    <td class="dataCol"><span id="j_id0:frm:j_id36:j_id37:0:Section:j_id38:17:j_id39"><span class="Internal_Forecast_Date__c">{!selectedRecordType} </span></span></td> 
+                                    
+                                    
+                                </apex:outputText>
+                                <apex:outputText rendered="{!f.Field == 'RecordTypeId'}">
+                                </apex:outputText> 
+                            </apex:repeat> 
+                        </apex:pageBlockSection>
+                        
+                    </apex:repeat>
+                </apex:pageBlock>
+                
+                
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <br/>
+        <div style="text-align: center;" >
+            <apex:commandButton action="{!createOpty}" value="Save" rerender="pb3" onclick="disableBtn(this)" />
+            <apex:commandButton action="{!cancelSave}" value="Cancel" immediate="true"  />
+        </div>
+        <br/>
+    </apex:form>
+</apex:page>

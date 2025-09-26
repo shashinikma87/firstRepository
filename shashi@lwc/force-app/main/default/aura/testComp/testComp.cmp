@@ -1,0 +1,22 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,flexiPage:availableforallpagetypes">     
+
+    <aura:attribute name="isDisplaying" type="Boolean" />
+
+    <aura:if isTrue="{!v.isDisplaying}" >
+    <p>Conditionally Rendered Content</p>
+  </aura:if>
+    
+<div class="slds-col modal-header slds-modal__header">
+    <h2 class="title slds-text-heading--medium">Milind Test</h2>
+</div>
+<div class="slds-col modal-body scrollable slds-p-around--medium" style="height: 200px; max-height: 400px; overflow-y: auto !important">
+            <p>&nbsp;</p>
+        <p>&nbsp;</p>
+    
+</div>
+    
+<div class="slds-col modal-footer slds-modal__footer">        
+    <lightning:button variant="neutral" label="Cancel" onclick="{! c.cancelClick }" />      
+    <lightning:button variant="brand" label="Save" onclick="{! c.saveClick }" />
+</div>
+</aura:component>

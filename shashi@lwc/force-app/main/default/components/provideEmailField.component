@@ -1,0 +1,6 @@
+<apex:component controller="provideEmailFieldController">
+    
+    <div>
+        <apex:inputText value="{!email}">Enter Email  </apex:inputText>
+    </div>
+</apex:component>

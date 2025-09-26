@@ -1,0 +1,14 @@
+
+
+REST API FOR SF CONNECTION 
+
+https://www.forcetalks.com/blog/integrating-one-salesforce-org-to-another-salesforce-org-using-rest-api/
+
+
+
+SOAP UI & SOAP API TRAILHEAD LINK 
+
+https://trailhead.salesforce.com/en/content/learn/modules/api_basics/api_basics_soap
+
+
+

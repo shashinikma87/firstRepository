@@ -1,0 +1,8 @@
+<apex:page controller="pageController" >
+    <apex:form >  
+        <c:VFCmp compData="{!theData}"></c:VFCmp>   
+        <apex:outputText value="{!theData}"  />    
+        
+        <apex:commandButton value="submit" action="{!getData}"/>
+    </apex:form> 
+</apex:page>

@@ -1,0 +1,124 @@
+<apex:page standardController="Opportunity" extensions="OpportunityController"  showHeader="false" sidebar="false">
+<head>    
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css"/>
+    <script>
+    
+    var Id = '{!$CurrentPage.parameters.Id}';
+    //alert(Id);
+    
+    function OpportunityLineItem(){
+        this.Id = null;
+        this.UnitPrice = null;
+        Discount_Percent__c = null;
+    }
+
+    $(document).ready( function(){
+        var table;
+        OpportunityController.doGetText(Id, function(result, event) {
+            if(event.type === 'exception') {
+                console.log("exception");
+                console.log(event);
+            } else if (event.status) {
+                console.log('Returned result : ', result);
+                table = $('#example').DataTable({  
+
+                    data: result,
+                    columns: [
+                        { title: '' },
+                        { title: "ID" },
+                        { title: "Name" },
+                        { title: "UnitPrice" },
+                    ],                            
+                    columnDefs: [
+                        {
+                            orderable: false,
+                            targets:   0,
+                            'render': function (data, type, row, meta){
+                                return '<input type="checkbox" class="checkBoxClass">'; 
+                            }
+                        },
+                        {
+                            orderable: false,
+                            targets:   1,
+                            'render': function (data, type, row, meta){
+                                return '<td id="row_id">' + row[1] +'</td>'; 
+                            }
+                        },
+                        {
+                            orderable: false,
+                            targets:   3,
+                            'render': function (data, type, row, meta){
+                                return '<input type="text" id="amount_val" value="' + row[3] + '" />'; 
+                            }
+                        }
+                    ],
+                    order: [[ 1, 'asc' ]],
+                });
+            }
+            
+            $(".checkBoxClass").change( function () { 
+                
+                if($(this).is(":checked")) {
+                    $(this).attr("checked", true);
+                }
+                console.log( 'You clicked on checkbox...');
+            });
+        });
+        
+        var opty_list = [];
+        
+        $("#btn1").click( function (){
+        
+            $('#example').find('tr').each(function () {
+                var row = $(this);
+                if (row.find('input[type="checkbox"]').is(':checked') ) {
+
+                    var opty_id = row.find('td').eq(1).html();
+                    var opty_amount = row.find('#amount_val').val();
+                    console.log('ID : ', row.find('td').eq(1).html());                    
+                    console.log('UnitPrice : ', row.find('#amount_val').val());
+
+                    var opty = new OpportunityLineItem();
+                    opty.Id = row.find('td').eq(1).html();
+                    opty.UnitPrice = row.find('#amount_val').val();
+                    //opty.Discount_Percent__c = 0;
+                    opty_list.push(opty);
+                }
+            });
+            
+            console.log('opty_list : ', opty_list);
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.OpportunityController.addOptys}',
+                opty_list,
+                function(result, event) {
+                    console.log(result);
+                    window.opener.location.href="/{!$CurrentPage.parameters.Id}";
+            		window.top.close();
+                }
+            );
+            
+            //opty_list = [];
+            
+            
+        });
+    });             
+
+    </script>
+</head>
+    
+<body>
+        
+    <table id="example" class="display" width="100%"></table>
+    <div style="text-align:center"  >
+        <!--    <apex:commandButton value="Save" /> -->
+        <button id="btn1" value="Save">Save</button> 
+    </div>
+    <div id="output"></div>
+</body>
+    
+</apex:page>

@@ -1,0 +1,110 @@
+<apex:page controller="DTTBTry2">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
+ 
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    
+    <script>
+    
+    $(document).ready(function () {
+        
+        var nn = "{!name}";
+        console.log('Name : ',nn);
+        
+        var array = [
+            [
+                "Rhona Davidson",
+                "Integration Specialist",
+                "Tokyo",
+                "55",
+                "2010/10/14",
+                "$327,900",
+            ],
+                [
+                    "Colleen Hurst",
+                    "Javascript Developer",
+                    "San Francisco",
+                    "39",
+                    "2009/09/15",
+                    "$205,500",
+                ],
+                    [
+                        "Sonya Frost",
+                        "Software Engineer",
+                        "Edinburgh",
+                        "23",
+                        "2008/12/13",
+                        "$103,600",
+                    ]
+			];
+                    
+                    
+                    $('#table1').DataTable(
+                    
+                    {
+                    	data: array
+                    });
+           });
+                    
+		function getRemoteAccount() {
+        	var accountName = 'passParam';
+
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.DTTBTry2.getName}',
+                accountName, 
+                function(result, event){
+                    if (event.status) {
+                    
+                    	alert('in if..', result);
+                    	
+                        // Get DOM IDs for HTML and Visualforce elements like this
+                    
+                    	/*document.getElementById('remoteAcctId').innerHTML = result.Id
+                        document.getElementById(
+                            "{!$Component.block.blockSection.secondItem.acctNumEmployees}"
+                            ).innerHTML = result.NumberOfEmployees;
+                    	*/
+                    } else if (event.type === 'exception') {
+                        
+                        console.log('in else if..');
+                    } else {
+                        console.log('in last else..');
+                    }
+                }, 
+                {escape: true}
+            );
+        }
+                    
+                    
+	</script>
+    <apex:form >
+        <button onclick="getRemoteAccount()">Click me</button>
+        
+    </apex:form>
+    
+    	<table id="table1" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Office</th>
+                    <th>Age</th>
+                    <th>Start date</th>
+                    <th>Salary</th>
+                </tr>
+            </thead>
+            <tbody>
+			<tr>
+				<td>Tiger Nixon</td>
+				<td>System Architect</td>
+				<td>Edinburgh</td>
+				<td>61</td>
+				<td>2011/04/25</td>
+				<td>$320,800</td>
+			</tr>
+            </tbody>
+        </table>
+        
+    
+</apex:page>

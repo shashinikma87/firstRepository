@@ -1,0 +1,108 @@
+<apex:page controller="NEWDATATABLECNTLR">
+    
+ 		<apex:includeScript value="https://code.jquery.com/jquery-1.11.1.min.js" />
+    <apex:includeScript value="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js" />
+    <apex:includeScript value="https://cdn.datatables.net/responsive/1.0.1/js/dataTables.responsive.min.js" />
+    
+    <apex:stylesheet value="https://cdn.datatables.net/1.10.2/css/jquery.dataTables.css" />
+    <apex:stylesheet value="https://cdn.datatables.net/responsive/1.0.1/css/dataTables.responsive.css" />
+
+
+        <script >
+            
+         function format ( d ) {
+                // `d` is the original data object for the row
+                return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+                    '<tr>'+
+                        '<td>Full name:</td>'+
+                        '<td>'+d.name+'</td>'+
+                    '</tr>'+
+                    '<tr>'+
+                        '<td>Extension number:</td>'+
+                        '<td>'+d.extn+'</td>'+
+                    '</tr>'+
+                    '<tr>'+
+                        '<td>Extra info:</td>'+
+                        '<td>And any further details here (images etc)...</td>'+
+                    '</tr>'+
+                '</table>';
+            }
+        
+        $(document).ready( function () {
+            
+			var table = $('#example').DataTable({
+                "bSortCellsTop": true,
+                "bPaginate": true,
+                "bProcessing": true,
+                "columns": [
+                    {
+                        "className":      'details-control',
+                        "orderable":      true,
+                        "data":           null,
+                        "defaultContent": ''
+                    },
+                    null, 
+                    null
+                ],
+                "order": [[1, 'asc']]
+                
+            });
+             
+  
+            // Add event listener for opening and closing details
+            $('#example tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = table.row( tr );
+         
+                if ( row.child.isShown() ) 
+                {
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else 
+                {
+                    row.child( format(row.data()) ).show();
+                    tr.addClass('shown');
+                }
+            } );
+                 
+       } );
+        </script>
+        
+
+    <style>
+            
+            td. details-control {
+      	      	background:  url ('https://next.datatables.net/examples/resources/details_open.png') no-repeat center center;    
+   	         	cursor: pointer;
+            }
+            
+            tr.shown td.details-control {
+       	    	background: url('https://next.datatables.net/examples/resources/details_close.png') no-repeat center center;
+            }
+
+        </style>
+    
+
+    <apex:form >
+        <table id="example"  style="width:100%">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Acount Name</th>
+                </tr>
+            </thead> 
+            
+            <tbody>
+                <apex:repeat value="{!actList}"  var="wrapper">
+                    <tr>
+                        <td></td>
+                        <td>{!wrapper.id}</td>
+                        <td>{!wrapper.name}</td>
+                    </tr>
+                </apex:repeat>
+            </tbody>
+        </table>
+	</apex:form>
+</apex:page>

@@ -1,0 +1,12 @@
+<template>
+    <template if:true={error}>
+        <lightning-card title="Error Occurred">
+            <div>Error Occurred</div>
+        </lightning-card>
+    </template>
+    <template if:false={error}>
+        <lightning-card title="Error not Occurred">
+        <div>Error did not occur</div>
+    </lightning-card>
+    </template>
+</template>

@@ -1,0 +1,32 @@
+<apex:page controller="wrapperClass" sidebar="false" showHeader="false">
+    <apex:form >
+        <apex:pageMessages />
+        <apex:pageBlock title="Edit Information in Account" mode="edit">
+            <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:commandButton value="Change Type" action="{!Changetype}" reRender="theTable"/>
+                    <apex:inputField value="{!anacc.type}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockTable value="{!accwrap}" var="a" id="theTable">
+                <apex:column headerValue="All accounts name">
+                    <apex:inputCheckbox value="{!a.selected}"/>
+                    <apex:actionSupport event="onclick" action="{!getselected}" reRender="other_block"/>&nbsp;
+                    <apex:outputField value="{!a.acc.name}"/>
+                </apex:column>
+                <apex:column headerValue="Owner name">
+                    <apex:outputField value="{!a.acc.Ownerid}"/>
+                </apex:column>
+                <apex:column headerValue="Type">
+                    <apex:outputField value="{!a.acc.Type}"/>
+                </apex:column>
+                <apex:column headerValue="Last modify">
+                    <apex:outputField value="{!a.acc.Website}"/>
+                </apex:column>
+                <apex:column headerValue="Last modify Price">
+                    <apex:outputField value="{!a.acc.Price__c}"/>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

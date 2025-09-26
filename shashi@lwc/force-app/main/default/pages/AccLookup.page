@@ -1,0 +1,19 @@
+<apex:page controller="myController" tabStyle="Contact">
+    <apex:form >
+        <apex:actionFunction name="callAction" action="{!callLookup}"/>
+        <apex:sectionHeader title="Add New Contact"/>
+        <apex:pageBlock >
+            <apex:pageBlockSection title="Contact Information" columns="1">
+                <apex:pageMessages />
+                <apex:inputText label="First Name" value="{!fName}"/>
+                <apex:inputText label="Last Name" value="{!lName}"/>
+                <apex:inputText label="Account Lookup" style="float:left;" value="{!accName}">
+                    <apex:image value="https://api.icons8.com/download/19343120d27c16dd3e9d21ad3aa637f94fd4d5fa/Android_L/PNG/256/Very_Basic/search-256.png" height="20" onclick="callAction()"/>
+                </apex:inputText>
+            </apex:pageBlockSection>
+            <center>
+                <apex:commandButton value="Save" action="{!save}"/>
+            </center>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

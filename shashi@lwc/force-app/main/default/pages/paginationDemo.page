@@ -1,0 +1,140 @@
+<apex:page controller="paginationCntlr" tabStyle="Account">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    
+    <script type="text/javascript">
+        
+        $(document).ready(function(){
+            checkAllFunction(); 
+
+        var flagValue = 100; 
+
+            if (flagValue == 'false'){
+                
+                showHideFields(flagValue);
+            } 
+        }); 
+        
+        //Loading modal functions
+        function showLoadingModal(){
+            $("#spinner").css({"display":"inline"});
+        }
+         
+        function hideLoadingModal(){
+            $("#spinner").css({"display":"none"});
+        }
+        
+        function checkAllFunction(){
+            $(".checkAll").on("click", function(e){
+                var isChecked = $(this).is(':checked'); 
+                $(".checkbox").prop('checked', isChecked);
+            });
+        }
+    
+    	function showHideFields(flag)
+        {
+            console.log('in showHideFields function... ',flag);
+            if(flag == 'true')
+            { 
+                console.log('in if..');
+                $("[id$=nextButton]").prop("disabled",false);
+            }
+            else 
+            { 
+                console.log('in else..');
+                $("[id$=nextButton]").prop("disabled",true);                       
+            }
+        }
+    
+    </script>
+    
+    <style>
+        /* Modal elements are used for indicating the form is saving when page is executed in the Service Console.
+        Sets the background to 80% white to 'grey' out input form */
+        .modal {
+            display:    none;
+            position:   fixed;
+            z-index:    1000;
+            top:        0;
+            left:       0;
+            height:     100%;
+            width:      100%;
+            background: rgba( 255, 255, 255, .8 )
+            50% 50%
+            no-repeat;
+        }
+        /* Box elements are used for indicating the form is saving when page is executed in the Service Console.
+        Box elements appear in the center of the page. */
+        .box {
+            background-color:      white;
+            border-radius:         10px;
+            -webkit-border-radius: 10px;
+            -moz-border-radius:    10px;
+            box-shadow:            0 0 20px 0 #222;
+            -webkit-box-shadow:    0 0 20px 0 #222;
+            -moz-box-shadow:       0 0 20px 0 #222;
+            position:              fixed;
+            top:                   50%;
+            left:                  50%;
+            margin-top:            -50px;
+            margin-left:           -100px;
+            height:                80px;
+            width:                 240px;
+            padding-top:           35px;
+            text-align:            center;
+        }
+        .alert-box {
+            color:#555;
+            border-radius:10px;
+            font-family:Tahoma,Geneva,Arial,sans-serif;font-size:11px;
+            padding:10px 10px 10px 36px;
+            margin:10px;
+        }
+        .alert-box span {
+            font-weight:bold;
+            text-transform:uppercase;
+        }
+        .error {
+            background:#ffecec url('images/error.png') no-repeat 10px 50%;
+            border:1px solid #f5aca6;
+        }
+        .success {
+            background:#e9ffd9 url('images/success.png') no-repeat 10px 50%;
+            border:1px solid #a6ca8a;
+        }
+        .warning {
+            background:#fff8c4 url('images/warning.png') no-repeat 10px 50%;
+            border:1px solid #f2c779;
+        }
+        .notice {
+            background:#e3f7fc url('images/notice.png') no-repeat 10px 50%;
+            border:1px solid #8ed9f6;
+        }
+    </style>
+    
+    
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Show Records" action="{!retrieveData}" reRender="pb1" oncomplete="showHideFields('{!showSchMessage}');"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection Title="Account Contact List" id="pb1" columns="1">
+                
+				<apex:pageBlockTable value="{!wrapList}" var="wrapObj">
+                    <apex:column headerValue="Sr. No." value="{!wrapObj.srNo}"/>
+                    <apex:column headerValue="Contact Id" value="{!wrapObj.conId}"/>
+                    <apex:column headerValue="Contact Name" value="{!wrapObj.conName}"/>
+                    <apex:column headerValue="Account Name" value="{!wrapObj.AccName}"/>
+                </apex:pageBlockTable>
+                
+                <apex:outputPanel styleClass="text-align: right" >
+                    <apex:CommandButton action="{!previous}" value="Previous" rendered="{!hasPrevious}"/> 
+                    <apex:CommandButton action="{!next}" value="Next" rendered="{!hasNext}"/>  
+                    Showing page-{!listNumber+1} of {!totalPages}
+                </apex:outputPanel>
+
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

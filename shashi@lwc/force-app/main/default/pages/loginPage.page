@@ -1,0 +1,13 @@
+<apex:page controller="connectSFOrg">
+    
+    <apex:form >
+        <apex:commandButton action="{!connectUsingOAuth}" value="Login to shahsi1@test.com org"/>
+        
+        <apex:commandButton value="Get Token" action="{!getToken}" />
+        
+        <br/><br/><br/>
+        <apex:commandButton action="{!connectUsingOAuth}" value="Login to shahsi1@test.com org"/>
+        
+        <apex:commandButton value="Get Token" action="{!getToken}" />
+    </apex:form>
+</apex:page>

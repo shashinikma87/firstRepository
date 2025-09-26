@@ -1,0 +1,455 @@
+<apex:page showHeader="false" controller="FileUploader" apiVersion="36.0"> 
+    <head>
+        <title>IMPORT EXCEL DATA</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+        <style type="text/css">            
+            .btn1,.btn1:hover{text-decoration:none}.upload-drop-zone{height:200px;border-width:2px;margin-bottom:20px;color:#ccc;border-style:dashed;border-color:#ccc;line-height:200px;text-align:center}body{background-color:#f3f5f6}.upload-drop-zone.drop{color:#222;border-color:#222}.tooltip-inner{text-align:center;-webkit-border-radius:0;-moz-border-radius:0;border-radius:4px;margin-bottom:6px;border:1px solid #ffd37f;background-color:#fffcdd;font-size:14px;color:#333;min-width:200px}.footer{left:0;bottom:0;width:100%;padding:2em;background-color:#f3f5f6;border-top:1px solid #fff;z-index:2;text-align:right;box-sizing:border-box;box-shadow:0 0 12px 0 rgba(0,0,0,.15);font-size:.9em}.btn1{background:#3498db;background-image:-webkit-linear-gradient(top,#3498db,#2980b9);background-image:-moz-linear-gradient(top,#3498db,#2980b9);background-image:-ms-linear-gradient(top,#3498db,#2980b9);background-image:-o-linear-gradient(top,#3498db,#2980b9);background-image:linear-gradient(to bottom,#3498db,#2980b9);-webkit-border-radius:4;-moz-border-radius:4;border-radius:4px;color:#fff;padding:10px 20px}.btn1:hover{background:#3cb0fd;background-image:-webkit-linear-gradient(top,#3cb0fd,#3498db);background-image:-moz-linear-gradient(top,#3cb0fd,#3498db);background-image:-ms-linear-gradient(top,#3cb0fd,#3498db);background-image:-o-linear-gradient(top,#3cb0fd,#3498db);background-image:linear-gradient(to bottom,#3cb0fd,#3498db)}
+        </style>
+        <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <br/>
+        <br/>
+        <div class="container">
+            <div class ="row">            
+                <div class="col-md-6">
+                <h2>Excel Data Import Wizard <br/> <small>You can import up to 10,000 records at a time.</small></h2>
+                </div>
+            </div>
+             <hr/>
+           
+          <div class="panel panel-default">
+            <div class="panel-heading"><strong>Import Data</strong> <small>Excel file upload</small></div>
+            <div class="panel-body">
+              
+              <h4>Select format to parse the excel into JSON or CSV format and parsed data will be used in Apex Class</h4>
+              <div class = "pull-right">
+                  <select name="format">
+                    <option value="csv"> CSV</option>
+                    <option value="json" selected="selected"> JSON</option>
+                  </select>
+              </div>
+              <!-- Standar Form -->
+              <br/> <br/>
+              <h4>Select files from your computer
+                <sup style= "font-size:13px;">
+                    <a href="#" data-toggle="tooltip" title="Choose the file containing the data you want to import. You can import up to 10,000 records at a time."> ? </a>
+                </sup>
+            </h4>
+                <div class="form-inline pull-right">
+                  <div class="form-group">
+                    <input type="file" name="xlfile" id="xlf"/>
+                  </div>
+                </div>
+                <br/>
+                <br/>
+              <!-- Drop Zone -->
+              <h4>Or drag and drop file below <sup ><a href="#" data-toggle="tooltip" title="Choose the file containing the data you want to import. You can import up to 10,000 records at a time."> ? </a></sup></h4>
+
+                <br/>
+                <br/>
+                  <div class="upload-drop-zone" id="drop">
+                    Just drag and drop any excel file here
+                  </div>
+                  <div style="margin:20px;">
+					
+                    <button class="btn1" onclick="initiateInsertion();" >Start Import</button>
+
+                    </div>
+				<div class = "panel panel-info">
+                   <div class = "panel-heading">
+                      <h3 class = "panel-title">Output</h3>
+                   </div>
+                   <apex:form >
+                    <apex:actionFunction name="passStringToUploadDataTosObject" action="{!parseData}" rerender="output123">
+                        <apex:param name="data" value="" assignTo="{!myString}" />
+                    </apex:actionFunction>
+                    
+               
+                    <apex:outputPanel id="output123" rendered="{!status}">
+                    Status : {!IF(status,'true', 'false')}
+                        <div class="alert alert-success fade in">
+                            <a href="#" class="close" data-dismiss="alert">×</a>
+                                <strong> Success! </strong>  <span class="label label-inverse"> {!size} </span> Rows inserted successfully.
+                        </div>
+                  </apex:outputPanel>  
+                    
+                </apex:form>
+                   <div class = "panel-body">
+                      <pre id="out">
+                      </pre>
+                   </div>
+                </div>
+                <div class = "panel error-info">
+                	<div class = "panel-heading">
+                      <h3 class = "panel-title">Errors</h3>
+                    </div>
+                	<div class = "error-body">
+                      <pre id="error">
+                      </pre>
+                   </div>
+                   
+				</div>                
+            </div>
+          </div>
+        </div> <!-- /container -->
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-shim.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+
+		<script>
+            $(document).ready(function(){
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+        
+        <script>
+            var X = XLSX;
+            
+            function fixdata(data) {
+                var o = "", l = 0, w = 10240;
+                for(; l<data.byteLength/w; ++l) o+=String.fromCharCode.apply(null,new Uint8Array(data.slice(l*w,l*w+w)));
+                o+=String.fromCharCode.apply(null, new Uint8Array(data.slice(l*w)));
+                return o;
+            }
+            
+            function get_radio_value( radioName ) {
+                var radios = document.getElementsByName( radioName );
+                for( var i = 0; i < radios.length; i++ ) {
+                    if( radios[i].checked || radios.length === 1 ) {
+                        return radios[i].value;
+                    }
+                }
+            }
+            
+        	function validate_data (type, data) {
+            
+            	var result = [];
+            	result = data;
+            	if (type == 'csv') {
+                    
+                    var csv = data;
+                	var lines=csv.split("\n");
+                    //var result = [];
+                    result = [];
+                    lines[0] = lines[0].replace(/(\r\n|\n|\r)/gm,"");
+                    var headers=lines[0].split(",");
+                    
+                    //console.log('length of lines => ',lines.length);
+                    //console.log('Lines =>*',lines,'**');
+                    
+                    for(var i=1;i<lines.length;i++) {
+                    	lines[i] = lines[i].replace(/(\r\n|\n|\r)/gm,"");
+                        var currentline=lines[i].split(",");
+                        var obj = {};
+                        for(var j=0;j<headers.length;j++) {
+                            
+                            console.log(typeof currentline[j]);
+                            if (headers[j].match(/End_Day_of_Month__c/i)) {
+								var key = headers[j].replace(/(\r\n|\n|\r)/gm,"");
+                                if (currentline[j]) {
+									currentline[j] = currentline[j].replace(/\r\n|\n|\r/,"");
+                                }
+                                obj[key] = currentline[j];
+                                
+                            } else {
+                            	obj[headers[j]] = currentline[j];
+							}
+                        }
+                    	result.push(obj);
+					}
+					result.splice(-1,1);
+				}
+				
+                console.log('m here..', result);
+                                      
+				if(result && result.length > 0) {
+					console.log('result size ==> ', result.length);
+					errored_records = [];
+                   
+                	var month_obj = {
+                		jan: "Jan",feb:"Feb",mar:"Mar",apr:"Apr",may:"May",jun:"Jun",jul:"Jul",aug:"Aug",sep:"Sep",oct:"Oct",nov:"Nov",dec:"Dec"
+					};
+                    
+                    flag = 0;
+                    
+                    for (i = 0; i < result.length; i++) {
+
+						if (result[i].Company_Code__c == '') { continue; }
+						
+                        console.log('Company Code : ', result[i].Company_Code__c);
+                        
+						// validate Company_Code__c
+						if (!result[i].Company_Code__c.match(/^[A-za-z]+/)) { 
+						    //errored_records.push(result[i].Company_Code__c); 
+						    flag = 1;
+						    errored_records.push('error in Company_Code__c for '+ result[i].Company_Code__c);  
+						    console.log('error in Company_Code__c for ',result[i].Company_Code__c );
+						}
+                  
+						// validate Air_Overrides__c
+						if (result[i].Air_Overrides__c && check_floating_number(result[i].Air_Overrides__c)) { 
+						    //errored_records.push(result[i].Company_Code__c); 
+						    flag = 1;
+						    errored_records.push('error in Air_Overrides__c for '+ result[i].Company_Code__c);  
+						    console.log('error in Air_Overrides__c for ',result[i].Company_Code__c );
+						}
+						
+						// validate GL_Sales__c
+						if (result[i].GL_Sales__c && check_floating_number(result[i].GL_Sales__c)) { 
+						    //errored_records.push(result[i].Company_Code__c); 
+						    flag = 1;
+						    errored_records.push('error in GL_Sales__c for '+ result[i].Company_Code__c);    
+						    console.log('error in GL_Sales__c for ',result[i].Company_Code__c );
+						}
+						// validate Net_Commission__c
+						if (result[i].Net_Commission__c && check_floating_number(result[i].Net_Commission__c)) { 
+						    //errored_records.push(result[i].Company_Code__c); 
+						    flag = 1;  
+						    errored_records.push('error in Net_Commission__c for '+ result[i].Company_Code__c);
+						    console.log('error in Net_Commission__c for ',result[i].Company_Code__c );
+						}
+						// validate Merchant_Fees__c
+						if (result[i].Merchant_Fees__c && check_floating_number(result[i].Merchant_Fees__c)) { 
+						    //errored_records.push(result[i].Company_Code__c); 
+						    flag = 1;  
+						    errored_records.push('error in Merchant_Fees__c for '+ result[i].Company_Code__c);
+						    console.log('error in Merchant_Fees__c for ',result[i].Company_Code__c );
+						}
+						// validate Land_Comm__c
+						if (result[i].Land_Comm__c && check_floating_number(result[i].Land_Comm__c)) { 
+						    //errored_records.push(result[i].Company_Code__c); 
+						    flag = 1;  
+						    errored_records.push('error in Land_Comm__c for '+ result[i].Company_Code__c);
+						    console.log('error in Land_Comm__c for ',result[i].Company_Code__c );
+						}	
+						// validate Paydirect_Sales__c
+						if (result[i].Paydirect_Sales__c && check_floating_number(result[i].Paydirect_Sales__c)) { 
+						    //errored_records.push(result[i].Company_Code__c); 
+						    flag = 1;  
+						    errored_records.push('error in Paydirect_Sales__c for '+ result[i].Company_Code__c);
+						    console.log('error in Paydirect_Sales__c for ',result[i].Company_Code__c );
+						} 
+						// validate Team__c
+						if (result[i].Team__c && !result[i].Team__c.match(/[A-za-z0-9]+/)) { 
+						    //errored_records.push(result[i].Company_Code__c); 
+						    flag = 1;  
+						    errored_records.push('error in Team__c for '+ result[i].Company_Code__c);
+						    console.log('error in Team__c for ',result[i].Company_Code__c );
+						}
+						
+						var currentTime = new Date()
+						// validate Year__c
+						if (result[i].Year__c && (result[i].Year__c < 1900 || result[i].Year__c > currentTime.getFullYear() || !result[i].Year__c.match(/^\d{4}$/) )) { 
+						    //errored_records.push(result[i].Company_Code__c); 
+						    flag = 1;  
+						    errored_records.push('error in Year__c for '+ result[i].Company_Code__c);
+						    console.log('error in Year__c for ',result[i].Company_Code__c );
+						}
+						// validate Month__c
+						if (result[i].Month__c) {
+						    var lower_case_month = result[i].Month__c.toLowerCase();
+							if (!(lower_case_month in month_obj )) {
+						    	//errored_records.push(result[i].Company_Code__c); 
+						    	flag = 1;
+						    	errored_records.push('error in Month__c for '+ result[i].Company_Code__c);  
+						    	console.log('error in Month__c for ',result[i].Company_Code__c );
+							}
+						}
+						// validate End_Day_of_Month__c
+						if (result[i].End_Day_of_Month__c) {
+						result[i].End_Day_of_Month__c = result[i].End_Day_of_Month__c.replace(/(\r\n|\n|\r)/gm,"");
+						if (result[i].End_Day_of_Month__c < 0 || result[i].End_Day_of_Month__c > 31 || !result[i].End_Day_of_Month__c.match(/\d{2}/)) {
+						    //errored_records.push(result[i].Company_Code__c); 
+						    flag = 1;
+						    errored_records.push('error in End_Day_of_Month__c for '+ result[i].Company_Code__c); 
+						    console.log('error in End_Day_of_Month__c for ',result[i].Company_Code__c );
+						}
+						}
+						// validate Start_Day_of_Month__c
+						if (result[i].Start_Day_of_Month__c && result[i].Start_Day_of_Month__c != 1) {
+						    //errored_records.push(result[i].Company_Code__c); 
+						    flag = 1;
+						    errored_records.push('error in Start_Day_of_Month__c for '+ result[i].Company_Code__c);   
+						    console.log('error in Start_Day_of_Month__c for ',result[i].Company_Code__c );                                
+						}
+
+						result[i].Unique_ID__c = result[i].Company_Code__c +'_'+ result[i].Team__c +'_'+ result[i].Month__c;
+					}
+                    
+                    if ( flag == 1 ){
+                        alert(errored_records );
+                        document.getElementById('error').innerHTML = 'Error in imput file for records => ' + errored_records;
+                        result = [];
+                        return result;
+                    }
+                	var final_result = "";
+                	if (type == 'csv') {
+                        final_result = JSON.stringify(result, 2, 2);
+                        return final_result;
+					} else {
+						return result;
+					}
+				}
+			}
+            
+                
+        	function check_floating_number(num) {
+                if (num != '') {
+                    if(!num.match(/\d+(\.\d+)?/)) { 									// || num < 0
+                        console.log('in function check_floating_number for => ', num);
+                        return true; 
+                    }
+                }
+                return false;
+			}
+
+        	function to_json(workbook) {
+                var result = {};
+                workbook.SheetNames.forEach(function(sheetName) {
+                    var roa = X.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                    roa = validate_data('json', roa);
+                    result[sheetName] = roa;
+                });
+                
+                console.log('JSON result =>', result);
+                return result;
+            }
+        
+            function to_csv(workbook) {
+                var result = [];
+                workbook.SheetNames.forEach(function(sheetName) {
+                    var csv = X.utils.sheet_to_csv(workbook.Sheets[sheetName]);
+                    
+                    console.log('CSV Result : ', csv);
+                    
+                    if(csv.length > 0){
+                        result.push("SHEET: " + sheetName);
+                        result.push("");
+                        result.push(csv);
+                    }
+                });
+                return result.join("\n");
+            }
+            
+            function to_formulae(workbook) {
+                var result = [];
+                workbook.SheetNames.forEach(function(sheetName) {
+                    var formulae = X.utils.get_formulae(workbook.Sheets[sheetName]);
+                    if(formulae.length > 0){
+                        result.push("SHEET: " + sheetName);
+                        result.push("");
+                        result.push(formulae.join("\n"));
+                    }
+                });
+                return result.join("\n");
+            }
+            
+            function process_wb(wb) {
+                var output = "";
+                switch(get_radio_value("format")) {
+                    case "json":
+                        output = JSON.stringify(to_json(wb), 2, 2);
+                        break;
+                    case "form":
+                        output = to_formulae(wb);
+                        break;
+                    case "csv":
+                    	output = to_csv(wb);
+                        break;
+                }
+                
+                if(out.innerText === undefined) out.textContent = output;
+                  else out.innerText = output;
+                
+                if(typeof console !== 'undefined') console.log("output ==> ", new Date());
+            }
+            
+            function initiateInsertion(){
+              
+				alert(document.getElementById('out').innerText);
+				passStringToUploadDataTosObject(document.getElementById('out').innerText);
+            }
+            
+            var drop = document.getElementById('drop');
+            function handleDrop(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                
+                var files = e.dataTransfer.files;
+                var f = files[0];
+                {
+                    var reader = new FileReader();
+                    var name = f.name;
+                    reader.onload = function(e) {
+                        var data = e.target.result;
+                        var arr = fixdata(data);
+                        var wb = X.read(btoa(arr), {type: 'base64'});
+                        process_wb(wb);
+                    };
+                    reader.readAsArrayBuffer(f);
+                }
+            }
+            
+            function handleDragover(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'copy';
+            }
+            
+            if(drop.addEventListener) {
+                drop.addEventListener('dragenter', handleDragover, false);
+                drop.addEventListener('dragover', handleDragover, false);
+                drop.addEventListener('drop', handleDrop, false);
+            }
+            
+            var xlf = document.getElementById('xlf');
+        	function handleFile(e) {					// Accepts EVENT as a parameter
+                
+                var files = e.target.files;
+                console.log('files => ',files);
+                var f = files[0];
+                {
+                    
+                    var reader = new FileReader();
+                    var name = f.name;
+                    console.log('File Name : ', name);
+                    
+                    if (name.match(/.+\.xlsx$/)) {
+                    //if (f.type.match(/application\/vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet/i)) {
+                        reader.onload = function(e) {
+                            var data = e.target.result;
+                            var arr = fixdata(data);		// returns data in an array but encoded data
+                            var wb =  X.read(btoa(arr), {type: 'base64'});
+                            process_wb(wb);
+                        };
+                        
+                        reader.readAsArrayBuffer(f);
+					}
+                    else if (name.match(/.+\.csv$/)) {
+                    //else if (name.match(/application\/vnd\.ms-excel/)) {
+                    
+                        reader.onload = function (e) {
+                            console.log(typeof get_radio_value("format"));
+                            console.log(get_radio_value("format"));
+                            if (get_radio_value("format") == 'csv') {
+                                document.getElementById('out').innerHTML = reader.result;
+							} else {
+                            	document.getElementById('out').innerHTML = validate_data('csv', reader.result);
+							}
+						};
+						// start reading the file. When it is done, calls the onload event defined above.
+						reader.readAsBinaryString(f);
+					}
+                }
+                return false;
+            }
+        
+            // this calls function handleFile(EVENT)
+        	if(xlf.addEventListener) xlf.addEventListener('change', handleFile, false); 
+		</script>
+    </body>
+</apex:page>

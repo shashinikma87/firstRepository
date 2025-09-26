@@ -1,0 +1,225 @@
+<apex:page controller="pageTableDemoCntlr">
+    
+    <head>
+        <!--
+        <apex:stylesheet value="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+        <apex:includescript value="https://code.jquery.com/jquery-3.3.1.js"/>
+        <apex:includescript value="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"/>
+        -->
+        
+        <apex:includeScript value="https://code.jquery.com/jquery-1.11.1.min.js" />
+        <apex:includeScript value="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js" />
+        <apex:includeScript value="https://cdn.datatables.net/responsive/1.0.1/js/dataTables.responsive.min.js" />
+        <apex:stylesheet value="https://cdn.datatables.net/1.10.2/css/jquery.dataTables.css" />
+        <apex:stylesheet value="https://cdn.datatables.net/responsive/1.0.1/css/dataTables.responsive.css" />
+        
+        <script type="text/javascript">
+        
+        
+        $(document).ready(function() {
+            
+            function format ( d ) {
+                // `d` is the original data object for the row
+                return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+                        '<tr>'+
+                            '<td>Extension number:</td>'+
+                            '<td>'+d.extn+'</td>'+
+                        '</tr>'+
+                        '<tr>'+
+                            '<td>Extra info:</td>'+
+                            '<td>And any further details here (images etc)...</td>'+
+                        '</tr>'+
+                    '</table>';
+            }
+            
+            
+                var table = $('#example1').DataTable( {
+                    "bSortCellsTop": true,
+                    "bPaginate": true,
+                    "bProcessing": true,
+                    "columns": [
+                        {
+                            "className":      'details-control',
+                            "orderable":      true,
+                            "data":           null,
+                            "defaultContent": ''
+                        },
+                        null, 
+                        null
+                    ],
+                    "order": [[1, 'asc']]
+                    
+                } );
+            
+            
+            // Add event listener for opening and closing details
+            $('#example tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = table.row( tr );
+                
+                if ( row.child.isShown() ) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else {
+                    // Open this row
+                    row.child( format(row.data()) ).show();
+                    tr.addClass('shown');
+                }
+            } );
+            
+            
+        } );
+        
+        </script>
+        <style>
+            td.details-control {
+    	        background: url('../resources/details_open.png') no-repeat center center;
+    	        cursor: pointer;
+            }
+            
+            tr.shown td.details-control {
+     	       background: url('../resources/details_close.png') no-repeat center center;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <apex:form id="frm">
+            <apex:pageBlock id="pb1" title="Account List" >
+                
+                <apex:pageBlockButtons >
+                    <apex:commandButton value="click me" action="{!clickMe}" reRender="pb2"/>
+                
+                </apex:pageBlockButtons>
+                
+                <table id="example1"  style="width:100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Position</th>
+                        </tr>
+                    </thead> 
+                    
+                    <tbody>
+                        
+                        <apex:repeat value="{!actList}"  var="wrapper">
+                            
+                            <tr class="details-control">
+                                <td></td>
+                                <td>{!wrapper.id}</td>
+                                <td>{!wrapper.name}</td>
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+                
+            </apex:pageBlock> 
+            
+            <apex:pageBlock id="pb2" title="Account List" >
+               ==  {!reRenderedPB2}  ==
+            </apex:pageBlock>
+        </apex:form>    
+        
+        <!--
+        <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Salary</th>
+            </tr>
+        </tfoot>
+    </table>
+        -->
+        
+        <!--
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                </tr>
+            </thead> 
+            
+            <tbody>
+                <apex:repeat value="{!actList}"  var="wrapper">
+                    <tr>
+                        <td>{!wrapper.id}</td>
+                        <td>{!wrapper.name}</td>
+                    </tr>
+                </apex:repeat>
+            </tbody>
+            
+            <tfoot>
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                </tr>
+            </tfoot>
+        </table>
+        
+        
+        
+        
+        
+    <apex:form >
+
+            
+        <apex:pageBlock >
+        	<apex:pageBlockSection title="Account List">
+            
+                
+            <apex:pageBlockSection title="Retrieved Billing Contract Line Items" id="dataSection1" columns="1" >
+
+				<apex:pageBlockTable value="{!actList}" id="example" var="wrapper" styleclass="display" style="width:100%">
+                    
+                    <apex:column headerValue="Account ID">
+                        <apex:outputLink value="/{!wrapper.Id}" target="_blank">{!wrapper.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column headerValue="Account Name">
+                        <apex:outputField value="{!wrapper.Name}" />
+                    </apex:column>
+				</apex:pageBlockTable>
+            </apex:pageBlockSection>
+            
+                
+                
+                <table id="example" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Account ID</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!actList}"  var="wrapper">
+                            <tr>
+                                <td>{!wrapper.id}</td>
+                                <td>{!wrapper.name}</td>
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+
+        </apex:pageBlockSection>
+        </apex:pageBlock>                
+            
+
+    </apex:form>
+-->    
+    </body>
+</apex:page>

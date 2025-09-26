@@ -1,0 +1,86 @@
+Sales management at Universal Containers is requesting better visibility into specific types of sales deals. They need to be notified when opportunities worth a large amount are close to closing. They would also like to receive a list of opportunities that are still open past the close date. Which feature can a system administrator use to accomplish this? (Choose 2)
+  Big deal alerts
+  Opportunity update reminders
+  
+Who can cases be assigned to when case assignment rules are being set up? (Choose 3)
+  Queue
+  Partner Portal User
+  Internal Salesforce User
+  
+Which functionality is available when using the data export service? (Choose 2)
+ Schedule a recurring export
+ Include attachments
+
+Universal Containers pushes an account number from an external accounting system into Salesforce. Sales users must be able to view the account number in Salesforce, but must not be able to modify it under any circumstances. How can a system administrator meet this requirement?
+ Set the field-level security for account number to visible and read only for the sales user profile
+
+What is a capability of the content delivery feature of Salesforce Content? (Choose 3)
+  Track how often content is viewed if downloaded
+  Makes content available to recipients within and outside of Salesforce
+  Generates URLs for content files
+
+What should be used to control a user’s ability to view a dashboard? (Choose 2)
+  Source Report folder access
+  Dashboard folder access
+  
+Universal Containers outsources its first tier of customer support to a partner. What can be used to identify all individuals who contribute to resolving a case?
+ Case Teams
+
+How can a System Administrator restrict users from viewing certain fields in list views, searches and reports?
+  Set the field to hidden on the user profile
+
+Which is a capability of Chatter files? (Choose 2)
+  View a list of files shared with a Chatter group
+  Post files from a Salesforce Content library to a Chatter feed
+  
+A marketing manager needs to view summary metrics across a set of related campaigns. How can this be accomplished?
+   Create a campaign hierarchy and include the related campaigns
+
+Which functionality is available when enhanced lists are enabled? (choose 2)
+ Create new records from a list view
+ Edit multiple records directly from a list view
+
+Which statement about Mobile Lite is true? (Choose 2)
+ It must be enabled by an administrator
+  It is available to users without a mobile license
+
+Universal Finance has segmented its customer base into two categories: High Wealth and Retirement. High Wealth accounts should be visible to High Wealth Sales team members only. Retirement accounts should be visible to all sales users. How can a system administrator meet this requirement?
+  Set the organization-wide default sharing to private and create a sharing rule to share Retirement accounts with all Sales users
+  
+Which functionality is available when customizing tasks? (Choose 2)
+  Record types can be created for tasks
+  Validation rules can be created for tasks
+  
+Sales Managers need to view and report on sales revenue across an entire company without having access to a custom object that tracks personal time-off request. Which permission should a system administrator enable in a custom profile to meet this requirement in a private sharing model?
+  View All for Opportunities
+  
+How can a sales user relate an opportunity to a campaign? (Choose 2)
+  Select the primary campaign source for the opportunity
+  Use the campaign influences related list on the opportunity
+  
+Which schedule type can be defined for a product? (Choose 2)
+  Revenue
+  Quantity
+  
+Which is a feature of Chatter?(Choose 3)
+ Bookmarks
+  Feeds
+   Recommendations
+   
+When the multiple currencies feature is enabled, which currency is used as the basis for all currency conversion rates?
+ Corporate currency
+ 
+Which user is listed in the case history related list for case changes made from assignment and escalation rules?
+  The automated case user specified in the support settings
+ 
+Which option is available when using the process visualizer? (Choose 2)
+  Share annotated approval process diagrams
+  View approval processes as a flow chart
+  
+  
+  
+  
+  
+  
+  
+  

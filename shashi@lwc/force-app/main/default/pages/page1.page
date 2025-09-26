@@ -1,0 +1,12 @@
+<apex:page controller="q171641" action="{!startJob}">
+    <apex:form id="form">
+        <span style="white-space: pre">
+            <apex:repeat value="{!log}" var="l">
+                <div>
+                {!l}
+                </div>
+            </apex:repeat>
+        </span>
+        <apex:actionPoller action="{!checkJobStatus}" interval="10" reRender="form"/>
+    </apex:form>
+</apex:page>

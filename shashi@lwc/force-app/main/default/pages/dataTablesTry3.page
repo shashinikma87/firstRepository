@@ -1,0 +1,124 @@
+<apex:page >
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
+ 
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    
+    <script>
+    
+    $(document).ready(function () {
+        var json = [
+                {
+                    "name": "Ram",
+                    "age": "21",
+                    "sex": "Male",
+                    "occupation": "Doctor"
+                },
+                {
+                    "name": "Mohan",
+                    "age": "32",
+                    "sex": "Male",
+                    "occupation": "Teacher"
+                },
+                {
+                    "name": "Rani",
+                    "age": "42",
+                    "sex": "Female",
+                    "occupation": "Nurse"
+                },
+                {
+                    "name": "Johan",
+                    "age": "23",
+                    "sex": "Female",
+                    "occupation": "Software Engineer"
+                },
+                {
+                    "name": "Shajia",
+                    "age": "39",
+                    "sex": "Female",
+                    "occupation": "Farmer"
+                },
+                {
+                    "name": "Shajia",
+                    "age": "39",
+                    "sex": "Female",
+                    "occupation": "Farmer"
+                },
+                {
+                    "name": "Shajia",
+                    "age": "39",
+                    "sex": "Female",
+                    "occupation": "Farmer"
+                },
+                {
+                    "name": "Shajia",
+                    "age": "39",
+                    "sex": "Female",
+                    "occupation": "Farmer"
+                },
+                {
+                    "name": "Shajia",
+                    "age": "39",
+                    "sex": "Female",
+                    "occupation": "Farmer"
+                },
+                {
+                    "name": "Shajia",
+                    "age": "39",
+                    "sex": "Female",
+                    "occupation": "Farmer"
+                },
+                {
+                    "name": "Shajia",
+                    "age": "39",
+                    "sex": "Female",
+                    "occupation": "Farmer"
+                },
+                {
+                    "name": "Shajia",
+                    "age": "39",
+                    "sex": "Female",
+                    "occupation": "Farmer"
+                },
+                {
+                    "name": "Shajia",
+                    "age": "39",
+                    "sex": "Female",
+                    "occupation": "Farmer"
+                },
+                {
+                    "name": "Shajia",
+                    "age": "39",
+                    "sex": "Female",
+                    "occupation": "Farmer"
+                }
+            ];
+             
+            var table = $('#table3').DataTable({
+                data: json,
+                columns: [
+                    { data: 'name' },
+                    { data: 'age' },
+                    { data: 'sex' },
+                    { data: 'occupation' }
+                ]
+            });
+        var info = table.page.info();
+        
+        console.log('m here...',info.pages);
+    });
+    </script>
+    
+    <table id="table3">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Sex</th>
+                <th>Occupation</th>
+            </tr>
+        </thead>
+    </table>
+
+    
+</apex:page>
