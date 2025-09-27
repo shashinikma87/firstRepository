@@ -1,0 +1,10 @@
+<apex:page controller="LookupCntlr">
+    
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection title="Account Lookup Field">
+                <apex:inputField value="{!c.AccountId}" label="Account"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

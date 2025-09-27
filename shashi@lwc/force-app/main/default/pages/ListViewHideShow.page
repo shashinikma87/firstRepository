@@ -1,0 +1,19 @@
+<apex:page id="thepage" >
+<script type="text/javascript">
+       function togglePanel(){
+           var panel = document.getElementById('thepage:theList');
+           console.log('id : '+panel);
+           
+           if(panel.style.display == ''){
+               panel.style.display = 'none';
+           }else{
+               panel.style.display = 'block';
+                
+           }
+   }
+   </script>
+    <apex:outputPanel id="theList"  style="display:none;" >
+        <apex:enhancedlist type="Lead" height="730" customizable="false" rowsPerPage="25"  />
+    </apex:outputPanel>
+ <input type="button" onclick="togglePanel();" value="hide"/>
+</apex:page>

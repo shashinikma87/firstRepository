@@ -1,0 +1,200 @@
+<apex:page controller="scheduleManuallyCtlr">
+    
+    <apex:form >
+    <table class="detailList" border="0" cellpadding="0" cellspacing="0"><tr><td class="data2Col  first  last " colSpan="2"><span id="j_id0:j_id1:j_id37:j_id43:j_id77:j_id78"><input id="weeklyOrMonthlyHidden" type="hidden" name="weeklyOrMonthlyHidden" value="weekly" /><input id="monthlyDayOrWeekHidden" type="hidden" name="monthlyDayOrWeekHidden" value="day" />
+        
+        <table width="100%">
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td align="right" class="labelCol">Frequency</td>
+                    <td align="left" valign="top">
+                        <table cellspacing="0"><tbody><tr>
+                            <td style="padding-right:10px;">
+                                <input id="weekRadio" name="weekOrMonthRadio" onclick="onWeeklyClick();" type="radio" value="weekly" />
+                                <label for="weekRadio">Weekly</label>
+                                <br />
+                                <input id="monthRadio" name="weekOrMonthRadio" onclick="onMonthlyClick();" type="radio" value="monthly" />
+                                <label for="monthRadio">Monthly</label>
+                            </td>
+                            <td>
+                                <div id="weeklyDiv1" style="display:block;background-color:#FFFFFF;border:1px solid #DDDDDD;padding:5px;">
+                                    Recurs every week on<br />
+                                    <input id="sunChx" type="checkbox" name="sunChx" /><label for="sunChx">Sunday</label>
+                                    <input id="monChx" type="checkbox" name="monChx" /><label for="monChx">Monday</label>
+                                    <input id="tueChx" type="checkbox" name="tueChx" /><label for="tueChx">Tuesday</label>
+                                    <input id="wedChx" type="checkbox" name="wedChx" checked="checked" /><label for="wedChx">Wednesday</label>
+                                    <input id="thuChx" type="checkbox" name="thuChx" /><label for="thuChx">Thursday</label>
+                                    <input id="friChx" type="checkbox" name="friChx" /><label for="friChx">Friday</label>
+                                    <input id="satChx" type="checkbox" name="satChx" /><label for="satChx">Saturday</label>
+                                </div>
+                                <div id="weeklyDiv2" style="display:block;background-color:#FFFFFF;border:1px solid #DDDDDD;padding:5px;">
+                                    Only for these specific days:<br />
+                                    <input id="Chx01" type="checkbox" name="Chx01" /><label>1</label>
+                                    <input id="Chx02" type="checkbox" name="Chx02" /><label>2</label>
+                                    <input id="Chx03" type="checkbox" name="Chx03" /><label>3</label>
+                                    <input id="Chx04" type="checkbox" name="Chx04" /><label>4</label>
+                                    <input id="Chx05" type="checkbox" name="Chx05" /><label>5</label>
+                                    <input id="Chx06" type="checkbox" name="Chx06" /><label>6</label>
+                                    <input id="Chx07" type="checkbox" name="Chx07" /><label>7</label>
+                                    <input id="Chx08" type="checkbox" name="Chx08" /><label>8</label>
+                                    <input id="Chx09" type="checkbox" name="Chx09" /><label>9</label>
+                                    <input id="Chx10" type="checkbox" name="Chx10" /><label>10</label>
+                                    <input id="Chx11" type="checkbox" name="Chx11" /><label>11</label>
+                                    <input id="Chx12" type="checkbox" name="Chx12" /><label>12</label>
+                                    <input id="Chx13" type="checkbox" name="Chx13" /><label>13</label>
+                                    <input id="Chx14" type="checkbox" name="Chx14" /><label>14</label>
+                                    <input id="Chx15" type="checkbox" name="Chx15" /><label>15</label>
+                                    <input id="Chx16" type="checkbox" name="Chx16" /><label>16</label><br />
+                                    <input id="Chx17" type="checkbox" name="Chx17" /><label>17</label>
+                                    <input id="Chx18" type="checkbox" name="Chx18" /><label>18</label>
+                                    <input id="Chx19" type="checkbox" name="Chx19" /><label>19</label>
+                                    <input id="Chx20" type="checkbox" name="Chx20" /><label>20</label>
+                                    <input id="Chx21" type="checkbox" name="Chx21" /><label>21</label>
+                                    <input id="Chx22" type="checkbox" name="Chx22" /><label>22</label>
+                                    <input id="Chx23" type="checkbox" name="Chx23" /><label>23</label>
+                                    <input id="Chx24" type="checkbox" name="Chx24" /><label>24</label>
+                                    <input id="Chx25" type="checkbox" name="Chx25" /><label>25</label>
+                                    <input id="Chx26" type="checkbox" name="Chx26" /><label>26</label>
+                                    <input id="Chx27" type="checkbox" name="Chx27" /><label>27</label>
+                                    <input id="Chx28" type="checkbox" name="Chx28" /><label>28</label>
+                                    <input id="Chx29" type="checkbox" name="Chx29" /><label>29</label>
+                                    <input id="Chx30" type="checkbox" name="Chx30" /><label>30</label><br />
+                                    <input id="ChxL0" type="checkbox" name="ChxL0" /><label>
+                                    L</label><input id="ChxL1" type="checkbox" name="ChxL1" /><label>L-1</label>
+                                    <input id="ChxL2" type="checkbox" name="ChxL2" /><label>L-2</label>
+                                    <input id="ChxL3" type="checkbox" name="ChxL3" /><label>L-3</label>
+                                    <input id="ChxL4" type="checkbox" name="ChxL4" /><label>L-4</label>
+                                    <input id="ChxL5" type="checkbox" name="ChxL5" /><label>L-5</label>
+                                    <input id="ChxL6" type="checkbox" name="ChxL6" /><label>L-6</label>
+                                    <input id="ChxL7" type="checkbox" name="ChxL7" /><label>L-7</label>
+                                    <input id="ChxL14" type="checkbox" name="ChxL14" /><label>L-14</label>
+                                </div>
+                                
+                                <div id="monthlyDiv" style="display:none;background-color:#FFFFFF;border:1px solid #DDDDDD;padding:5px;">
+                                    <input id="dayOfMonthRadio" name="monthlyTypeRadio" onclick="document.getElementById('monthlyDayOrWeekHidden').value='day';" type="radio" value="day" /> 
+                                    On day &nbsp;<select name="j_id131" size="1">	
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                    <option value="23">23</option>
+                                    <option value="24">24</option>
+                                    <option value="25">25</option>
+                                    <option value="26">26</option>
+                                    <option value="27">27</option>
+                                    <option value="28">28</option>
+                                    <option value="29">29</option>
+                                    <option value="30">30</option>
+                                    <option value="L">last</option>
+                                    </select> of every month
+                                    <p></p>
+                                    <input id="weekOfMonthRadio" name="monthlyTypeRadio" onclick="document.getElementById('monthlyDayOrWeekHidden').value='week';" type="radio" value="week" />
+                                    On the &nbsp;<select name="j_id134" size="1" style="margin-right:5px;">	
+                                    <option value="1">1st</option>
+                                    <option value="2">2nd</option>
+                                    <option value="3">3rd</option>
+                                    <option value="4">4th</option>
+                                    <option value="L">last</option>
+                                    </select><select name="j_id136" size="1">	
+                                    <option value="1">Sunday</option>
+                                    <option value="2">Monday</option>
+                                    <option value="3">Tuesday</option>
+                                    <option value="4">Wednesday</option>
+                                    <option value="5">Thursday</option>
+                                    <option value="6">Friday</option>
+                                    <option value="7">Saturday</option>
+                                    </select> of every month
+                                </div>
+                            </td>
+                            </tr></tbody></table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" class="labelCol">Start Time</td>
+                    <td><select name="j_id139" size="1">	
+                    <option value="1">01</option>
+                    <option value="2">02</option>
+                    <option value="3">03</option>
+                    <option value="4">04</option>
+                    <option value="5">05</option>
+                    <option value="6">06</option>
+                    <option value="7">07</option>
+                    <option value="8">08</option>
+                    <option value="9">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    </select><select name="j_id141" size="1">	
+                    <option value="0">00</option>
+                    <option value="15">15</option>
+                    <option value="30">30</option>
+                    <option value="45">45</option>
+                    </select><select name="j_id143" size="1">	
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                    </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+    <script type="text/javascript">
+    function onWeeklyClick()
+    {
+        document.getElementById("weeklyOrMonthlyHidden").value="weekly";
+        toggleWeeklyMonthly(true);
+    }
+
+    function onMonthlyClick()
+    {
+        document.getElementById("weeklyOrMonthlyHidden").value="monthly";
+        toggleWeeklyMonthly(false);
+    }
+
+    function toggleWeeklyMonthly(isWeekly)
+    {
+        document.getElementById("weeklyDiv1").style.display = (isWeekly ? "block" : "none");
+        document.getElementById("weeklyDiv2").style.display = (isWeekly ? "block" : "none");
+        document.getElementById("monthlyDiv").style.display = (isWeekly ? "none" : "block");
+    }
+
+    if ("weekly" == "weekly")
+    {
+        document.getElementById("weekRadio").checked = true;
+    }
+    else
+    {
+        document.getElementById("monthRadio").checked = true;
+    }
+
+    if ("day" == "day")
+    {
+        document.getElementById("dayOfMonthRadio").checked = true;
+    }
+    else
+    {
+        document.getElementById("weekOfMonthRadio").checked = true;
+    }
+
+    </script></span></td></tr></table>
+        </apex:form>
+</apex:page>

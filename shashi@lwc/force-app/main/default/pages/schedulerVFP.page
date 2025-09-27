@@ -1,0 +1,86 @@
+<apex:page controller="AH_JobScheduler_Ctlr">
+  
+        <style>
+        
+        table {
+            display: table;
+            border-collapse: separate;
+            border-spacing: 2px;
+            border-color: grey;
+        }
+        
+        .pbBody, .pbBody a, .pbBody td, .lbBody a, .lbBodyDescription, .list .headerRow .noRowsHeader {
+      	  color: #000;
+        }
+        
+        body, td {
+            font-family: Arial,Helvetica,sans-serif;
+            color: #222;
+        }   
+        
+    </style>
+    
+    <script>
+    
+        function clickSaveButton()
+        {
+            //alert('Save button clicked...');
+            callSave();
+        }
+    
+    </script>
+    
+    <apex:form >
+        
+        <br/>
+        <h1 style="margin-top: 0; font-size:25px;">Finance Job Scheduler</h1>
+        <br/>
+        <div style="margin-left:800px;" id="statusID">
+        <h1  style="margin-top: 0; font-size:10px;">{!status}</h1>
+        </div>
+        <!--
+        <div style="margin-left:800px;">
+            <apex:commandButton value="Save" onclick="clickSaveButon();"/> 
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <apex:commandButton value="Cancel"/>
+        </div>
+		-->
+        
+        <br/>
+        
+        <apex:pageBlock >
+            <apex:pageBlockButtons location="top">
+                <apex:outputPanel id="buttons">
+                    <apex:commandButton value="Save" action="{!saveFunc}" />
+                    <apex:commandButton value="Cancel" />
+                    
+                    <!-- <input type="submit" onclick="clickSaveButton();" value="Save2"/> -->
+                </apex:outputPanel>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection columns="1">
+                
+                <apex:inputText id="job_name" label="Job Name" value="{!jobName}" style="width:250px;" required="true"/>
+                <!--
+                <apex:selectList value="{!selectedClass}" multiselect="false" size="1" label="Apex Class" style="width:250px;" required="true" >
+                    <apex:selectOptions value="{!classOptions}"/> 
+                </apex:selectList>
+				-->
+            </apex:pageBlockSection>
+
+            <apex:actionFunction name="callSave" action="{!saveFunc}" />
+        </apex:pageBlock>
+    </apex:form>
+    
+    <table style="padding: 10px;" >
+        <tr>
+            <td>
+                Schedule Apex Execution
+            </td>
+            <td>
+                	<c:cronVFC />  
+            </td>
+        </tr>
+    </table>
+    
+</apex:page>

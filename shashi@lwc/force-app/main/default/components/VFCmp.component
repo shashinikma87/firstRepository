@@ -1,0 +1,8 @@
+<apex:component controller="CompController">    
+    <apex:attribute type="ComponentData" name="compData" required="true" description="The data going in and out" assignTo="{!cData}"/>    
+    <apex:outputPanel id="banManagerPanel">
+        <apex:inputText value="{!searchText}">
+            <apex:commandButton value="Go" action="{!updateData}"/>                
+        </apex:inputText>
+    </apex:outputPanel>
+</apex:component>

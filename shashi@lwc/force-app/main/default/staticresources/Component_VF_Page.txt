@@ -1,0 +1,1091 @@
+
+			*********************************************************************
+					----- START VISUALFORCE PAGE -----
+					<apex:page controller="AH_JobScheduler_Ctlr" >
+    
+    <style>
+        
+        table {
+        display: table;
+        border-collapse: separate;
+        border-spacing: 2px;
+        border-color: grey;
+        }
+        
+        .pbBody, .pbBody a, .pbBody td, .lbBody a, .lbBodyDescription, .list .headerRow .noRowsHeader {
+        color: #000;
+        }
+        
+        body, td {
+        font-family: Arial,Helvetica,sans-serif;
+        color: #222;
+        }   
+        
+    </style>
+    
+    <script>
+    
+    function clickSaveButton()
+    {
+        //alert('Save button clicked...');
+        //callSave();
+    }
+    
+    </script>
+    
+    <apex:form >
+        <br/>
+        	<h1 style="margin-top: 0; font-size:25px;">Finance Job Scheduler</h1>
+        <br/>
+        <div style="margin-left:800px;" id="statusID">
+                <h1  style="margin-top: 0; font-size:10px;">{!status}</h1>
+        </div>
+        <br/>
+        <apex:pageBlock >
+            
+            <apex:pageBlockButtons location="top">
+                <apex:outputPanel id="buttons">
+                    <apex:commandButton value="Save" action="{!saveFunc}" />
+                    <apex:commandButton value="Cancel" />
+                </apex:outputPanel>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection columns="1">
+                <apex:inputText id="job_name" label="Job Name" value="{!jobName}" style="width:250px;" required="true"/>
+                <apex:selectList value="{!selectedClass}" multiselect="false" size="1" label="Apex Class" style="width:250px;" required="true" >
+                    <apex:selectOptions value="{!classOptions}"/> 
+                </apex:selectList>
+            </apex:pageBlockSection>
+            
+            <!-- <apex:actionFunction name="callSave" action="{!saveFunc}" /> -->
+        </apex:pageBlock>
+        
+        
+    </apex:form>
+    
+    <!-- COMPONENT DETAILS--->
+    <table style="padding: 10px;" >
+        <tr>
+            <td>  
+                Schedule Apex Execution
+            </td>
+            <td>
+                <!--- APex Component Created By Sean-->
+                <c:AH_CronBuilder_Sean getData="{!theData}"/> 
+                <apex:outputText value="{!theData}"/>
+            </td>
+        </tr>
+    </table>
+    <!--- SHOW SCHEDULED CRON JOBS HERE-->
+    <apex:form >
+        <apex:pageBlock title="Existing CronJobs Expressions" mode="edit">
+            <apex:pageBlockButtons location="top" >
+                <apex:commandButton action="{}" value="Delete Cronjobs"/>
+                
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>    
+</apex:page>
+					
+					------ END VF PAGE NEVIGATION-----
+			*********************************************************************
+					----- START VF PAGE CONTROLLER---------
+					public class AH_JobScheduler_Ctlr 
+{
+    
+    public String jobName {get; set;}
+    public String selectedClass {get;set;}
+    public List<SelectOption> classOptions {get;set;}
+    
+    // VARIABLE TO DISPLAY DATA FROM COMPONENT.
+    public String theData{get;set;}
+    
+    
+    public String sessionId;
+    private String serverUrl;
+    private String orgId;     
+    private String origLocale;    
+    private String userId;   
+    
+    private String endPointUrl;
+    
+    public String status {get; set;}
+    
+    public AH_CronBuilder_ctlr_Sean vfc;
+    
+    public static String cronExpr {get; set;}
+    
+    // CONSTRUCTOR METHOD
+    public AH_JobScheduler_Ctlr()
+    {
+        system.debug('in VF page constructor...');
+        //system.debug('strCronString   :' + strCronString);
+        ////////////OUTPUT TEXT RETRIEVE FROM COMPONENT DATA////////////
+        AH_CronBuilder_ctlr_Sean test = new AH_CronBuilder_ctlr_Sean();
+        System.debug('theData==>'+test.strCronString);
+        system.debug('cronExpr : '+cronExpr);
+        ////////////OUTPUT TEXT RETRIEVE FROM COMPONENT DATA////////////
+        
+        jobName = 'Hiiii';
+        
+        //vfc = new AH_CronBuilder_ctlr_Sean();
+        
+        AH_Scheduled_Job_Setting__mdt jobMDT = retrieveCredentials();
+        
+        endPointUrl = jobMDT.Endpoint__c;
+        
+        // RETRIEVE DATA FROM CUSTOM SETTING - AH_Scheduled_Job_Credentials__c 
+        AH_Scheduled_Job_Credentials__c credentials = new AH_Scheduled_Job_Credentials__c();
+        credentials = AH_Scheduled_Job_Credentials__c.getValues(jobMDT.Running_User_Profile_Name__c);
+        system.debug('credentials : '+credentials);
+        
+        
+        if(credentials != NULL){
+            
+            // LOGIN TO REMOTE SF ORG
+            login(jobMDT.Context_Username__c, credentials.Context_User_Password__c, credentials.Context_User_Security_Token__c, jobMDT.Endpoint__c);
+            
+            setClassOptionsList(String.valueOf(jobMDT.Schedulable_Classes__c));
+        }
+        
+    }
+    
+    
+    public AH_Scheduled_Job_Setting__mdt retrieveCredentials()
+    {
+        
+        // GET RUNNING USER'S PROFILE ID
+        String profileId = UserInfo.getProfileId(); 
+        system.debug('profileId : '+profileId);
+        
+        // GET RUNNING USER'S PROFILE NAME OF USING RUNNING USER'S PROFILE ID
+        Profile prf = [SELECT ID, NAME FROM Profile WHERE ID =: profileId];
+        
+        // RETRIEVE CUSTOM METADATA TYPE INFO FOR RUNNING USER PROFILE
+        AH_Scheduled_Job_Setting__mdt jobMDT = [ SELECT ID, DeveloperName, 
+                                                Label, 
+                                                Endpoint__c, 
+                                                Context_Username__c, 
+                                                Schedulable_Classes__c, 
+                                                Running_User_Profile_Name__c 
+                                                FROM AH_Scheduled_Job_Setting__mdt 
+                                                WHERE Label =: prf.Name];
+        
+        system.debug('jobMDT : '+jobMDT);
+        
+        return jobMDT;
+    }
+    
+    
+    public void login(String uName, String pwd, String securityToken, String endPoint) 
+    {   
+        
+        // GET RUNNING USER'S PROFILE ID
+        String profileId = UserInfo.getProfileId(); 
+        system.debug('profileId : '+profileId);
+        
+        // GET RUNNING USER'S PROFILE NAME OF USING RUNNING USER'S PROFILE ID
+        Profile prf = [SELECT ID, NAME FROM Profile WHERE ID =: profileId];
+        
+        // RETRIEVE CUSTOM METADATA TYPE INFO FOR RUNNING USER PROFILE
+        AH_Scheduled_Job_Setting__mdt jobMDT = [ SELECT ID, DeveloperName, 
+                                                Label, 
+                                                Endpoint__c, 
+                                                Context_Username__c, 
+                                                Schedulable_Classes__c, 
+                                                Running_User_Profile_Name__c 
+                                                FROM AH_Scheduled_Job_Setting__mdt 
+                                                WHERE Label =: prf.Name];
+        
+        system.debug('jobMDT : '+jobMDT);
+        
+        // TO BE REMOVED LATER 
+        //status = jobMDT.Context_Username__c +', '+  jobMDT.Running_User_Profile_Name__c   +', '+   jobMDT.Schedulable_Classes__c  +', '+ jobMDT.Endpoint__c;
+        endPointUrl = jobMDT.Endpoint__c;
+        
+        // RETRIEVE DATA FROM CUSTOM SETTING - AH_Scheduled_Job_Credentials__c 
+        AH_Scheduled_Job_Credentials__c credentials = new AH_Scheduled_Job_Credentials__c();
+        credentials = AH_Scheduled_Job_Credentials__c.getValues(jobMDT.Running_User_Profile_Name__c);
+        system.debug('credentials : '+credentials);
+        
+        if(credentials != NULL){
+            
+            // LOGIN TO REMOTE SF ORG
+            //login(jobMDT.Context_Username__c, credentials.Context_User_Password__c, credentials.Context_User_Security_Token__c, jobMDT.Endpoint__c);
+            status = 'login successful';
+            
+            
+            try {
+                string sEndPoint = 'https://login.salesforce.com/services/Soap/u/26.0'; 
+                
+                PartnerRemote.Soap soap = new PartnerRemote.Soap();
+                
+                //PartnerRemote.LoginResult loginResult = soap.login('shashi@test.com', 'Jan@2020' + 'zZAWqE4wTsSZC5TzdrAYy6KJ', sEndPoint);
+                PartnerRemote.LoginResult loginResult = soap.login(uName, pwd + securityToken, sEndPoint);
+                
+                soap.endpoint_x = loginResult.serverUrl; 
+                serverUrl = loginResult.serverUrl.split('/services')[0]; 
+                sessionId = loginResult.sessionId; 
+                orgId = loginResult.userInfo.organizationId; 
+                origLocale = loginResult.userInfo.userLocale; 
+                userId = loginResult.userInfo.userId; 
+                
+                
+                //AH_CronBuilder_ctlr_Sean vfc = new AH_CronBuilder_ctlr_Sean();
+                //vfc.generateCronExpression();
+                //system.debug('Cron value : '+vfc.strCronExpression);
+                
+            }
+            catch(Exception e){
+                system.debug('Found exception : '+e);
+                system.debug('Line Nmber : '+e.getLineNumber());
+            }
+        }        
+    }
+    
+    public void setClassOptionsList(String classNames)
+    {
+        classOptions = new List<SelectOption>();
+        
+        List<String> classList = classNames.split(',');
+        classOptions.add(new SelectOption('','-None-'));
+        
+        for(String className : classList)
+        {
+            classOptions.add(new SelectOption(className,className));
+        }
+        
+        //return classOptions;
+    }
+
+    public void saveFunc()
+    {
+        
+        system.debug('cronExpr : '+cronExpr);
+        //scheduleClasses();
+        
+    }
+    
+    public void scheduleClasses()
+    {
+        
+        try 
+        {
+            system.debug('Scheduling classes');
+            
+            // CREATE NEW HTTP REQUEST TO LOGIN IN ORG  
+            Httprequest request = getHttpRequests(endPointUrl+'services/Soap/s/36.0');
+            
+            String apexString = 'schedulerForContactCreation sch2 = new schedulerForContactCreation();String sch = \'0 40 17 * * ?\'; system.schedule(\'AAAAAA\', sch, sch2);';
+            
+            system.debug('apexString : '+apexString);
+            
+            //request.setBody('<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Header/><Body><login xmlns="urn:partner.soap.sforce.com"><username>' + loginUsername+ '</username><password>' + loginPass + '</password></login></Body></Envelope>');
+            request.setBody('<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:apex="http://soap.sforce.com/2006/08/apex"><soapenv:Header><apex:DebuggingHeader><apex:categories><apex:category>Apex_code</apex:category><apex:level>ERROR</apex:level></apex:categories><apex:debugLevel>NONE</apex:debugLevel></apex:DebuggingHeader><apex:SessionHeader><apex:sessionId>'+ sessionId +'</apex:sessionId></apex:SessionHeader></soapenv:Header><soapenv:Body><apex:executeAnonymous><apex:String>'+ apexString +'</apex:String></apex:executeAnonymous></soapenv:Body></soapenv:Envelope>');
+            httpresponse bodyresp2 = (new Http()).send(request);
+            string resp= bodyresp2.getBody(); // read login body
+            system.debug(' **** Response = ' + resp);
+            
+            // CHECK FOR INVALID LOGIN 
+            if (resp.containsignorecase('<soapenv:Fault><faultcode>'))
+            {
+                Dom.XmlNode resultElmt1 = bodyresp2 .getBodyDocument().getRootElement()
+                    .getChildElement('Body','http://schemas.xmlsoap.org/soap/envelope/')
+                    .getChildElement('Fault','http://schemas.xmlsoap.org/soap/envelope/');
+                String faultcode = resultElmt1.getChildElement('faultcode', null).getText();
+                String faultstring = resultElmt1.getChildElement('faultstring', null).getText();
+                
+                system.debug(' **** faultstring = ' + faultstring);
+                
+                //NI_Error_Logger.WriteToLogwithOrgDetailId(srcOrgID, faultstring, 'NI_Org_Details__c', 'AH_FetchTrialExpirationBatchHelper', 'Insert');
+                //session_info.put('login_success', 'false');
+                
+                //return session_info;
+                
+            }
+            
+            // CHECK FOR EXPIRED PASSWORD
+            if (resp.containsignorecase('<passwordExpired>true<')) 
+            {
+                system.debug(' **** Password Expired..');
+                //session_info.put('login_success', 'false');
+                //session_info.put('ExpiredPassword', 'True');
+                //NI_Error_Logger.WriteToLogwithOrgDetailId(srcOrgID, 'INVALID_OPERATION_WITH_EXPIRED_PASSWORD: The users password has expired, you must call SetPassword before attempting any other API operations', 'NI_Org_Details__c', 'AH_FetchTrialExpirationBatchHelper', 'Insert');
+                //return session_info;
+            }
+            
+            // LOGIN IS UNSUCCESSFUL THEN SKIP ALL OTHER PROCESSES 
+            if (!resp.containsignorecase('<soapenv:Fault><faultcode>'))
+            {
+                Dom.XmlNode resultElmt = bodyresp2 .getBodyDocument().getRootElement()
+                    .getChildElement('Body', 'http://schemas.xmlsoap.org/soap/envelope/')
+                    .getChildElement('loginResponse', 'urn:partner.soap.sforce.com')
+                    .getChildElement('result', 'urn:partner.soap.sforce.com');
+                
+                // FETCH SESSION ID AND SERVER URL FROM RESPONSE
+                String SERVER_URL = resultElmt.getChildElement('serverUrl', 'urn:partner.soap.sforce.com').getText().split('/services')[0];
+                String SESSION_ID = resultElmt.getChildElement('sessionId', 'urn:partner.soap.sforce.com').getText();
+                //login_success = 'true';
+                //session_info.put('SERVER_URL', SERVER_URL);
+                //session_info.put('SESSION_ID', SESSION_ID);
+                //session_info.put('login_success', login_success);
+                //system.debug('session_info'+session_info);
+                
+                
+                // CHECK IF ALREADY SCHEDULED FOR EXECUTION 
+                // already scheduled for execution
+            }
+        }
+        catch (Exception e) 
+        {
+            system.debug('Exception occured at ' + e.getlinenumber() + '\n\n' + e.getMessage());
+            //NI_Error_Logger.WriteToLogwithOrgDetailId(srcOrgID, 'Exception occured at line no. :' + e.getlinenumber() + '. ' + e.getMessage(), 'NI_Org_Details__c', 'AH_FetchTrialExpirationBatchHelper', 'Insert');
+        }
+    }
+   
+    public static httprequest getHttpRequests(string SERVER_URL)
+    {
+        
+        Httprequest request = new HttpRequest();
+        request.setEndpoint(SERVER_URL + '/services/Soap/c/36.0');
+        request.setMethod('POST');
+        request.setHeader('Content-Type', 'text/xml;charset=UTF-8');
+        request.setHeader('SOAPAction', '""');
+        return request;
+        
+        // CALL SCHEDULE CLASS METHOD HERE THIS WILL EXECUTE AFTER POST AND SCHEDULE CLASS FOR EXTERNAL ORG.
+    }
+    
+    public static HttpResponse getHttpResponse (Httprequest request, String SESSION_ID, String sql)
+    {
+        
+        HttpResponse permiResp = new HttpResponse();
+        try {
+            request.setBody('<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:enterprise.soap.sforce.com">'+
+                            '<soapenv:Header><urn:QueryOptions><urn:batchSize>2</urn:batchSize></urn:QueryOptions>'+
+                            '<urn:SessionHeader><urn:sessionId>'+SESSION_ID+'</urn:sessionId></urn:SessionHeader>'+
+                            '</soapenv:Header><soapenv:Body>'+
+                            '<urn:query><urn:queryString>'+sql+'</urn:queryString>'+
+                            '</urn:query></soapenv:Body></soapenv:Envelope>');      
+            
+            permiResp = (new Http()).send(request);
+        } 
+        catch(Exception e) {
+            System.debug('Exception captured in getHttpRespose : '+e.getlinenumber()+'\n\n'+e.getMessage());
+        }
+        return permiResp;
+        
+        //USE METHOD HERE TO GET THE SCHEDULED CLASS LIST AND DISPLAY ON THE VF PAGE.
+    }    
+    
+        /*
+    public MetadataService.MetadataPort createService()
+    {   
+    MetadataService.MetadataPort service = new MetadataService.MetadataPort();
+    service.SessionHeader = new MetadataService.SessionHeader_element();
+    service.SessionHeader.sessionId = sessionId;
+    return service;		
+    }
+    */
+}
+					
+					----- END VF PAGE CONTROLLER----------
+			*********************************************************************
+					----- COMPONENT NAVIGATION---------
+					  <apex:component access="global" controller="AH_CronBuilder_ctlr_Sean">
+   
+    <apex:attribute name="cronString" type="String" required="false" assignTo="{!strCronString}" description="The Cron Expression string builded by component."/> 
+    
+    <apex:attribute name="getData" type="String" required="false" assignTo="{!sendString}" description="The Cron string builded by component."/> 
+    <apex:componentBody >
+        
+        <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <meta http-equiv="x-ua-compatible" content="ie=edge" />
+                <title>Cron Builder</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <apex:stylesheet value="/apexpages/slds/latest/assets/styles/salesforce-lightning-design-system-vf.css" />    
+                <apex:stylesheet value="{!URLFOR($Resource.AmadeusHospitalityStyles)}" />  
+                <apex:includeScript value="{!$Resource.Toast}"/>
+                <apex:slds />
+                <style type="text/css">                
+                    br {
+                        display: block;
+                        margin: 5px 0;
+                    }   
+                    td {
+                        height: 25px;
+                        vertical-align: top;
+                    }                
+                </style>      
+            </head>
+            
+            <div id="divCronMain" class="slds-scope" style="margin: 10px 10px 10px 10px; !important;">   
+                
+            <apex:form id="frmCronMain"> 
+                    
+                    <script language="JavaScript" type="text/javascript">    
+                    
+                    function changeFrequency()  
+                    {
+                        afFrequency();
+                    }
+                    
+                    function changeDayMode1()  
+                    {
+                        afDayMode1();
+                    }
+                    
+                    function changeDayMode2()  
+                    {
+                        afDayMode2();
+                    }
+                    
+                    </script>   
+                    
+                    <apex:actionFunction id="afFrequency" name="afFrequency" action="{!changeFrequency}" rerender="opMain,opDayOfWeek,opMonthly" /> 
+                    <apex:actionFunction id="afDayMode1" name="afDayMode1" action="{!changeDayMode1}" rerender="opMain,opDayOfWeek,opMonthly,rbtn01,rbtn02" /> 
+                    <apex:actionFunction id="afDayMode2" name="afDayMode2" action="{!changeDayMode2}" rerender="opMain,opDayOfWeek,opMonthly,rbtn01,rbtn02" /> 
+                    
+                    
+ <apex:outputText id="txtTest" value="{!strCronString}"></apex:outputText>      
+                    
+                    
+                    <apex:outputPanel id="opMain" layout="block" style="background:#e5e8e8;height:100%;width:100%;padding: 25px 25px 25px 25px;">
+                        <table style="padding: 10px;">
+                            <tr>
+                                <td>
+                                    <apex:outputLabel id="lblFrequency" value="Frequency: " />
+                                </td>
+                                <td>
+                                    <apex:selectRadio value="{!strSelFrequency}" layout="pageDirection" onchange="changeFrequency();">
+                                        <apex:selectOptions value="{!lstFrequency}" />
+                                    </apex:selectRadio>
+                                </td>
+                                <td>
+                                    <apex:outputPanel id="opMonthly" layout="block" rendered="{! NOT(bByDayOfWeek)}" style="background:#FFFFFF;width:600px;border-style:solid;border-color:#ccd1d1;border-width:1px;padding: 5px 5px 5px 5px">
+                                        
+                                        <apex:inputCheckbox id="rbtn01" value="{!bByOnDay}" onchange="changeDayMode1();" />
+                                        &nbsp;
+                                        <apex:outputLabel value="On day" />
+                                        &nbsp;
+                                        
+                                        <apex:selectList id="ddlDays" value="{!strSelDay}" style="width:60px;" size="1" multiselect="false" disabled="{!bByOnNthDay}"> 
+                                            <apex:selectOptions value="{!lstDays}" /> 
+                                        </apex:selectList>   
+                                        &nbsp;
+                                        <apex:outputLabel value="of every month" />
+                                        &nbsp;
+                                        
+                                        <apex:inputCheckbox id="rbtn02" value="{!bByOnNthDay}" onchange="changeDayMode2();" />
+                                        &nbsp;
+                                        <apex:outputLabel value="On" />
+                                        &nbsp;
+                                        
+                                        <apex:selectList id="ddlNthDays" value="{!strSelNthDay}" style="width:85px;" size="1" multiselect="false" disabled="{!bByOnDay}"> 
+                                            <apex:selectOptions value="{!lstNthDays}" /> 
+                                        </apex:selectList>  
+                                        &nbsp;
+                                        
+                                        <apex:selectList id="ddlDaysofWeek" value="{!strSelDayofWeek}" style="width:95px;" size="1" multiselect="false" disabled="{!bByOnDay}"> 
+                                            <apex:selectOptions value="{!lstDaysofWeek}" /> 
+                                        </apex:selectList>  
+                                        &nbsp;
+                                        <apex:outputLabel value="of every month" />
+                                        
+                                        
+                                    </apex:outputPanel>
+                                    <apex:outputPanel id="opDayOfWeek" layout="block" rendered="{!bByDayOfWeek}" style="background:#FFFFFF;width:160px;border-style:solid;border-color:#ccd1d1;border-width:1px;padding: 5px 5px 5px 5px">
+                                        Recurs every week on
+                                        <br/>
+                                        <br/>
+                                        <apex:inputCheckbox id="ww00" title="Sunday" value="{!bSunday}" />&nbsp;<label for="ww00">Sunday</label>
+                                        <br/>
+                                        <apex:inputCheckbox id="ww10" title="Monday" label="Monday" value="{!bMonday}" />&nbsp;<label for="ww10">Monday</label>
+                                        <br/>
+                                        <apex:inputCheckbox id="ww20" title="Tuesday" label="Tuesday" value="{!bTuesday}" />&nbsp;<label for="ww20">Tuesday</label>
+                                        <br/>
+                                        <apex:inputCheckbox id="ww30" title="Wednesday" label="Wednesday" value="{!bWednesday}" />&nbsp;<label for="ww30">Wednesday</label>
+                                        <br/>
+                                        <apex:inputCheckbox id="ww40" title="Thursday" label="Thursday" value="{!bThursday}" />&nbsp;<label for="ww40">Thursday</label>
+                                        <br/>
+                                        <apex:inputCheckbox id="ww50" title="Friday" label="Friday" value="{!bFriday}" />&nbsp;<label for="ww50">Friday</label>
+                                        <br/>
+                                        <apex:inputCheckbox id="ww60" title="Saturday" label="Saturday" value="{!bSaturday}" />&nbsp;<label for="ww60">Saturday</label>
+                                        <br/>  
+                                    </apex:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                    <br/>
+                                </td>
+                            </tr>             
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <apex:outputLabel id="lblStartDate" value="Start: " />
+                                </td>
+                                <td>
+                                    <c:AH_DatePicker defaultValue="{!strStartDate}" defaultStyle="width:110px;" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <apex:outputLabel id="lblEndDate" value="End: " />
+                                </td>
+                                <td>
+                                    <c:AH_DatePicker defaultValue="{!strEndDate}" defaultStyle="width:110px;" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <apex:outputLabel id="lblStartTime" value="Preferred Start Time: " />
+                                </td>
+                                <td>
+                                    <apex:selectList id="ddlStartTimes" value="{!strSelStartTime}" style="width:110px;" size="1" multiselect="false"> 
+                                        <apex:selectOptions value="{!lstStartTimes}" /> 
+                                    </apex:selectList>                 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                    <br/>
+                                </td>
+                            </tr>             
+                            <tr>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    <apex:outputLabel id="lblStartTimeMsg" value="Exact start time will depend on job queue activity." style="color:#757575;" />
+                                </td>
+                            </tr> 
+                            <tr>
+                                <td>
+                                    <apex:commandButton id="cmdGetCronEx" value="Create Cron Expression" title="Click to generate Cron Expression" action="{!generateCronExpression}" reRender="frmCronMain,opMain,txtCronEx,txtTest" />
+                                </td>
+               
+                                <td colspan="2">
+                                    <apex:outputText id="txtCronEx" value="{!strCronExpression}" style="color:green;" />
+                                </td>
+                            </tr>                         
+                        </table>    
+                    </apex:outputPanel>
+                    
+               </apex:form> 
+                
+            </div>
+            
+        </html>          
+        
+    </apex:componentBody>
+    
+</apex:component>
+					----- END COMPONENT NAVIGATION----------
+
+			*********************************************************************
+					---START Component Controller----
+					
+						/****************************************************************************************
+Name            : AH_CronBuilder_ctlr Class
+Author          : Sean Harris
+Created Date    : 02/20/2020
+Last Mod Date   : 02/20/2020
+Last Mod By     : Sean Harris
+NICC Reference  : 
+Description     : 
+
+Format
+======
+A cron expression is a string comprised of 6 or 7 fields separated by white space. 
+Fields can contain any of the allowed values, along with various combinations of the allowed special characters for that field. 
+
+The fields are as follows:
+
+Field Name Mandatory Allowed Values Allowed Special Characters
+Seconds YES 0-59 , - * /
+Minutes YES 0-59 , - * /
+Hours YES 0-23 , - * /
+Day of month YES 1-31 , - * ? / L W
+Month YES 1-12 or JAN-DEC , - * /
+Day of week YES 1-7 or SUN-SAT , - * ? / L #
+Year NO empty, 1970-2099 , - * /
+
+So cron expressions can be as simple as this: * * * * ? *
+or more complex, like this: 0/5 14,18,3-39,52 * ? JAN,MAR,SEP MON-FRI 2002-2010
+
+Special Characters
+==================
+* ("all values") - used to select all values within a field. For example, "" in the minute field means *"every minute".
+
+? ("no specific value") - useful when you need to specify something in one of the two fields in which the character is allowed, but not the other. 
+For example, if I want my trigger to fire on a particular day of the month (say, the 10th), but don’t care what day of the week that happens to be, 
+I would put "10" in the day-of-month field, and "?" in the day-of-week field. See the examples below for clarification.
+
+- - used to specify ranges. For example, "10-12" in the hour field means "the hours 10, 11 and 12".
+
+, - used to specify additional values. For example, "MON,WED,FRI" in the day-of-week field means "the days Monday, Wednesday, and Friday".
+
+/ - used to specify increments. For example, "0/15" in the seconds field means "the seconds 0, 15, 30, and 45". 
+And "5/15" in the seconds field means "the seconds 5, 20, 35, and 50". 
+You can also specify ‘/’ after the ‘’ character - in this case ‘’ is equivalent to having ‘0’ before the ‘/’. 
+‘1/3’ in the day-of-month field means "fire every 3 days starting on the first day of the month".
+
+L ("last") - has different meaning in each of the two fields in which it is allowed. 
+For example, the value "L" in the day-of-month field means "the last day of the month" - day 31 for January, day 28 for February on non-leap years. 
+If used in the day-of-week field by itself, it simply means "7" or "SAT". But if used in the day-of-week field after another value, 
+it means "the last xxx day of the month" - for example "6L" means "the last friday of the month". 
+You can also specify an offset from the last day of the month, such as "L-3" which would mean the third-to-last day of the calendar month. 
+When using the ‘L’ option, it is important not to specify lists, or ranges of values, as you’ll get confusing/unexpected results.
+
+W ("weekday") - used to specify the weekday (Monday-Friday) nearest the given day. 
+As an example, if you were to specify "15W" as the value for the day-of-month field, 
+the meaning is: "the nearest weekday to the 15th of the month". So if the 15th is a Saturday, the trigger will fire on Friday the 14th. 
+If the 15th is a Sunday, the trigger will fire on Monday the 16th. If the 15th is a Tuesday, then it will fire on Tuesday the 15th. 
+However if you specify "1W" as the value for day-of-month, and the 1st is a Saturday, the trigger will fire on Monday the 3rd, 
+as it will not ‘jump’ over the boundary of a month’s days. The ‘W’ character can only be specified when the day-of-month is a single day, 
+not a range or list of days.
+
+The 'L' and 'W' characters can also be combined in the day-of-month field to yield 'LW', which translates to *"last weekday of the month"*.
+# - used to specify "the nth" XXX day of the month. For example, the value of "6#3" in the day-of-week field means "the third Friday of the month" 
+(day 6 = Friday and "#3" = the 3rd one in the month). Other examples: "2#1" = the first Monday of the month and "4#5" = the fifth Wednesday of the month. 
+Note that if you specify "#5" and there is not 5 of the given day-of-week in the month, then no firing will occur that month.
+
+The legal characters and the names of months and days of the week are not case sensitive. MON is the same as mon.
+
+****************************************************************************************/
+
+public class AH_CronBuilder_ctlr_Sean 
+{
+   
+    // COLLECTIONS
+    public List<SelectOption> lstFrequency {get; set;} 
+    public List<SelectOption> lstStartTimes {get; set;} 
+    public List<SelectOption> lstDays {get; set;} 
+    public List<SelectOption> lstNthDays {get; set;} 
+    public List<SelectOption> lstDaysofWeek {get; set;} 
+
+    // STRINGS
+    public String strSelFrequency {get; set;}
+    public String strSelStartTime {get; set;}
+    public String strSelDay {get; set;}
+    public String strSelNthDay {get; set;}
+    public String strSelDayofWeek {get; set;}
+    public String strStartDate {get; set;}
+    public String strEndDate {get; set;}
+    public String strCronExpression {get; set;} 
+    public String strCronString {get; set;} 
+    
+    // BOOLEANS
+    public boolean bSunday {get; set;} 
+    public boolean bMonday {get; set;} 
+    public boolean bTuesday {get; set;} 
+    public boolean bWednesday {get; set;} 
+    public boolean bThursday {get; set;} 
+    public boolean bFriday {get; set;} 
+    public boolean bSaturday {get; set;} 
+    public boolean bByDayOfWeek {get; set;}  
+    public boolean bByOnDay {get; set;} 
+    public boolean bByOnNthDay {get; set;}  
+    // VARIABLE TO PASS FOR VF PAGE.
+    Public String sendString {get; set;}
+
+    
+    public AH_CronBuilder_ctlr_Sean() 
+    {
+        system.debug('in VFC constructor...');
+        initForm();
+        sendString = 'HELLOOOOO....';
+        
+    }
+    
+    private void initForm()
+    {
+        
+        lstFrequency = new List<SelectOption>(); 
+        lstFrequency.add(new SelectOption('Weekly', 'Weekly'));
+        lstFrequency.add(new SelectOption('Monthly', 'Monthly'));
+        strSelFrequency = 'Weekly';
+        
+        bByDayOfWeek = true;
+        bByOnDay = true;
+        bByOnNthDay = false;
+        
+        bSunday = false;
+        bMonday = false;
+        bTuesday = false;
+        bWednesday = false;
+        bThursday = false; 
+        bFriday = false;
+        bSaturday = false;  
+
+        lstStartTimes = new List<SelectOption>();        
+        lstStartTimes.add(new SelectOption('--None--', '--None--'));
+        lstStartTimes.add(new SelectOption('0 0 0', '12:00 AM'));
+        lstStartTimes.add(new SelectOption('0 15 0', '12:15 AM'));
+        lstStartTimes.add(new SelectOption('0 30 0', '12:30 AM'));
+        lstStartTimes.add(new SelectOption('0 45 0', '12:45 AM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 1', '1:00 AM')); 
+        lstStartTimes.add(new SelectOption('0 15 1', '1:15 AM'));
+        lstStartTimes.add(new SelectOption('0 30 1', '1:30 AM'));
+        lstStartTimes.add(new SelectOption('0 45 1', '1:45 AM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 2', '2:00 AM')); 
+        lstStartTimes.add(new SelectOption('0 15 2', '2:15 AM'));
+        lstStartTimes.add(new SelectOption('0 30 2', '2:30 AM'));
+        lstStartTimes.add(new SelectOption('0 45 2', '2:45 AM'));   
+        
+        lstStartTimes.add(new SelectOption('0 0 3', '3:00 AM'));
+        lstStartTimes.add(new SelectOption('0 15 3', '3:15 AM'));
+        lstStartTimes.add(new SelectOption('0 30 3', '3:30 AM'));
+        lstStartTimes.add(new SelectOption('0 45 3', '3:45 AM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 4', '4:00 AM')); 
+        lstStartTimes.add(new SelectOption('0 15 4', '4:15 AM'));
+        lstStartTimes.add(new SelectOption('0 30 4', '4:30 AM'));
+        lstStartTimes.add(new SelectOption('0 45 4', '4:45 AM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 5', '5:00 AM')); 
+        lstStartTimes.add(new SelectOption('0 15 5', '5:15 AM'));
+        lstStartTimes.add(new SelectOption('0 30 5', '5:30 AM'));
+        lstStartTimes.add(new SelectOption('0 45 5', '5:45 AM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 6', '6:00 AM')); 
+        lstStartTimes.add(new SelectOption('0 15 6', '6:15 AM'));
+        lstStartTimes.add(new SelectOption('0 30 6', '6:30 AM'));
+        lstStartTimes.add(new SelectOption('0 45 6', '6:45 AM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 7', '7:00 AM')); 
+        lstStartTimes.add(new SelectOption('0 15 7', '7:15 AM'));
+        lstStartTimes.add(new SelectOption('0 30 7', '7:30 AM'));
+        lstStartTimes.add(new SelectOption('0 45 7', '7:45 AM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 8', '8:00 AM')); 
+        lstStartTimes.add(new SelectOption('0 15 8', '8:15 AM'));
+        lstStartTimes.add(new SelectOption('0 30 8', '8:30 AM'));
+        lstStartTimes.add(new SelectOption('0 45 8', '8:45 AM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 9', '9:00 AM')); 
+        lstStartTimes.add(new SelectOption('0 15 9', '9:15 AM'));
+        lstStartTimes.add(new SelectOption('0 30 9', '9:30 AM'));
+        lstStartTimes.add(new SelectOption('0 45 9', '9:45 AM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 10', '10:00 AM')); 
+        lstStartTimes.add(new SelectOption('0 15 10', '10:15 AM'));
+        lstStartTimes.add(new SelectOption('0 30 10', '10:30 AM'));
+        lstStartTimes.add(new SelectOption('0 45 10', '10:45 AM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 11', '11:00 AM')); 
+        lstStartTimes.add(new SelectOption('0 15 11', '11:15 AM'));
+        lstStartTimes.add(new SelectOption('0 30 11', '11:30 AM'));
+        lstStartTimes.add(new SelectOption('0 45 11', '11:45 AM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 12', '12:00 PM')); 
+        lstStartTimes.add(new SelectOption('0 15 12', '12:15 PM'));
+        lstStartTimes.add(new SelectOption('0 30 12', '12:30 PM'));
+        lstStartTimes.add(new SelectOption('0 45 12', '12:45 PM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 13', '1:00 PM')); 
+        lstStartTimes.add(new SelectOption('0 15 13', '1:15 PM'));
+        lstStartTimes.add(new SelectOption('0 30 13', '1:30 PM'));
+        lstStartTimes.add(new SelectOption('0 45 13', '1:45 PM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 14', '2:00 PM')); 
+        lstStartTimes.add(new SelectOption('0 15 14', '2:15 PM'));
+        lstStartTimes.add(new SelectOption('0 30 14', '2:30 PM'));
+        lstStartTimes.add(new SelectOption('0 45 14', '2:45 PM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 15', '3:00 PM')); 
+        lstStartTimes.add(new SelectOption('0 15 15', '3:15 PM'));
+        lstStartTimes.add(new SelectOption('0 30 15', '3:30 PM'));
+        lstStartTimes.add(new SelectOption('0 45 15', '3:45 PM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 16', '4:00 PM')); 
+        lstStartTimes.add(new SelectOption('0 15 16', '4:15 PM'));
+        lstStartTimes.add(new SelectOption('0 30 16', '4:30 PM'));
+        lstStartTimes.add(new SelectOption('0 45 16', '4:45 PM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 17', '5:00 PM')); 
+        lstStartTimes.add(new SelectOption('0 15 17', '5:15 PM'));
+        lstStartTimes.add(new SelectOption('0 30 17', '5:30 PM'));
+        lstStartTimes.add(new SelectOption('0 45 17', '5:45 PM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 18', '6:00 PM')); 
+        lstStartTimes.add(new SelectOption('0 15 18', '6:15 PM'));
+        lstStartTimes.add(new SelectOption('0 30 18', '6:30 PM'));
+        lstStartTimes.add(new SelectOption('0 45 18', '6:45 PM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 19', '7:00 PM')); 
+        lstStartTimes.add(new SelectOption('0 15 19', '7:15 PM'));
+        lstStartTimes.add(new SelectOption('0 30 19', '7:30 PM'));
+        lstStartTimes.add(new SelectOption('0 45 19', '7:45 PM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 20', '8:00 PM')); 
+        lstStartTimes.add(new SelectOption('0 15 20', '8:15 PM'));
+        lstStartTimes.add(new SelectOption('0 30 20', '8:30 PM'));
+        lstStartTimes.add(new SelectOption('0 45 20', '8:45 PM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 21', '9:00 PM')); 
+        lstStartTimes.add(new SelectOption('0 15 21', '9:15 PM'));
+        lstStartTimes.add(new SelectOption('0 30 21', '9:30 PM'));
+        lstStartTimes.add(new SelectOption('0 45 21', '9:45 PM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 22', '10:00 PM')); 
+        lstStartTimes.add(new SelectOption('0 15 22', '10:15 PM'));
+        lstStartTimes.add(new SelectOption('0 30 22', '10:30 PM'));
+        lstStartTimes.add(new SelectOption('0 45 22', '10:45 PM'));
+        
+        lstStartTimes.add(new SelectOption('0 0 23', '11:00 PM')); 
+        lstStartTimes.add(new SelectOption('0 15 23', '11:15 PM'));
+        lstStartTimes.add(new SelectOption('0 30 23', '11:30 PM'));
+        lstStartTimes.add(new SelectOption('0 45 23', '11:45 PM'));
+        strSelStartTime = '--None--';
+        
+        lstDays = new List<SelectOption>();  
+        lstDays.add(new SelectOption('1', '1'));
+        lstDays.add(new SelectOption('2', '2'));
+        lstDays.add(new SelectOption('3', '3'));
+        lstDays.add(new SelectOption('4', '4'));
+        lstDays.add(new SelectOption('5', '5'));
+        lstDays.add(new SelectOption('6', '6'));
+        lstDays.add(new SelectOption('7', '7'));
+        lstDays.add(new SelectOption('8', '8'));
+        lstDays.add(new SelectOption('9', '9'));
+        lstDays.add(new SelectOption('10', '10'));
+        lstDays.add(new SelectOption('11', '11'));
+        lstDays.add(new SelectOption('12', '12'));
+        lstDays.add(new SelectOption('13', '13'));
+        lstDays.add(new SelectOption('14', '14'));
+        lstDays.add(new SelectOption('15', '15'));
+        lstDays.add(new SelectOption('16', '16'));
+        lstDays.add(new SelectOption('17', '17'));
+        lstDays.add(new SelectOption('18', '18'));
+        lstDays.add(new SelectOption('19', '19'));
+        lstDays.add(new SelectOption('20', '20'));
+        lstDays.add(new SelectOption('21', '21'));
+        lstDays.add(new SelectOption('22', '22'));
+        lstDays.add(new SelectOption('23', '23'));
+        lstDays.add(new SelectOption('24', '24'));
+        lstDays.add(new SelectOption('25', '25'));
+        lstDays.add(new SelectOption('26', '26'));
+        lstDays.add(new SelectOption('27', '27'));
+        lstDays.add(new SelectOption('28', '28'));
+        lstDays.add(new SelectOption('29', '29'));
+        lstDays.add(new SelectOption('30', '30'));
+        lstDays.add(new SelectOption('31', '31'));
+        lstDays.add(new SelectOption('L', 'last'));       
+        strSelDay = '1';
+
+        lstNthDays = new List<SelectOption>();  
+        lstNthDays.add(new SelectOption('#1', 'the 1st'));
+        lstNthDays.add(new SelectOption('#2', 'the 2nd'));
+        lstNthDays.add(new SelectOption('#3', 'the 3rd'));
+        lstNthDays.add(new SelectOption('#4', 'the 4th'));
+        lstNthDays.add(new SelectOption('L', 'the Last'));
+        strSelNthDay = '#1';
+        
+        lstDaysofWeek = new List<SelectOption>();  
+        lstDaysofWeek.add(new SelectOption('SUN', 'Sunday'));
+        lstDaysofWeek.add(new SelectOption('MON', 'Monday'));
+        lstDaysofWeek.add(new SelectOption('TUE', 'Tuesday'));
+        lstDaysofWeek.add(new SelectOption('WED', 'Wednesday'));
+        lstDaysofWeek.add(new SelectOption('THR', 'Thursday'));
+        lstDaysofWeek.add(new SelectOption('FRI', 'Friday'));
+        lstDaysofWeek.add(new SelectOption('SAT', 'Saturday'));
+        strSelDayofWeek = 'SUN';
+        
+    }
+  
+    public void changeFrequency()
+    {
+        if (bByDayOfWeek)
+        {
+            bByDayOfWeek = false;
+        }
+        else
+        {
+            bByDayOfWeek = true;
+        }
+    }
+    
+    public void changeDayMode1()
+    {  
+
+        if (bByOnDay)
+        {
+            bByOnNthDay = false;
+        }
+        else
+        {
+            bByOnNthDay = true;
+        }        
+    }
+    
+    public void changeDayMode2()
+    {  
+
+        if (bByOnNthDay)
+        {
+            bByOnDay = false;
+        }
+        else
+        {
+            bByOnDay = true;
+        }        
+    }
+    
+    public void generateCronExpression()
+    {
+		
+        system.debug(' IN generateCronExpression...');
+        // ===================================================================        
+        // SECONDS, MINUTES, HOURS
+        // ===================================================================
+        
+        system.debug('strSelStartTime : '+strSelStartTime );
+        if (strSelStartTime == '--None--')
+        {
+            return;
+        }
+    
+        // ===================================================================        
+        // DAY OF MONTH
+        // ===================================================================
+		string strDoM = '*';
+        
+        if (!bByDayOfWeek)
+        {
+            if (bByOnDay)
+            {
+                strDoM = strSelDay;
+            }
+//            else
+//            { 
+                
+//            }
+            
+        }
+        
+        // ===================================================================        
+        // MONTH
+        // ===================================================================
+        string strMonths = '*';
+        string strDoW = '';
+        
+        if (!bByDayOfWeek)
+        {
+            if (bByOnDay)
+            {
+                strMonths = '1/1';
+            }
+            else
+            {
+                strDoM = '?';
+                strMonths = '1/1';
+                strDoW = strSelDayofWeek + strSelNthDay;
+            }
+            
+        }
+        
+        // ===================================================================        
+        // DAY OF WEEK
+        // ===================================================================
+        
+        if (bByDayOfWeek)
+        {
+            
+            strDoW = '';
+            
+            if (bSunday)
+            {
+                strDoW += 'SUN,';
+            }
+            if (bMonday)
+            {
+                strDoW += 'MON,';
+            }
+            if (bTuesday)
+            {
+                strDoW += 'TUE,';
+            }
+            if (bWednesday)
+            {
+                strDoW += 'WED,';
+            }
+            if (bThursday)
+            {
+                strDoW += 'THU,';
+            }
+            if (bFriday)
+            {
+                strDoW += 'FRI,';
+            }
+            if (bSaturday)
+            {
+                strDoW += 'SAT,';
+            }        
+            
+            if (strDoW != '')
+            {
+                strDoW = (strDoW.mid(0, strDoW.length() - 1));
+                strDoM = '?';
+            }
+            else
+            {
+                strDoW = '*';
+            }
+            
+        }
+        
+        // ===================================================================        
+        // YEAR  
+        // ===================================================================
+		string strYears = '*';
+        
+
+        // ===================================================================        
+        // BUILD CRON EXPRESSION  
+        // ===================================================================
+        strCronExpression = strSelStartTime + ' ' + strDoM + ' ' + strMonths + ' ' + strDoW + ' ' + strYears; 
+       
+        strCronString = strCronExpression;
+		system.debug(' strCronExpression = ' + strCronExpression); 
+        system.debug('strCronString  :' + strCronString);
+        //AH_JobScheduler_Ctlr.cronExpr = strCronString;
+        
+        // CODE TO PASS VALUE FROM COMPONENT TO VF PAGE .
+        AH_JobScheduler_Ctlr test = new AH_JobScheduler_Ctlr();
+        test.theData = strCronString;
+        system.debug(' test.theData = ' + test.theData);
+        
+    }
+    
+}
+						
+					 ---END COMPONENT CONTROLLER----
+			*********************************************************************

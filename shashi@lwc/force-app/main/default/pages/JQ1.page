@@ -1,0 +1,28 @@
+<apex:page >
+    
+    <html>
+        <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+            <script> 
+                $(document).ready( function(){
+                
+                    console.log('start..');
+                    
+                    $("p").bind("click", function(){
+                        $( "This is a click Event").appendTo( "body" );
+                    });
+                    
+                    $("p").bind("dblclick", function(){
+                        $( "This is a double-click Event"  ).appendTo( "body" );
+                    });
+            	});
+            </script>
+            
+            <title>Test if jQuery is loaded</title>
+        </head>
+        <body>
+            <p>Click me!</p>
+        </body>
+    </html>
+
+</apex:page>

@@ -1,0 +1,192 @@
+<apex:page Controller="SampleController" sidebar="false">
+    <head>
+        <!-- earlier working files
+		<apex:includescript value="//code.jquery.com/jquery-1.11.1.min.js"/>
+        <apex:includescript value="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"/>
+        <apex:stylesheet value="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css"/>
+         
+        <apex:stylesheet value="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+        <apex:includescript value="https://code.jquery.com/jquery-3.3.1.js"/>
+        <apex:includescript value="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"/>
+        -->
+        
+	    <apex:includeScript value="https://code.jquery.com/jquery-1.11.1.min.js" />
+    	<apex:includeScript value="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js" />
+	    <apex:stylesheet value="https://cdn.datatables.net/1.10.2/css/jquery.dataTables.css" />
+    	<apex:stylesheet value="https://cdn.datatables.net/responsive/1.0.1/css/dataTables.responsive.css" />
+		<apex:includeScript value="https://cdn.datatables.net/responsive/1.0.1/js/dataTables.responsive.min.js" />
+
+
+        
+        <script>
+        
+        function format ( d ) {
+            // `d` is the original data object for the row
+            return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+                '<tr>'+
+                    '<td>Full name:</td>'+
+                    '<td>'+d.name+'</td>'+
+                '</tr>'+
+                '<tr>'+
+                    '<td>Extension number:</td>'+
+                    '<td>'+d.extn+'</td>'+
+                '</tr>'+
+                '<tr>'+
+                    '<td>Extra info:</td>'+
+                    '<td>And any further details here (images etc)...</td>'+
+                '</tr>'+
+            '</table>';
+        }
+        
+        j$ = jQuery.noConflict();
+        j$(document).ready( function () {
+            var accTable = j$('[id$="pbTable"]').DataTable({
+                "bSortCellsTop": true,
+                "bPaginate": true,
+                "bProcessing": true,
+                "columns": [
+                    {
+                        "className":      'details-control',
+                        "orderable":      true,
+                        "data":           null,
+                        "defaultContent": ''
+                    },
+                    null, null, null, null
+                ],
+                "order": [[1, 'asc']]
+                
+            });
+            
+ 
+            // Add event listener for opening and closing details
+            j$('#pbTable tbody').on('click', 'td.details-control', function () {
+                var tr = j$(this).closest('tr');
+                var row = table.row( tr );
+         
+                if ( row.child.isShown() ) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else {
+                    // Open this row
+                    row.child( format(row.data()) ).show();
+                    tr.addClass('shown');
+                }
+            } );
+                    
+           
+            /*
+            
+				j$('.theImage').on('click', function ()
+                var tr = j$(this).parent('tr'); 
+				var row = table.row( tr );
+            	console.log('Row : '+row.val());
+            	
+            );
+            
+            
+            // Add event listener for opening and closing details
+            $('#example tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = table.row( tr );
+         
+                if ( row.child.isShown() ) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else {
+                    // Open this row
+                    row.child( format(row.data()) ).show();
+                    tr.addClass('shown');
+                }
+            } );
+              */      
+                    
+
+            // select checkbox
+            selectAllRows();
+        });
+        
+        function selectAllRows(){
+        
+            j$('.select-All').on('click', function()
+			{
+                console.log(j$(this));
+            	var isChecked = j$(this).is(':checked');
+                j$('.BLCheckBox').prop('checked',isChecked);
+                var tr = j$(this).parent('tr'); 
+                console.log('Row : '+j$(tr));               
+            });
+            
+                        
+		}
+        
+        </script>
+        
+        <style>
+            td.details-control {
+      	      	background:  url ('https://next.datatables.net/examples/resources/details_open.png') no-repeat center center;    
+   	         	cursor: pointer;
+            }
+            tr.shown td.details-control {
+       	    	background: url('https://next.datatables.net/examples/resources/details_close.png') no-repeat center center;
+            }
+
+        </style>
+        
+    </head>
+    <body>
+        <apex:form >
+            <apex:pageBlock title="My Accounts List">
+                
+                <apex:pageBlockTable id="pbTable" var="wrap" value="{!wrapper}" styleClass="display">
+                    
+                    <apex:column >
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">
+                            <apex:inputCheckbox value="{!isAllChecked}" styleClass="select-All" />
+                        </apex:facet>
+                        <apex:inputCheckbox value="{!wrap.check}" styleClass="BLCheckBox"/>
+                    </apex:column>
+                    <apex:column headerValue="Name">
+                        <apex:outputField value="{!wrap.act.Name}" />
+                    </apex:column>
+                    <apex:column headerValue="Account Number">
+                        <apex:outputField value="{!wrap.act.AccountNumber}" />
+                    </apex:column>
+                    <apex:column headerValue="Phone">
+                        <apex:outputField value="{!wrap.act.Phone}" />
+                    </apex:column>
+                </apex:pageBlockTable>
+                
+                
+                <!--
+                <table id="accTable" class="display">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Account Number</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat var="acc" value="{!accList}">
+                            <tr>
+                                <td></td>
+                                <td>{!acc.Name}</td>
+                                <td>{!acc.AccountNumber}</td>
+                                <td>{!acc.Phone}</td>
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+                -->
+            </apex:pageBlock>
+        </apex:form>
+    </body>
+        
+</apex:page>

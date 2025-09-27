@@ -1,0 +1,20 @@
+<apex:page controller="exampleCon">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    
+    <script type="text/javascript">
+        
+        $(document).ready(function(){
+    
+            alert('Entered Javascript') ;
+            CallApexMethod() ;
+            
+            //showLoadingModal();
+        }); 
+    </script>
+    
+    <apex:form >
+        <apex:actionFunction name="CallApexMethod" action="{!method1}" onComplete="alert('After apex method') ;"/>
+ 
+    </apex:form>
+</apex:page>

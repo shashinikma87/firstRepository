@@ -1,0 +1,38 @@
+<HTML>
+
+	<HEAD>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
+		<script>
+		$(document).ready( function() {
+				$('#b').click (function(){
+					
+					var fName = $('#text1').val();
+					var lName = $('#text2').val();
+					
+					console.log('First Name : '+fName);
+					console.log('Last Name : '+lName);
+					
+					
+					//alert('Button Clicked..');
+					$('#show_result').text($('#text1').val() +' '+$('#text2').val()).slideUp().slideDown();
+				});
+				
+			});
+			
+		</script>
+	</HEAD>
+	<BODY>
+		<FORM id="frm">
+			First name: <input type="Text" id="text1" /> </br></br>
+			Last name: <input type="Text" id="text2" /> </br></br>
+			<input type="button" id="b" value ="Click Me!">
+			</br></br>
+			<div id="show_result">
+				
+			</div>
+			
+		</FORM>
+				
+		
+	</BODY>
+</HTML>

@@ -1,0 +1,61 @@
+<apex:page standardController="Lead" extensions="tableOfRecords">
+        
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" />
+        <script>
+
+        	$(document).ready( function() {
+               
+                $("#b1").on("click", function(){
+                    
+                    console.log('in method...');
+                    alert("Button Clicked..");
+                });
+                
+                $("input:checkbox").click   
+                (function(e){
+                    console.log($(this));
+                    if ($(this).is( "#selectAll" ) ){
+						console.log('chor sapadla');
+                    }
+                    //var table= $(e.target).closest("#mytable");
+                    //$("td input:checkbox",table).attr("checked",e.target.checked);
+                });
+				
+            });
+        </script>
+    
+        <apex:form >
+            <p id="pEle">Hiiiiiiiiii</p>
+            <apex:pageBlock >
+                <apex:pageBlockTable value="{!leads}" var="item" id="mytable">
+                    <apex:column >
+                        <apex:facet name="header">
+                            <apex:inputCheckbox id="selectAll"/>
+                        </apex:facet>
+                        <apex:inputCheckbox value="{!eachRow}"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">ID</apex:facet>
+							{!item.id}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Name</apex:facet>
+                        {!item.Name}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Company</apex:facet>
+                        {!item.Company}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Email</apex:facet>
+                        {!item.Email}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Status</apex:facet>
+                        {!item.Status}
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlock>            
+            <input type="Button" id="b1" value="Click me!"/>
+        </apex:form>
+</apex:page>

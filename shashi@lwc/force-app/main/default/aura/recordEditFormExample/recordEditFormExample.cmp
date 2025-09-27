@@ -1,0 +1,30 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+    
+    <lightning:layout title="" multipleRows="true">
+        <lightning:layoutItem padding="around-small" size="12">
+            <lightning:card title="recordEditForm">
+                <lightning:recordEditForm recordId="0036F00002vzPonQAE" objectApiName="Contact" >
+                    <lightning:messages />
+                    <lightning:outputField fieldName="AccountId" />
+                    <lightning:inputField fieldName="FirstName" />
+                    <lightning:inputField fieldName="LastName" />
+                    <lightning:inputField fieldName="Email" />
+                    <lightning:button class="slds-m-top_small" variant="brand" type="submit" name="update" label="Update" />
+                </lightning:recordEditForm>
+            </lightning:card>
+        </lightning:layoutItem>
+        
+        <lightning:layoutItem padding="around-small" size="12">
+            <lightning:card title="recordForm">
+                <lightning:recordForm recordId="0036F00002vzPonQAE" 
+                                      objectApiName="Contact" 
+                                      layoutType="Compact" 
+                                      columns="1"
+                                      mode="edit">
+                    
+                </lightning:recordForm>
+            </lightning:card>
+        </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>

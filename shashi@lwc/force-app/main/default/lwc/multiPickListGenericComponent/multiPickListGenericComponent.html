@@ -1,0 +1,20 @@
+<template>
+  <div class="slds-box slds-col slds-scrollable" style="height: 17rem; padding: initial; background-color: white;">
+    <ul role="menu" style="min-width: 100%; width: fit-content;">
+        <lightning-dual-listbox name="languages"
+                            label="Select Languages"
+                            source-label="Available"
+                            selected-label="Selected"
+                            field-level-help="This is a dual listbox"
+                            options={options}
+                            value={values}
+                            onchange={handleChange}>
+        </lightning-dual-listbox>
+    </ul>
+  </div>
+  <div>
+    <lightning-button label="Save" class="slds-m-left_x-small"
+			title="Save" onclick={onSave} variant="brand-outline">
+		</lightning-button>
+  </div>
+</template>

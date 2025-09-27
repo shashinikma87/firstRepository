@@ -1,0 +1,17 @@
+<!-- firstTemplate.html -->
+<template>
+	<div class="slds-p-around_medium lgc-bg">
+		<lightning-input type="text" label="Enter some text" value={textVal} onchange={handleChange}></lightning-input>
+	</div>
+	<div class="slds-m-vertical_medium">
+		<p>The value of the input field is: <span class="slds-text-heading_small">{textVal}</span></p>
+	</div>
+	<lightning-card>
+		<div>
+			Primary Template Rendered
+		</div>
+	</lightning-card>
+
+	<c-child-component-test></c-child-component-test>
+
+</template>

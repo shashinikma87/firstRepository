@@ -1,0 +1,5 @@
+{"animals": [
+	{ "id' : 1, "type" : "pesky porcupine"},
+	{ "id' : 2, "type" : "hungry hippo"},
+	{ "id' : 3, "type" : "squeaky squirrel"}
+]}

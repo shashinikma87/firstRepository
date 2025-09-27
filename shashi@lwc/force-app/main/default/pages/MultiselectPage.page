@@ -1,0 +1,16 @@
+<apex:page controller="MultiController">
+    <apex:form >
+        <apex:pageBlock title="RecordTypes">
+            <c:MultiselectPicklist leftLabel="Available Active RecordTypes"
+                leftOptions="{!allContacts}"
+                rightLabel="Selected RecordTypes"
+                rightOptions="{!selectedContacts}"
+                size="14"
+                width="150px"/>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!save}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+    <apex:outputText >{!message}</apex:outputText>
+</apex:page>

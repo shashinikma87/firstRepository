@@ -1,0 +1,46 @@
+https://focusonforce.com/salesforce-adm-201-exam-questions/
+
+31 / 50
+
+Focus on 
+Solutions 
+Campaign
+Knowledge base articles
+
+
+
+
+To Check :
+
+1. Custom fiscal years 
+2. data loader limit				-	5,00,000
+3. Knowledge content to public site
+4. group tasks
+5. shared activities
+6. Dashboard => Dynamic, refresh related
+7. Cases	-	 saw video
+8. Leads	-	
+9. Campaign management	-	
+10. Knowledge base articles - how they can be accessed ?			-		lots of questions
+11. Opportunity
+12. What is solutions ?
+13. approval process
+14. cloud scheduler
+15. Assignment rule 
+16. Queue				-	Once seen video
+
+
+
+
+https://www.exam-labs.com/exam/ADM-201
+http://keadyalways.blogspot.in/
+http://sfdcstudy.org/adm-201-certification/adm-201-quizzes/
+
+
+
+Detailed description : http://www.salesforcetutorial.com/field-level-security-salesforce/
+
+
+
+https://trailhead.salesforce.com/modules/chatter_basics_for_users
+https://trailhead.salesforce.com/modules/knowledge_essentials/units/knowledge_essentials_intro

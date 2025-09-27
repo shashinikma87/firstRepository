@@ -1,0 +1,18 @@
+<apex:page controller="connectOrg">
+    
+    <apex:form >
+        <apex:pageBlock title="Org Data">
+            <apex:pageBlockSection >
+                <apex:pageBlockTable columns="2" title="Org Data" value="{!UserInfo}" var="key"> 
+                    <apex:column headerValue="Name" value="{!key}" />
+                    <apex:column headerValue="Value" value="{!UserInfo[key]}" />
+                </apex:pageBlockTable>
+			</apex:pageBlockSection>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Retrieve Org Data" action="{!connect}" />
+                
+                 
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

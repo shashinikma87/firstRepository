@@ -1,0 +1,3 @@
+<apex:page >
+  <h1>Hey! I have just enabled development mode. Cool man!</h1>
+</apex:page>

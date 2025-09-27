@@ -1,0 +1,994 @@
+
+
+https://vceguide.com/which-feature-sets-the-base-level-of-access-to-an-object/
+
+https://www.salesforceben.com/certified-developer-mock-exam/
+
+https://www.brainscape.com/flashcards/salesforce-platform-dev-i-sample-test-5355010/packs/8042249
+
+https://www.brainscape.com/flashcards/salesforce-platform-dev-i-sample-test-5355010/packs/8042249
+
+Name the language Force.com uses to support full-text search in Objects
+
+Which functionality is NOT available on a custom object?
+
+1.  Record Types
+2.  Workflows
+3.  Assignment Rules
+4.  Validation Rules
+
+	3
+
+What is the name for an object that enables a many-to-many relationship between two other objects?
+
+1.  Junction Object
+2.  Child Object
+3.  Schema Object
+4.  Connector Object
+5.  Parent Object
+
+There is more than 1 version of a Salesforce Record ID?
+
+1.  False
+2.  True
+
+	2
+
+What can a cross-object formula reference?
+
+1.  Records of the same Object
+2.  Both Parent and Child objects
+3.  Parent Only
+4.  Child Only
+
+	2
+
+What do the first 3 characters of a Salesforce Record ID identify? e.g. 00Q2400000198J8
+
+1.  The serial number in the data centre
+2.  The location on the storage pod
+3.  The Object type
+4.  The storage field identifier
+
+Which of the following is not a valid return type of a custom formula?
+
+1.  Date
+2.  Array
+3.  Text
+4.  Decimal
+
+In a data model object A is related to B, B is related to C. How will a developer create a report to include fields of A & C?
+
+1.  Report cannot be created
+2.  Create lookup relationships between A,B and C
+3.  Create a custom report type with A,B and C, and use it in the report.
+4.  Create a custom report with A and C fields as relationships already exist
+
+	4
+
+Which of the following represent correct syntax to display first name from global variable user?
+
+1.  $User.FirstName
+2.  {User.FirstName}
+3.  {!$User.FirstName}
+4.  {!User.FirstName}
+
+	3
+
+Object A has a lookup to object B. Which of the following statements are true?
+
+1.  Fields of both A and B are accessible from object B
+2.  Fields of both B and A are accessible from object A
+3.  Fields of object B can be accessed from object A
+4.  Fields of object A can be accessed from object B
+
+	1 2 
+
+What type of field cannot be used in a formula field?
+
+1.  Standard Fields
+2.  Date/Time
+3.  Other Formula Fields
+4.  Text Area (Long)
+
+What type of field cannot be used in a formula field?
+
+1.  Standard Fields
+2.  Date/Time
+3.  Other Formula Fields
+4.  Text Area (Long)
+
+Which of the following is not a sandbox type?
+
+1.  Professional
+2.  Developer
+3.  Partial Data
+4.  Full
+
+Name the prefix used by standard Visualforce markup tags.
+
+1.  s
+2.  c
+3.  apex
+4.  vf
+
+What type of data cannot be imported using the import wizard?		Users
+
+1.  Users
+2.  Custom Objects
+3.  Leads
+4.  Accounts and Contacts
+
+		These records cannot be imported via the import wizards:
+		 
+		Assets
+		Cases
+		Campaigns
+		Contracts
+		Documents
+		Opportunities
+		Products
+
+The organization IDs of your sandboxes remain same each time your sandbox is refreshed
+
+1.  False
+2.  True
+
+What is the maximum number of external IDs an object may have?
+
+1.  5
+2.  1
+3.  3
+4.  7
+
+What are required pieces of a validation rule?
+
+1.  Description
+2.  Return Value
+3.  Condition Formula
+4.  Rule Name
+5.  Error Message
+
+What is true about a junction object?
+
+1.  A custom object that has two Master-Detail relationships
+2.  A standard object that has two Master-Detail relationships
+3.  A standard object that has one Master-Detail relationship
+4.  A custom object that has one Master-Detail relationship
+
+What is the maximum number of fields that can be added to an object?
+
+1.  100
+2.  200
+3.  500
+4.  No limit
+		Unlimited 	500 
+		Group 		100
+		
+How do you highlight totals in a report?
+
+1.  Summary totals
+2.  Custom summary field
+3.  Formula Field
+4.  Roll-up summary field
+
+Standard picklist fields can be controlling or dependent?
+
+1.  True
+2.  False
+
+	Standard picklist fields can be controlling fields but not dependent fields.
+	
+What type of field needs to be wrapped in a function (In a formula) to be accessed?
+
+1.  Currency
+2.  Picklist
+3.  Date/Time
+4.  Long Text Field
+
+When would a developer use upsert and external IDs?
+
+1.  To integrate with an external system
+2.  To migrate customizations from a sandbox to production
+3.  To load related records without knowing Salesforce record IDs
+4.  To use Web Services API to query for data
+
+What are the three different custom tabs you can create? (Select 3)
+
+1.  Custom Object Tab
+2.  Web Tab
+3.  Standard Object Tab
+4.  APEX Tab
+5.  Visualforce Tab
+
+	1 2 5 	
+
+Which feature sets the base level of access to an object?
+
+1.  Profiles
+2.  Public Groups
+3.  Organizational Wide Defaults
+4.  Roles
+
+	Organizational Wide Defaults
+	
+What must a developer consider when inserting data via an API based tool?
+
+1.  Required fields on page layouts are enforced
+2.  APEX Triggers are ignored
+3.  Universally required field settings are respected
+4.  Validation Rules are Respected
+
+	3 4 
+
+Which of the following cannot be included in a VisualForce page?
+
+1.  Java
+2.  Javascript
+3.  HTML
+4.  Flash
+
+	1
+
+In a master-detail relationship scenario, the fields of the parent object need to be displayed in the related list. How will a developer achieve this design?
+
+1.  Assignment rule
+2.  Cross-object formula field
+3.  Validation rule
+4.  Workflow rule
+
+	2
+
+What is the maximum number of master-detail lookup relationships allowable per object?
+
+1.  3
+2.  1
+3.  2
+4.  4
+
+	There is only 2 Master Detail Relationship allowed per object and it can have upto three custom detail levels. Each object is allowed to have one or two masters, or up to 8 details. You can have a Total of 40 Relationship fields with a Maximum of 2 Master Detail Relationships.
+	
+What is a self relationship?
+
+1.  A lookup to global search
+2.  A relationship of account to opportunity owned by same owner
+3.  A lookup field to the same object
+4.  A lookup field to the user object
+
+	2
+
+When building a custom application, a developer can include a custom icon for the app?
+
+1.  True
+2.  False
+
+	1
+
+Roll-up Summaries are only available on what type of relationship?
+
+1.  Lookup relationship
+2.  Formula relationship
+3.  Apex relationship
+4.  Master-Detail relationship
+
+	4
+
+Your manager has asked you to create an object with radio buttons that track a rating of 1-5, how will you achieve this?
+
+1.  Create a formula field
+2.  Create a dependant picklist that feeds the radio button type field
+3.  Create a Visualforce page with radio buttons.
+4.  Create a radio button with 5 options
+
+	3
+
+Can you use an IF statement in a formula field?
+
+1.  True
+2.  False
+	
+	1
+
+Which of the following is true about Roll-up summary fields?
+
+1.  Roll-up summary can only be set on the parent of a Master-Detail or Lookup relationship.
+2.  Roll-up summary can be used to compute SUM,MIN,MAX,AVG over a set of records
+3.  Roll-up summary fields are read only.
+4.  The results of the roll-up summary is displayed on the child in a master-detail relationship.
+
+	3
+
+Before code can be deployed in production, what percentage of test coverage must be achieved?
+
+1.  50
+2.  100
+3.  75
+4.  25
+
+Currently defined picklist values are retained when you change a picklist to a multi-select picklist?
+
+1.  False
+2.  True
+
+	Currently defined picklist values are retained when you change a picklist to a multi-select picklist. If records contain values that are not in the picklist definition, those values are deleted from those records when the data type changes.
+
+What is API Access?
+
+1.  Is required to be able to deploy APEX Code in Force.com
+2.  Provides direct access to all data stored in Force.com from virtually any platform.
+3.  Allows developers to write test classes within Salesforce.
+4.  Can be given to users to allow them to access all Apps.
+
+	2
+
+Which of the following cannot be done via a Workflow?
+
+1.  Create a Task
+2.  Create an Event
+3.  Create an Outbound Message
+4.  Create an Email Alert
+
+	2
+
+A field designated as required, is only required when it is added to a user’s page layout
+
+1.  True
+2.  False
+
+	2
+
+Which edition of Salesforce is API access not available for by default?
+
+1.  All Editions
+2.  Professional
+3.  Developer
+4.  Unlimited
+
+	The API is not available by default for the following editions: Contact Edition. Group Edition. Professional Edition.
+	
+How can you make a field mandatory?
+
+1.  Check the required field box on the field definition
+2.  Create a Workflow Rule
+3.  Check the required field box for the field on the record type
+4.  Creating a validation rule for the field
+5.  Check the required field box on the page layout.
+
+	1 4 5 
+
+To create a new VisualForce page HelloWorld in development mode, which URL should be appended to the server address?
+
+1.  /vf/HelloWorld
+2.  /home/HelloWorld
+3.  /HelloWorld
+4.  /apex/HelloWorld
+
+	4
+
+An organization wants to create a field to store manager data on the user object. The manager field is a reference to another user record. What type of relationship should be used?
+
+1.  Many-to-many
+2.  Lookup
+3.  Hierarchical
+4.  Master-Detail
+
+	2
+
+A user’s profile does not have any permissions to view a custom object. However, the Organization Wide Defaults for the custom object are set to Public Read/Write. Users with this profile will still be able to access the custom object.
+
+1.  True
+2.  False
+
+	2
+	
+You have Custom Object A & Custom Object B, a record has to be created on B once a certain criteria is met A, how can this be achieved?
+
+1.  Visualforce page
+2.  Apex Trigger on Object B
+3.  Apex Trigger on Object A
+4.  Workflow Rule
+	
+	3
+
+Select the data types that are supported by formula fields
+
+1.  Text
+2.  Percent
+3.  E-mail
+4.  Currency
+5.  Phone
+
+	1 2 4
+
+	Data types in Formula Fields
+		Numeric data type.
+		Currency data type.
+		String data type.
+		Date-Time data type.
+		Boolean data type.
+
+What language is used to query Salesforce for specific information?
+
+1.  SQL
+2.  SOQL
+3.  SOSL
+4.  Apex
+
+	2
+
+A Developer wants to make sure that all fields on his new custom object are editable to all profiles, what should be checked on field level security?
+
+1.  Disable Visible and Read-Only
+2.  Disable Visible but Enable Read-Only
+3.  Enable Visible but Disable Read-Only
+4.  Enable Visible and Read-Only
+
+	3
+
+What is true about Master-Detail relationships? (Select 2)
+
+1.  You have to expose the master-detail field on the child object page layout
+2.  You can have a child record without the parent record
+3.  You cannot delete a child object
+4.  When the parent record is deleted, all child records will be deleted
+
+	1 4 
+
+How many components can a Dashboard have?
+
+1.  20
+2.  50
+3.  100
+4.  10
+
+	Each dashboard can have up to 20 components.
+
+An organization needs to create a public website that displays data from Salesforce.com organization without user registration.
+
+1.  Visualforce
+2.  Force.com sites
+3.  Apex
+4.  Salesforce Knowledgebase
+	
+	2
+
+Which Salesforce Formula Function can return a value based on more than two different field parameters?
+
+1.  IF Statement
+2.  Contains
+3.  CASE Statement
+4.  Beings
+
+	3
+	
+If a child record in a master detail relationship is deleted, the parent is deleted.
+
+1.  True
+2.  False
+
+	2
+	
+Customer services wish to analyse how many open cases there are each day over a period of time. How can they achieve this?
+
+1.  Tabular Reports
+2.  Matrix Reports
+3.  Summary Reports
+4.  Analytic Snapshot
+
+	4
+	
+What is true about a custom tab?
+
+1.  It can only be included in one application
+2.  It can only be included in standard applications
+3.  It can be included in as many applications as desired
+4.  It can only be included in custom applications
+
+	3
+	
+Which of these is not a valid report type?
+
+1.  Summary
+2.  Matrix
+3.  Detailed
+4.  Tabular
+
+	3
+
+	
+	
+	
+Which of these is an accurate statement about "with sharing" keywords? Select all that apply.
+Inner classes inherit the sharing setting from the container class
+Either inner classes or outer classes can be declared as "with sharing", but not both
+Inner classes do not inherit the sharing setting from the container class
+Both inner classes and outer classes can be declared as "with sharing"
+
+In the given code, from where does the Boolean inherit its value? _x000D_Boolean b = true;
+Class
+Object
+Enum
+String
+
+Which of these is a characteristic of the Lightning Component framework? Select all that apply.
+It has an event-driven architecture.
+It works with the existing Visualforce pages.
+It uses XML as its data format.
+It includes responsive components.
+
+Visualforce components are similar to which type of tag library containing tag namespace prefixes?
+ASP tag library
+JSP tag library
+ASP log file
+DL JSP log file
+
+A developer wants to display all of the available record types for a Case object. The developer also wants to display the picklist values for the Case.Status field. The Case object and the Case.Status field are on a custom Visualforce page. What action can the developer perform to get the record types and picklist values in the controller? Select all that apply.
+Use Schema.PickListEntry returned by Case.Status.getDescribe().getPicklistValues()
+Use Schema.RecordTypeInfo returned by Case.SObjectType.GetDescribe().getRecordTypeInfos()
+Use SOQL to query Case records in the org to get all the RecordType values available for Case
+Use SOQL to query case records in the org to get all values for the Status picklist field
+
+On a Visualforce page with a custom controller, by using an ID parameter that is passed in the URL, how should a developer retrieve a record? Select all that apply.
+Use the constructor method for the controller
+Use the $Action.View method in the Visualforce page
+Use the <apex:detail> tag in the Visualforce page
+Create a new PageReference object with the Id
+
+Which of these statements are true about the "view state" inspector? Select all that apply.
+Shows components contributing to view state
+Must be enabled on a user profile
+Is displayed only when using <apex: form>
+Is controlled by the Role Hierarchy
+
+What type of a programming language is Apex? Select all that apply.
+Object-oriented
+On-Demand
+Water-Fall
+Declarative-Specific
+
+In what order does Salesforce execute events while saving a record?
+Before Triggers; Validation Rules; After Triggers; Assignment Rules; Workflow Rules; Commit
+Validation Rules; Before triggers; After triggers Workflow Rules Assignment Rules; Commit
+Before Triggers; Validation Rules; After triggers; Workflow rules; Assignment Rules; Commit
+Validation Rules; Before Triggers; After Triggers; Assignment Rules; Workflow Rules; Commit
+
+In a single record, a user selects multiple values from a multi-select pick list. How are the selected values represented in Apex?
+As a String with each value separated by a comma
+As a Set<String> with each value as an element in the set
+As a List<String> with each value as an element in the list
+As a String with each value separated by a semicolon
+
+How can a developer determine, from the DescribeSObjectResult, if the current user will be able to create records for an object in Apex?
+By using the IsInsertable() method
+By using the IsCreatable() method
+By using the hasAccess() method
+By using the canCreate() method
+
+Which code block returns the ListView of an Account object using the following Debug statement? _x000D_system.debug(controller.getListViewOptions());_x000D_
+ApexPages.StandardSetController controller = new ApexPages.StandardSetController(Database.getQueryLocator(Ã”SELECT Id FROM Account LIMIT 1Ã•));
+ApexPages.StandardController controller = new ApexPages.StandardController([SELECT Id FROM Account LIMIT 1]);
+ApexPages.StandardController controller = new ApexPages.StandardController(Database.getQueryLocator(Ã”SELECT Id FROM Account LIMIT 1Ã•));
+ApexPages.StandardSetController controller = new ApexPages.StandardSetController([SELECT Id FROM Account LIMIT 1]);
+
+A developer runs the following anonymous code block: List<Account> acc = [SELECT Id FROM Account LIMIT 10;]; Delete acc; Database.emptyRecycleBin(acc); system.debug(Limits.getDMLStatements() + ', '+Limits.getLimitsDMLStatements()); What is the result?
+2, 150
+150, 2
+11, 150
+150, 11
+
+Which of the following is a valid Apex statement?
+Private static constant Double rate = 7.75;
+Account() acctList = new List<Account>{new Account()};
+Integer w, x, y, = 123, x = Ã”abcÃ•;
+Map conMap = [SELECT Name FROM Contact];
+
+A person who does not have "View Encrypted Data" permission will see the field with masked characters. Assuming the field is in the page layout, what happens if he tries to edit the value by clicking on the Edit button?
+The field will not appear in the edit layout.
+The user will see only masked characters, but can enter a new value and save it.
+It will throw an error on changing that field and saving it.
+He can see the original value and he can save the record.
+
+A custom object has an organization-wide default setting of "Private" with Grant Access Using Hierarchies turned off. Which users can select the Sharing button on records for that object?
+Only the record owner and a user with the System Administrator profile
+The record owner, a user with the System Administrator profile, and a user shared to the record
+The record owner, a user shared to the record, any user above the record owner in the role hierarchy, and a user with the System Administrator profile
+The record owner, a user above the record owner in the role hierarchy, and a user with the System
+
+Universal Containers wants to create a custom order management application that allows users to enter order details such as the Product Name and Product Code. The application should be able to check if these values are consistent with the valid Product Name and Product Code combinations set up in a custom object. Which feature would a developer use to accomplish this?
+A validation rule with the REGEX function
+A formula field with the VALIDATE function
+A validation rule with the VLOOKUP function
+A formula field with the IF function
+
+How would a developer use Schema Builder to delete a custom field from an Account object that was required for prototyping but is no longer needed?
+Delete the field from Schema Builder and then all references in the code will be automatically removed
+Remove all the references in the code and then the field will be automatically removed from Schema Builder
+Mark the field for deletion in Schema Builder and then delete it from the declarative UI
+Remove all references from the code and then delete the custom field from Schema Builder
+
+Which of these statements is true for encrypted custom fields? Select all that apply.
+Encrypted fields can be included in Search results.
+Encrypted fields can be included in report results.
+Encrypted fields are not available in filters for list views, reports, and Roll-up summary fields.
+Encrypted fields are not available for validation rules or Apex scripts.
+
+A developer created an Apex Trigger using the Developer Console and now wants to debug the code. How can the developer accomplish this in the Developer Console?
+Select the Override Log Triggers checkbox for the Trigger
+Open the Progress tab in the Developer Console
+Open the Logs tab in the Developer Console
+Add the user name in the Log Inspector
+
+What is the minimum log level needed to see user-generated debug statements?
+INFO
+FINE
+WARN
+DEBUG
+
+ Which of the following can be done using the Force.com platform? Select all that apply.
+Data-warehousing
+Applications with clicks and not code
+Applications can be upgraded without loss of customization
+Code version control system
+
+Which of the following refers to the data model of Salesforce? Select all that apply.
+Force.com API
+Force.com metadata API
+Sandbox
+Force.com IDE
+
+Which one of the following is not possible to view in the Debug Logs?
+Workflow formula evaluation results
+Assignment rules
+Formula field calculations
+Validation rules
+Resources used by Apex Script
+
+By using which tool can the developer change the data model of a Salesforce organization?
+Data loader
+Administrator setup
+Cloud based data wizard
+Other
+
+Dashboard refresh can be monitored using:
+Apex jobs
+Scheduled jobs
+Dashboard jobs
+Report jobs
+
+Which of the following will you use for browsing objects and fields in the Force.com IDE? Select all that apply.
+Force.com Projects
+Schema Explorer
+Development Work Area
+Debug View
+
+Each setSavepoint() and rollback statement counts against the total number of DML statements.
+1
+0
+
+What should a developer working in a sandbox use to exercise a new test class before the developer deploys that test class to production? Select all that apply.
+The Apex Test Execution page in Salesforce Setup
+The Run Tests page in Salesforce Setup
+The Test menu in the Developer Console
+The REST API and ApexTestRun method
+
+
+What is true for a partial sandbox that is not true for a full sandbox?
+
+Choose 2 answers:
+
+A. More frequent refreshes.
+B. Only Includes necessary metadata.
+C. Use of change sets.
+D. Limited to 5 GB of data.
+
+1 4 
+
+What is the accurate statement about with sharing keyword?
+choose 2 answers
+
+A) Inner class donot inherit the sharing setting from the container class
+B) Both inner and outer class can be declared as with sharing
+C) Either inner class or outer classes can be declared as with sharing but not both
+D) Inner class inherit the sharing setting from the conatiner class
+
+
+A) Inner class donot inherit the sharing setting from the container class
+B) Both inner and outer class can be declared as with sharing
+
+A developer is creating an application to track engines and their parts. An individual part can be used in different types of engines.
+What data model should be used to track the data and to prevent orphan records.
+
+A. Create a junction object to relate many engines to many parts though a master -detail relationship.
+B. Create a master -detail relationship to represent the one -to -many model of engines to parts
+C. Create a lookup relationship to represent how each part relates to the parent engine object.
+D. Create a junction object to relate many engines to many parts through a lookup relationship.
+
+A. Create a junction object to relate many engines to many parts though a master -detail relationship.   
+
+A company that uses a Custom object to track candidates would like to send candidate information automatically to a third -party human resource system when a candidate is hired.
+What can a developer do to accomplish this task?
+
+A. Create an escalation rule to the hiring manager.
+B. Create an auto response rule to the candidate.
+C. Create a Process Builder with an outbound message action.
+D. Create a workflow rule with an outbound message action.
+D. Create a workflow rule with an outbound message action.
+
+What should a developer working in a sandbox use to exercise a new test Class before the developer deploys that test to production?
+Choose 2 answers
+
+A. The REST API and ApexTestRun method
+B. The Apex Test Execution page in Salesforce Setup.
+C. The Test menu in the Developer Console.
+D. The Run Tests page in Salesforce Setup.
+B. The Apex Test Execution page in Salesforce Setup.
+
+C. The Test menu in the Developer Console
+
+What is a correct pattern to follow when programming in Apex on a Multi-tenant platform?
+
+A. Apex code is created in a separate environment from schema to reduce deployment errors.
+B. DML is performed on one record at a time to avoid possible data concurrency issues.
+C. Queries select the fewest fields and records possible to avoid exceeding governor limits.
+D. Apex classes use the ''with sharing" keyword to prevent access from other server tenants.
+C. Queries select the fewest fields and records possible to avoid exceeding governor limits.
+
+
+How can a developer avoid exceeding governor limits when using an Apex Trigger?
+choose 2 answers
+
+A. By using a helper class that can be invoked from multiple triggers.
+B. By using the Database class to handle DML transactions.
+C. By using Maps to hold data from query results.
+D. By performing DML transactions on lists of SObjects.
+C. By using Maps to hold data from query results.
+
+D. By performing DML transactions on lists of SObjects.
+
+
+Which data structure is returned to a developer when performing a SOSL search?
+
+A. A list of lists of sObjects.
+B. A map of sObject types to a list of sObjects
+C. A map of sObject types to a list oflists of sobjects
+D. a list of sObjects.
+A. A list of lists of sObjects.
+
+
+A developer created an Apex trigger using the Developer Console and now wants to debug code
+How can the developer accomplish this in the Developer Console?
+
+A. Select the Override Log Triggers checkbox for the trigger
+B. Add the user name in the Log Inspector.
+C. Open the Progress tab in the Developer Console.
+D. Open the logs tab in the Developer Console.
+D. Open the logs tab in the Developer Console.
+
+
+A developer has a block of code that omits any statements that indicate whether the code block should execute with or without sharing.
+What will automatically obey the organization-wide defaults and sharing settings for the user who executes the code in the Salesforce organization?
+
+A. Apex Triggers
+B. HTTP Callouts
+C. Apex Controllers
+D. Anonymous Blocks
+D. Anonymous Blocks
+
+Ref: https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_keywords_sharing.htm
+
+
+What is a capability of cross-object formula fields?
+Choose 3 answers
+
+A. Formula fields can reference fields from master-detail or lookup parent relationships.
+B. Formula fields can expose data the user does not have access to in a record.
+C. Formula fields can be used in three roll-up summaries per object.
+D. Formula fields can reference fields in a collection of records from a child relationship.
+E. Formula fields can reference fields from objects that are up to 10 relationships away.
+A. Formula fields can reference fields from master-detail or lookup parent relationships.
+
+B. Formula fields can expose data the user does not have access to in a record.
+
+E. Formula fields can reference fields from objects that are up to 10 relationships away.
+
+Ref:
+https://help.salesforce.com/HTViewHelpDoc?id=customize_cross_object.htm
+
+
+What is a characteristic of the Lightning Component Framework?
+Choose 2 answers:
+
+A. It has an event-driven architecture.
+B. It works with existing Visualforce pages.
+C. It includes responsive components.
+D. It uses XML as its data format.
+A. It has an event-driven architecture.
+
+C. It includes responsive components.
+
+
+A candidate may apply to multiple jobs at the company Universal Containers by submitting a single application per job posting, that application cannot be modified to be resubmitted to a different job posting.
+
+What can the administrator do to associate an application with each job posting in the schema for the organization?
+
+A. Create a lookup relationship on both objects to a junction object called Job Posting Applications.
+B. Create a master-detail relationship in the Job Postings custom object to the Applications custom object.
+C. Create a master-detail relationship in the Application custom object to the Job Postings custom object.
+D. Create a lookup relationship in the Applications custom object to the Job Postings custom object.
+C. Create a master-detail relationship in the Application custom object to the Job Postings custom object.
+
+
+In an organization that has enabled multiple currencies, a developer needs to aggregate the sum of the Estimated_value__c currency field from the CampaignMember object using a roll-up summary field called Total_estimated_value__c on Campaign.
+
+How is the currency of the Total_estimated_value__c roll-up summary field determined?
+
+A. The values in Campaignmember.Estimated_value__c are converted into the currency of the Campaign record and the sum is displayed using the currency on the Campaign record.
+B. The values in CampaignMember.Estimated_value__c are converted into the currency on the majority of the CampaignMember records and the sum is displayed using that currency.
+C. The values in CampaignMember.Estimated_value__c are summed up and the resulting Total_estimated_value__c field is displayed as a numeric field on the Campaign record.
+D. The values In CampaignMember.Estimated_value__c are converted into the currency of the current user, and the sum is displayed using the currency on the Campaign record.
+A. The values in Campaignmember.Estimated_value__c are converted into the currency of the Campaign record and the sum is displayed using the currency on the Campaign record.
+
+
+When loading data into an organization, what can a developer do to match records to update existing records?
+
+Choose 2 answers
+
+A. Match an external Id Text field to a column in the imported file.
+B. Match the Id field to a column in the Imported file.
+C. Match the Name field to a column in the imported file.
+D. Match an auto -generated Number field to a column in the imported file.
+A. Match an external Id Text field to a column in the imported file.
+
+B. Match the Id field to a column in the Imported file.
+
+
+In which order does SalesForce execute events upon saving a record?
+
+A. Before Triggers; Validation Rules; After Triggers; Assignment Rules; Workflow Rules; Commit
+B. Validation Rules; Before Triggers; After Triggers; Workflow Rules; Assignment Rules; Commit
+C. Before Triggers; Validation Rules; After Triggers; Workflow Rules; Assignment Rules; Commit
+D. Validation Rules; Before Triggers; After Triggers; Assignment Rules; Workflow Rules; Commit
+A. Before Triggers; Validation Rules; After Triggers; Assignment Rules; Workflow Rules; Commit
+
+Ref: https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers_order_of_execution
+
+What is true for a partial sandbox that is not true for a full sandbox?
+
+Choose 2 answers:
+
+A. More frequent refreshes.
+B. Only Includes necessary metadata.
+C. Use of change sets.
+D. Limited to 5 GB of data.
+A. More frequent refreshes.
+
+D. Limited to 5 GB of data.
+
+
+A developer creates a Workflow Rule declaratively that updates a field on an object. An Apex update trigger exists for that object.
+What happens when a user updates a record?
+
+A. No changes are made to the data.
+B. Both the Apex Trigger and Workflow Rule are fired only once.
+C. The Workflow Rule is fired more than once.
+D. The Apex Trigger is fired more than once.
+D. The Apex Trigger is fired more than once.
+
+
+A company has a custom object named Warehouse. Each Warehouse record has a distinct record owner, and is related to a parent Account in Salesforce.
+Which kind of relationship would a developer use to relate the Account to the Warehouse?
+
+A. One -to -Many
+B. Lookup
+C. Master -Detail
+D. Parent -Child
+B. Lookup
+
+
+What is the preferred way to reference web content such as images, style sheets, JavaScript, and other libraries that is used in Visualforce pages?
+
+A. By accessing the content from Chatter Files.
+B. By uploading the content in the Documents tab.
+C. By accessing the content from a third -party CDN.
+D. By uploading the content as a Static Resource.
+D. By uploading the content as a Static Resource.
+
+
+In the code below, what type does Boolean inherit from?
+Boolean b= true;
+
+A. Enum
+B. Object
+C. String
+D. Class
+B. Object
+
+
+Which component is available to deploy using Metadata API?
+
+Choose 2 answers
+
+A. Case Layout
+B. Account Layout
+C. Case Feed Layout
+D. ConsoleLayout
+A. Case Layout
+
+B. Account Layout
+
+
+An org has different Apex Classes that provide Account -related functionality.
+After a new validation rule is added to the object, many of the test methods fail.
+What can be done to resolve the failures and reduce the number of code changes needed for future validation rules?
+
+Choose 2 answers:
+
+A. Create a method that creates valid Account records, and call this method from within test methods.
+B. Create a method that loads valid Account records from a Static Resource, and call this method within test methods.
+C. Create a method that performs a callout for a valid Account record, and call this method from within test methods.
+D Create a method that queries for valid Account records, and call this method from within test methods.
+A. Create a method that creates valid Account records, and call this method from within test methods.
+
+B. Create a method that loads valid Account records from a Static Resource, and call this method within test methods.
+
+
+Which requirement needs to be implemented by using standard workflow instead of Process Builder?
+Choose 2 answers
+
+A. Create activities at multiple intervals.
+B. Send an outbound message without Apex code.
+C. Copy an account address to its contacts.
+D. Submit a contract for approval.
+A. Create activities at multiple intervals.
+
+B. Send an outbound message without Apex code.
+
+
+What would a developer do to update a picklist field on related Opportunity records when a modification to the associated Account record is detected?
+
+A. Create a process with Process Builder.
+B. Create a workflow rule with a field update.
+C. Create a Lightning Component.
+D. Create a Visualforce page.
+A. Create a process with Process Builder.
+
+
+A developer uses a before insert trigger on the Lead object to fetch the Territory__c object, where the Territory__c.PostalCode__c matches the Lead.PostalCode. The code fails when the developer uses the Apex Data Loader to insert 10,000 Lead records. The developer has the following code block:
+
+Line-01: for (Lead l : Trigger.new){
+Line-02: if (l.PostalCode != null) {
+Line-03: List terrList = [SELECT Id FROM Territory__c WHERE PostalCode__c = :l.PostalCode];
+Line-04: if(terrList.size() > 0)
+Line-05: l.Territory__c = terrList[0].Id;
+Line-06: }
+Line-07: }
+
+Which line of code is causing the code block to fail?
+
+A. Line-03: A SOQL query is located inside of the for loop code.
+B. Line-01: Trigger:new is not valid in a before insert Trigger.
+C. Line-02: A NullPointer exception is thrown if PostalCode is null.
+D. Line-05: The Lead in a before insert trigger cannot be updated.
+A. Line-03: A SOQL query is located inside of the for loop code.
+
+
+What must the Controller for a Visualforce page utilize to override the Standard Opportunity view button?
+
+A. The StandardSetController to support related lists for pagination.
+B. the Opportunity StandardController for pre -built functionality.
+C. A callback constructor to reference the StandardController.
+D.A constructor that initializes a private Opportunity variable.
+B. the Opportunity StandardController for pre -built functionality.
+
+
+Why would a developer use Test. startTest( ) and Test.stopTest( )?
+
+A. To avoid Apex code coverage requirements for the code between these lines
+B. To start and stop anonymous block execution when executing anonymous
+Apex code
+C. To indicate test code so that it does not Impact Apex line count governor limits.
+D. To create an additional set of governor limits during the execution of a single test class.
+D. To create an additional set of governor limits during the execution of a single test class.
+
+
+

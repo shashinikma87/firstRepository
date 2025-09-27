@@ -1,0 +1,106 @@
+<HTML>
+
+	<HEAD>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
+		
+		<script>
+		$(document).ready( function() {
+			$('#b').click (function(){
+				
+				var table = $("#mytable");
+				table.find('tr').each(function () {
+					
+					var row = $(this);
+					if (row.find('input[type="checkbox"]').is(':checked')) {
+					
+					//if (row.find('input[type="checkbox"]:checked')) {
+						var $tds = row.find('td');
+						var name1 = $tds.eq(1).text();
+						var name2 = $tds.eq(2).text();
+						var name3 = $tds.eq(3).text();
+						console.log( name1+' '+name2+' '+name3);
+						
+						row.css( "color", "red" );
+					}
+					else {
+						row.css( "color", "black" );
+					}
+				});
+			});
+			
+			$("#mytable tr").find('input[type="checkbox"]').click(function(){
+				//$(this).find("#topCheckBox").click (function(){
+					alert('found');
+				//});
+			});
+			
+			$("#mytable").find('tr').each(function () {
+			
+				var row = $(this);
+				if (row.find('input[type="checkbox"]').is(':checked')) {
+					row.css( "color", "red" );
+				}
+				else {
+					row.css( "color", "black" );
+				}
+			
+			});
+				
+				
+		});
+			
+		</script>
+	</HEAD>
+	<BODY>
+		</br></br>
+		<table border="2" style="margin-left:50px" id="mytable">
+		  <tr>
+			<th><input type="checkbox" value="Select All" id="topCheckBox"></th>
+			<th>Company</th>
+			<th>Contact</th>
+			<th>Country</th>
+		  </tr>
+		  <tr>
+			<td><input type="checkbox"></td>
+			<td>Alfreds Futterkiste</td>
+			<td>Maria Anders</td>
+			<td>Germany</td>
+		  </tr>
+		  <tr>
+			<td><input type="checkbox"></td>
+			<td>Centro comercial Moctezuma</td>
+			<td>Francisco Chang</td>
+			<td>Mexico</td>
+		  </tr>
+		  <tr>
+			<td><input type="checkbox"></td>
+			<td>Ernst Handel</td>
+			<td>Roland Mendel</td>
+			<td>Austria</td>
+		  </tr>
+		  <tr>
+			<td><input type="checkbox"></td>
+			<td>Island Trading</td>
+			<td>Helen Bennett</td>
+			<td>UK</td>
+		  </tr>
+		  <tr>
+			<td><input type="checkbox"></td>
+			<td>Laughing Bacchus Winecellars</td>
+			<td>Yoshi Tannamuri</td>
+			<td>Canada</td>
+		  </tr>
+		  <tr>
+			<td><input type="checkbox"></td>
+			<td>Magazzini Alimentari Riuniti</td>
+			<td>Giovanni Rovelli</td>
+			<td>Italy</td>
+		  </tr>
+		</table>
+		</br></br>
+		<input type="button" style ="margin-left:100px" id="b" value ="Show Selected Data">
+		</br></br>
+		<div id ="show_result">
+		</div>
+	</BODY>
+</HTML>

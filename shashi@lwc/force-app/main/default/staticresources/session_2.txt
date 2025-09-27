@@ -1,0 +1,9 @@
+
+Introducing Role Hierarchies
+The first way that we can share access to records is by defining a role hierarchy. Similar to an org chart, a role hierarchy represents a level of data access that a user or group of users needs. Users assigned to roles near the top of the hierarchy (normally the CEO, executives, and other management) get to access the data of all the users who fall directly below them in the hierarchy.
+
+
+
+read/write/transfer : https://success.salesforce.com/answers?id=90630000000Co5YAAS
+
+Controlled by Parent : https://help.salesforce.com/articleView?id=000004005&language=en_US&type=1

@@ -1,0 +1,212 @@
+<apex:component controller="AH_CronBuilder_ctlr_Sean">
+        
+    <apex:attribute type="ComponentData" name="compData" required="true" description="The data going in and out" assignTo="{!cData}"/>     description="The data going in and out" assignTo="{!cData}"/>
+
+    
+    <apex:componentBody >
+        
+        <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <meta http-equiv="x-ua-compatible" content="ie=edge" />
+                <title>Cron Builder</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <apex:stylesheet value="/apexpages/slds/latest/assets/styles/salesforce-lightning-design-system-vf.css" />    
+                <apex:stylesheet value="{!URLFOR($Resource.AmadeusHospitalityStyles)}" />  
+                <apex:includeScript value="{!$Resource.Toast}"/>
+                <apex:slds />
+                <style type="text/css">                
+                    br {
+                        display: block;
+                        margin: 5px 0;
+                    }   
+                    td {
+                        height: 25px;
+                        vertical-align: top;
+                    }                
+                </style>      
+            </head>
+            
+            <div id="divCronMain" class="slds-scope" style="margin: 10px 10px 10px 10px; !important;">   
+                
+            <apex:form id="frmCronMain"> 
+                    
+                    <script language="JavaScript" type="text/javascript">    
+                    
+                    function changeFrequency()  
+                    {
+                        afFrequency();
+                    }
+                    
+                    function changeDayMode1()  
+                    {
+                        afDayMode1();
+                    }
+                    
+                    function changeDayMode2()  
+                    {
+                        afDayMode2();
+                    }
+                    
+                    </script>   
+                    
+                    <apex:actionFunction id="afFrequency" name="afFrequency" action="{!changeFrequency}" rerender="opMain,opDayOfWeek,opMonthly" /> 
+                    <apex:actionFunction id="afDayMode1" name="afDayMode1" action="{!changeDayMode1}" rerender="opMain,opDayOfWeek,opMonthly,rbtn01,rbtn02" /> 
+                    <apex:actionFunction id="afDayMode2" name="afDayMode2" action="{!changeDayMode2}" rerender="opMain,opDayOfWeek,opMonthly,rbtn01,rbtn02" /> 
+                    
+                    
+ 				<apex:outputText id="txtTest" value="{!strCronString}"></apex:outputText>      
+                    
+                    
+                    <apex:outputPanel id="opMain" layout="block" style="background:#e5e8e8;height:100%;width:100%;padding: 25px 25px 25px 25px;">
+                        <table style="padding: 10px;">
+                            <tr>
+                                <td>
+                                    <apex:outputLabel id="lblFrequency" value="Frequency: " />
+                                </td>
+                                <td>
+                                    <apex:selectRadio value="{!strSelFrequency}" layout="pageDirection" onchange="changeFrequency();">
+                                        <apex:selectOptions value="{!lstFrequency}" />
+                                    </apex:selectRadio>
+                                </td>
+                                <td>
+                                    <apex:outputPanel id="opMonthly" layout="block" rendered="{! NOT(bByDayOfWeek)}" style="background:#FFFFFF;width:600px;border-style:solid;border-color:#ccd1d1;border-width:1px;padding: 5px 5px 5px 5px">
+                                        
+                                        <apex:inputCheckbox id="rbtn01" value="{!bByOnDay}" onchange="changeDayMode1();" />
+                                        &nbsp;
+                                        <apex:outputLabel value="On day" />
+                                        &nbsp;
+                                        
+                                        <apex:selectList id="ddlDays" value="{!strSelDay}" style="width:60px;" size="1" multiselect="false" disabled="{!bByOnNthDay}"> 
+                                            <apex:selectOptions value="{!lstDays}" /> 
+                                        </apex:selectList>   
+                                        &nbsp;
+                                        <apex:outputLabel value="of every month" />
+                                        &nbsp;
+                                        
+                                        <apex:inputCheckbox id="rbtn02" value="{!bByOnNthDay}" onchange="changeDayMode2();" />
+                                        &nbsp;
+                                        <apex:outputLabel value="On" />
+                                        &nbsp;
+                                        
+                                        <apex:selectList id="ddlNthDays" value="{!strSelNthDay}" style="width:85px;" size="1" multiselect="false" disabled="{!bByOnDay}"> 
+                                            <apex:selectOptions value="{!lstNthDays}" /> 
+                                        </apex:selectList>  
+                                        &nbsp;
+                                        
+                                        <apex:selectList id="ddlDaysofWeek" value="{!strSelDayofWeek}" style="width:95px;" size="1" multiselect="false" disabled="{!bByOnDay}"> 
+                                            <apex:selectOptions value="{!lstDaysofWeek}" /> 
+                                        </apex:selectList>  
+                                        &nbsp;
+                                        <apex:outputLabel value="of every month" />
+                                        
+                                        
+                                    </apex:outputPanel>
+                                    <apex:outputPanel id="opDayOfWeek" layout="block" rendered="{!bByDayOfWeek}" style="background:#FFFFFF;width:160px;border-style:solid;border-color:#ccd1d1;border-width:1px;padding: 5px 5px 5px 5px">
+                                        Recurs every week on
+                                        <br/>
+                                        <br/>
+                                        <apex:inputCheckbox id="ww00" title="Sunday" value="{!bSunday}" />&nbsp;<label for="ww00">Sunday</label>
+                                        <br/>
+                                        <apex:inputCheckbox id="ww10" title="Monday" label="Monday" value="{!bMonday}" />&nbsp;<label for="ww10">Monday</label>
+                                        <br/>
+                                        <apex:inputCheckbox id="ww20" title="Tuesday" label="Tuesday" value="{!bTuesday}" />&nbsp;<label for="ww20">Tuesday</label>
+                                        <br/>
+                                        <apex:inputCheckbox id="ww30" title="Wednesday" label="Wednesday" value="{!bWednesday}" />&nbsp;<label for="ww30">Wednesday</label>
+                                        <br/>
+                                        <apex:inputCheckbox id="ww40" title="Thursday" label="Thursday" value="{!bThursday}" />&nbsp;<label for="ww40">Thursday</label>
+                                        <br/>
+                                        <apex:inputCheckbox id="ww50" title="Friday" label="Friday" value="{!bFriday}" />&nbsp;<label for="ww50">Friday</label>
+                                        <br/>
+                                        <apex:inputCheckbox id="ww60" title="Saturday" label="Saturday" value="{!bSaturday}" />&nbsp;<label for="ww60">Saturday</label>
+                                        <br/>  
+                                    </apex:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                    <br/>
+                                </td>
+                            </tr>             
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <apex:outputLabel id="lblStartDate" value="Start: " />
+                                </td>
+                                <td>
+                                    <c:AH_DatePicker defaultValue="{!strStartDate}" defaultStyle="width:110px;" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <apex:outputLabel id="lblEndDate" value="End: " />
+                                </td>
+                                <td>
+                                    <c:AH_DatePicker defaultValue="{!strEndDate}" defaultStyle="width:110px;" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <apex:outputLabel id="lblStartTime" value="Preferred Start Time: " />
+                                </td>
+                                <td>
+                                    <apex:selectList id="ddlStartTimes" value="{!strSelStartTime}" style="width:110px;" size="1" multiselect="false"> 
+                                        <apex:selectOptions value="{!lstStartTimes}" /> 
+                                    </apex:selectList>                 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                    <br/>
+                                </td>
+                            </tr>             
+                            <tr>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    <apex:outputLabel id="lblStartTimeMsg" value="Exact start time will depend on job queue activity." style="color:#757575;" />
+                                </td>
+                            </tr> 
+                            <tr>
+                                <td>
+                                    <apex:commandButton id="cmdGetCronEx" value="Create Cron Expression" title="Click to generate Cron Expression" action="{!generateCronExpression}" reRender="frmCronMain,opMain,txtCronEx,txtTest" />
+                                </td>
+                                <td colspan="2">
+                                    <apex:outputText id="txtCronEx" value="{!strCronExpression}" style="color:green;" />
+                                </td>
+                            </tr>                         
+                        </table>    
+                    </apex:outputPanel>
+                    
+               </apex:form> 
+                
+            </div>
+            
+        </html>          
+        
+    </apex:componentBody>
+    
+</apex:component>

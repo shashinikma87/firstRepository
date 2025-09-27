@@ -1,0 +1,238 @@
+/* AmadeusHospitalityStyles.css */
+.AHRequiredInput
+{
+    position: relative;
+    height: 100%;
+}
+
+.AHRequiredInput .AHRequiredBlock
+{
+    background-color: #CC0000;
+    position: absolute;
+    left: -4px;
+    width: 3px;
+    top: 1px;
+    bottom: 1px;
+    border-radius: 3px 0px 0px 3px;
+}
+
+.popupDialogBox 
+{      
+    position: absolute;
+    background-color: white;
+    border-radius: 5px;
+    top: 80px;
+    left: 50%;
+    width: 1200px;
+    margin-left: -600px;
+    z-index: 9999;
+    padding: 10px; 
+    box-shadow: 10px 10px 5px #888888;
+} 
+
+.popupConfirmationBox 
+{      
+    position: absolute;
+    background-color: white;
+    border-radius: 5px;
+    top: 80px;
+    left: 50%;
+    width: 800px;
+    margin-left: -400px;
+    z-index: 9999;
+    padding: 10px; 
+    box-shadow: 10px 10px 5px #888888;
+} 
+
+.popupBackground 
+{          
+	position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: calc(9000 + 2);
+    background-color: rgba(0,0,0,.1);
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .2s ease,visibility 0s;
+    transition-delay: 0s,.3s; 
+}
+
+.popupSuccess
+{      
+	position: absolute;
+	color: white;
+	background-color: #04844b; 
+	border-radius: 5px;
+    top: 30px;
+    left: 50%;
+    width: 500px;
+    margin-left: -250px;
+    z-index: 9999;
+    padding: 0px;       
+} 
+
+.popupSuccessFade
+{      
+    -webkit-animation-duration: 5s;animation-duration: 5s;
+    -webkit-animation-fill-mode: both;animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeOut 
+{
+    0% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+@keyframes fadeOut 
+{
+    0% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+.fadeOut 
+{
+    -webkit-animation-name: fadeOut;
+    animation-name: fadeOut;
+} 
+
+.roundedContainer
+{
+    width: 100%;
+    border: 1px solid lightgray;
+    padding: 10px;
+    border-radius: 5px;
+    !important;
+}
+
+.slds-spinner_container 
+{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: calc(9000 + 2);
+    background-color: rgba(255,255,255,.75);
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .2s ease,visibility 0s;
+    transition-delay: 0s,.3s;
+} 
+
+/* TOOLTIP */
+.tooltip 
+{
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext 
+{
+    visibility: hidden;
+    background-color: #005fb2;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext 
+{
+    visibility: visible;
+} 
+
+@font-face {
+    font-family: 'AmadeusBold';
+    src: url('{!URLFOR($Resource.AmadeusBoldFont, 'amadeus-bold-web.eot')}');
+    src: url('{!URLFOR($Resource.AmadeusBoldFont, 'amadeus-bold-web.eot')}?#iefix') format('embedded-opentype'),
+         url('{!URLFOR($Resource.AmadeusBoldFont, 'amadeus-bold-web.woff')}') format('woff'), 
+         url('{!URLFOR($Resource.AmadeusBoldFont, 'amadeus-bold-web.ttf')}') format('truetype'), 
+         url('{!URLFOR($Resource.AmadeusBoldFont, 'amadeus-bold-web.svg.woff')}#AmadeusBold') format('svg'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AmadeusBoldItalic';
+    src: url('{!URLFOR($Resource.AmadeusBoldItalicFont, 'amadeus-bolditalic-web.eot')}');
+    src: url('{!URLFOR($Resource.AmadeusBoldItalicFont, 'amadeus-bolditalic-web.eot')}?#iefix') format('embedded-opentype'),
+         url('{!URLFOR($Resource.AmadeusBoldItalicFont, 'amadeus-bolditalic-web.woff')}') format('woff'), 
+         url('{!URLFOR($Resource.AmadeusBoldItalicFont, 'amadeus-bolditalic-web.ttf')}') format('truetype'), 
+         url('{!URLFOR($Resource.AmadeusBoldItalicFont, 'amadeus-bolditalic-web.svg.woff')}#AmadeusBoldItalic') format('svg'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AmadeusItalic';
+    src: url('{!URLFOR($Resource.AmadeusItalicFont, 'amadeus-italic-web.eot')}');
+    src: url('{!URLFOR($Resource.AmadeusItalicFont, 'amadeus-italic-web.eot')}?#iefix') format('embedded-opentype'),
+         url('{!URLFOR($Resource.AmadeusItalicFont, 'amadeus-italic-web.woff')}') format('woff'), 
+         url('{!URLFOR($Resource.AmadeusItalicFont, 'amadeus-italic-web.ttf')}') format('truetype'), 
+         url('{!URLFOR($Resource.AmadeusItalicFont, 'amadeus-italic-web.svg.woff')}#AmadeusItalic') format('svg'); 
+    font-weight: normal;
+    font-style: normal;
+} 
+
+@font-face {
+    font-family: 'AmadeusLight';
+    src: url('{!URLFOR($Resource.AmadeusLightFont, 'amadeus-light.eot')}');
+    src: url('{!URLFOR($Resource.AmadeusLightFont, 'amadeus-light.eot')}?#iefix') format('embedded-opentype'),
+         url('{!URLFOR($Resource.AmadeusLightFont, 'amadeus-light.woff')}') format('woff'), 
+         url('{!URLFOR($Resource.AmadeusLightFont, 'amadeus-light.ttf')}') format('truetype'), 
+         url('{!URLFOR($Resource.AmadeusLightFont, 'amadeus-light.svg.woff')}#AmadeusLight') format('svg'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AmadeusLightItalic';
+    src: url('{!URLFOR($Resource.AmadeusLightItalicFont, 'amadeus-lightitalic.eot')}');
+    src: url('{!URLFOR($Resource.AmadeusLightItalicFont, 'amadeus-lightitalic.eot')}?#iefix') format('embedded-opentype'),
+         url('{!URLFOR($Resource.AmadeusLightItalicFont, 'amadeus-lightitalic.woff')}') format('woff'), 
+         url('{!URLFOR($Resource.AmadeusLightItalicFont, 'amadeus-lightitalic.ttf')}') format('truetype'), 
+         url('{!URLFOR($Resource.AmadeusLightItalicFont, 'amadeus-lightitalic.svg.woff')}#AmadeusLightItalic') format('svg'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AmadeusRegular';
+    src: url('{!URLFOR($Resource.AmadeusRegularFont, 'amadeus-regular-web.eot')}');
+    src: url('{!URLFOR($Resource.AmadeusRegularFont, 'amadeus-regular-web.eot')}?#iefix') format('embedded-opentype'),
+         url('{!URLFOR($Resource.AmadeusRegularFont, 'amadeus-regular-web.woff')}') format('woff'), 
+         url('{!URLFOR($Resource.AmadeusRegularFont, 'amadeus-regular-web.ttf')}') format('truetype'), 
+         url('{!URLFOR($Resource.AmadeusRegularFont, 'amadeus-regular-web.svg.woff')}#AmadeusRegular') format('svg'); 
+    font-weight: normal;
+    font-style: normal;
+} 
+
+@font-face {
+    font-family: 'AmadeusThin';
+    src: url('{!URLFOR($Resource.AmadeusThinFont, 'amadeus-thin-web.eot')}');
+    src: url('{!URLFOR($Resource.AmadeusThinFont, 'amadeus-thin-web.eot')}?#iefix') format('embedded-opentype'),
+         url('{!URLFOR($Resource.AmadeusThinFont, 'amadeus-thin-web.woff')}') format('woff'), 
+         url('{!URLFOR($Resource.AmadeusThinFont, 'amadeus-thin-web.ttf')}') format('truetype'), 
+         url('{!URLFOR($Resource.AmadeusThinFont, 'amadeus-thin-web.svg.woff')}#AmadeusThin') format('svg'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AmadeusThinItalic';
+    src: url('{!URLFOR($Resource.AmadeusThinItalicFont, 'amadeus-thinitalic-web.eot')}');
+    src: url('{!URLFOR($Resource.AmadeusThinItalicFont, 'amadeus-thinitalic-web.eot')}?#iefix') format('embedded-opentype'),
+         url('{!URLFOR($Resource.AmadeusThinItalicFont, 'amadeus-thinitalic-web.woff')}') format('woff'), 
+         url('{!URLFOR($Resource.AmadeusThinItalicFont, 'amadeus-thinitalic-web.ttf')}') format('truetype'), 
+         url('{!URLFOR($Resource.AmadeusThinItalicFont, 'amadeus-thinitalic-web.svg.woff')}#AmadeusThinItalic') format('svg'); 
+    font-weight: normal;
+    font-style: normal;
+}    

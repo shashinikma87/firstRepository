@@ -1,0 +1,27 @@
+Here are some examples to get you started
+
+** All Apex classes and triggers
+/services/data/v36.0/tooling/apexManifest
+
+** For the list of custom objects 
+/services/data/v36.0/tooling/query?q=Select+DeveloperName+From+CustomObject
+
+** For all fields of an object
+/services/data/v36.0/tooling/query?q=Select+DeveloperName+From+FieldDefinition+where+EntityDefinition.DeveloperName='Account'
+
+**List of validation rules on account
+/services/data/v36.0/tooling/query?q=Select+Id,Active,Description,EntityDefinition.DeveloperName,ErrorDisplayField,+ErrorMessage+From+ValidationRule+where+EntityDefinition.DeveloperName='Account'
+
+**for all workflow rules (Including inactive )
+/services/data/v36.0/tooling/query?q=Select+Id,Name,TableEnumOrId+From+WorkflowRule
+
+**for all workflow rules by object (For ex: Account)
+/services/data/v36.0/tooling/query?q=Select+Name,TableEnumOrId+From+WorkflowRule+where+TableEnumOrId='Account'
+
+You can use Workbench (workbench.developerforce.com/login.php) Rest Explorer to play it.
+
+For approval process, you can query it using SOQL
+SELECT Id,Name,DeveloperName,Type,Description,TableEnumOrId,State,CreatedDate FROM ProcessDefinition
+Where TableEnumOrId = 'Opportunity'
+
+ 

@@ -1,0 +1,13 @@
+<template>
+    <lightning-card title="Parent">
+        <lightning-layout>
+            Value From Child :{msg}
+        </lightning-layout>
+    </lightning-card>
+
+    <lightning-card title="Child">
+        <lightning-layout>
+            <c-c-p2-child-comp onmycustomevent={handleCustomEvent}></c-c-p2-child-comp>
+        </lightning-layout>
+    </lightning-card>
+</template>

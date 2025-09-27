@@ -1,0 +1,12 @@
+<apex:component controller="listController">
+    
+    <apex:selectList id="complainType" value="{!selMenu}" size="1" styleClass="slds-select" label="Complain Type" onchange="callMe()">
+        <apex:selectOptions value="{!Menus}" />
+    </apex:selectList>
+
+    <script>
+        function callMe{
+            callCtrl();//this will call action function in VF page
+        }
+    </script>
+</apex:component>

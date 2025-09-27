@@ -1,0 +1,129 @@
+<apex:page controller="DTTBTry4">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
+ 
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    
+    <script>
+    
+    $(document).ready(function () {
+		
+        
+    });
+    
+    
+    function getRemoteContacts() {
+        
+        var table;
+        
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.DTTBTry4.getContacts}',
+             
+            function(result, event){
+                
+                console.log('result : ',typeof result);
+                
+                if (event.status) {
+                    
+                    table = $('#contactsTable').DataTable({
+                        data: result,
+                        columns: [
+                            { data: 'cnt' },
+                            { data: 'contID' },
+                            { data: 'contName' },
+                            { data: 'accId' }
+                        ],
+                        "processing": true,
+                        "serverSide": false,
+                        "ajax": {
+                            data : {pageNum : 1},
+                            dataType : "json",
+                            //success: function
+                        }
+                    });
+                    
+                } else if (event.type === 'exception') {
+
+                } else {
+
+                }
+            }, 
+            {escape: true}
+        );
+        
+        console.log('m at the end..');
+    }
+    
+    
+    
+    function getNextPageContacts() {
+        
+        var table;
+        
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.DTTBTry4.getNextContacts}',
+             
+            function(result, event){
+                
+                console.log('result : ',typeof result);
+                
+                if (event.status) {
+                    
+                    console.log('Success : ',result);
+                    return result;
+                    
+                    
+                } else if (event.type === 'exception') {
+                    console.log( 'exception => ', event.message + " = > " + event.where );
+                } else {
+                    console.log("responseErrors => ", event.message);
+                }
+            }, 
+            {escape: true}
+        );
+        
+        console.log('m at the end..');
+    }
+    
+    
+    
+    
+    
+    
+    
+    </script>
+    
+    <input id="acctSearch" type="text"/>
+    <button onclick="getRemoteAccount()">Get Account</button>
+    <div id="responseErrors"></div>
+
+    <apex:pageBlock id="block">
+        <apex:pageBlockSection id="blockSection" columns="2">
+            <apex:pageBlockSectionItem id="firstItem">
+                <span id="remoteAcctId"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem id="secondItem">
+                <apex:outputText id="acctNumEmployees"/>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+    
+    <input id="acctSearch" type="text"/>
+    <button onclick="getRemoteContacts()">Get Contacts</button>
+    <div id="responseErrors"></div>
+    
+    <table id="contactsTable">
+        <thead>
+            <tr>
+                <th>Sr. No.</th>
+                <th>Contact ID</th>
+                <th>Contact Name</th>
+                <th>Account ID</th>
+            </tr>
+        </thead>
+    </table>
+
+    
+</apex:page>

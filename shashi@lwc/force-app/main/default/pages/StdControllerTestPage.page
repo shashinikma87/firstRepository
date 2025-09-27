@@ -1,0 +1,16 @@
+<apex:page standardController="Contact" extensions="testCntlr"> <!--  renderAs="pdf" -->
+    <!-- Begin Default Content REMOVE THIS -->
+    <h1>Congratulations</h1>
+    This is your new Page
+    <br/>
+    {!c.Id} => {!contact.name}
+    <br/>  
+    <apex:form >
+        <apex:pageBlock title="Edit Contact" >
+        <apex:inputField label="Contact Name" value="{!Contact.name}"/> <p/>
+            Account Name : <apex:inputField label="Contact Name using instantiation" value="{!a.name}" /><p/>
+        <apex:commandButton value="Save" action="{!save}" />
+            </apex:pageBlock>
+    </apex:form>
+    <!-- End Default Content REMOVE THIS -->
+</apex:page>

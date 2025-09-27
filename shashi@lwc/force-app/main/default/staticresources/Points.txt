@@ -1,0 +1,14 @@
+efrank@genepoint.com
+- reset password link and check for the knowledge and Ideas tabs / what are the tabs / info available to this tyoe user.
+
+
+What can an administrator assign to both Ideas and Answers?
+  Categories
+  
+Products tab
+
+Pricebook tabs
+
+Salesforce content library
+
+Chatter

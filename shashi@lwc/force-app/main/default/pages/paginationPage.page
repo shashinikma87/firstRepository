@@ -1,0 +1,27 @@
+<apex:page controller="SelectListController" >
+      <apex:form >
+            <apex:selectList value="{!TestValue}" size="1" >
+           <apex:selectOptions value="{!TestList.0}"/>
+           <apex:selectOptions value="{!TestList.1}"/>
+           <apex:selectOptions value="{!TestList.2}"/>
+           <apex:selectOptions value="{!TestList.3}"/>
+           <apex:selectOptions value="{!TestList.4}"/>
+           <apex:selectOptions value="{!TestList.5}"/>
+           <apex:selectOptions value="{!TestList.6}"/>
+           <apex:selectOptions value="{!TestList.7}"/>
+           <apex:selectOptions value="{!TestList.8}"/>
+           <apex:selectOptions value="{!TestList.9}"/>
+           <apex:selectOptions value="{!TestList.11}"/>
+           <apex:selectOptions value="{!TestList.12}"/>
+           <apex:selectOptions value="{!TestList.13}"/>
+           <apex:selectOptions value="{!TestList.14}"/>
+           <apex:selectOptions value="{!TestList.15}"/>
+           <apex:selectOptions value="{!TestList.16}"/>
+           <apex:selectOptions value="{!TestList.17}"/>
+           <apex:selectOptions value="{!TestList.18}"/>
+           <apex:selectOptions value="{!TestList.19}"/>
+           <apex:actionSupport event="onchange" rerender="testValue"/>
+            </apex:selectList>
+            &nbsp;&nbsp;<apex:outputText id="testValue" value="{!TestValue}"/>
+      </apex:form>
+</apex:page>

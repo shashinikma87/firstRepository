@@ -1,0 +1,23 @@
+<apex:page >
+    
+    <script language="JavaScript" type="text/javascript">
+    
+    function getBaseURL() {
+        
+        var url = location.href;  // entire url including querystring - also: window.location.href;
+        var baseURL = url.substring(0, url.indexOf('/', 14));
+        
+        return url;
+        
+        //return baseURL + "/";
+    }
+    
+    console.log('Base URL = ',getBaseURL());
+    
+    
+    </script>
+    
+    
+    <a href="{!$Site.BaseUrl}" target="_blank">URL</a><br/>
+    
+</apex:page>

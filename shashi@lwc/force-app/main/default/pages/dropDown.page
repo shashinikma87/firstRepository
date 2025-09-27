@@ -1,0 +1,17 @@
+<apex:page controller="actionsup" language="{!$CurrentPage.parameters.lang}" >
+    <apex:form id="form">
+        <div >
+            <apex:actionRegion >
+                Language:
+                <apex:selectList id="subroleList" value="{!selected}" size="1" >
+                    <apex:selectOptions value="{!options}" ></apex:selectOptions>
+                    <apex:actionSupport event="onchange" action="{!selectlist}" reRender="panel"/>
+				</apex:selectList> 
+            </apex:actionRegion>
+            <br/>
+            <apex:outputpanel id="panel">
+                 <apex:outputText value="{!selected}" />
+            </apex:outputpanel>
+        </div>
+    </apex:form>
+</apex:page>
